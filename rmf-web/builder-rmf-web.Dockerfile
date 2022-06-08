@@ -1,6 +1,6 @@
 FROM ghcr.io/open-rmf/rmf_deployment_template/builder-rmf
 
-COPY rmf-web.repos /root
+COPY rmf-web/rmf-web.repos /root
 
 SHELL ["bash", "-c"]
 
