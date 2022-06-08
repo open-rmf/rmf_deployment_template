@@ -4,8 +4,7 @@ This repo provides a sample template to build, deploy and manage an RMF installa
 This repo is structured as -
 - `main` - Intro
 - `build/rmf` - Build Dockerfiles and CI pipeline
-- `infra/bringup` - Cloud cluster bringup scripts and docs
-- `infra/run` - Cluster runtime configs
+- `cloud_infra` - Cloud cluster bringup scripts and docs and runtime configs
 
 _(These branches may be setup as independant repos for a production environment, the intent in having them as branches here is to provide a concise one-stop location for easy reference.)_
 
