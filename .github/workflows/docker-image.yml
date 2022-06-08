@@ -27,7 +27,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
-          file: rmf/builder-rosdep.Dockerfile
+          dockerfile: rmf/builder-rosdep.Dockerfile
           # push: true
           tags: ghcr.io/open-rmf/rmf_deployment_template/builder-rosdep:latest
       -
