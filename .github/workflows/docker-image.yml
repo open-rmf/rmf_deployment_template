@@ -1,3 +1,11 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "akash-dev/build/rmf" ]
+  pull_request:
+    branches: [ "akash-dev/build/rmf" ]
+
 jobs:
   build:
     runs-on: self-hosted
