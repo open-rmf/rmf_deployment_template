@@ -3,7 +3,7 @@ FROM ghcr.io/open-rmf/rmf_deployment_template/builder-rmf-web
 SHELL ["bash", "-c"]
 
 RUN mkdir /opt/rmf/src/rmf-web/packages/dashboard/src/assets/resources
-COPY dashboard_resources/* /opt/rmf/src/rmf-web/packages/dashboard/src/assets/resources/
+COPY rmf-web/dashboard_resources/* /opt/rmf/src/rmf-web/packages/dashboard/src/assets/resources/
 
 RUN . /opt/rmf/install/setup.bash 
 
