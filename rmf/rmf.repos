@@ -1,0 +1,65 @@
+repositories:
+  rmf/ament_cmake_catch2:
+    type: git
+    url: https://github.com/open-rmf/ament_cmake_catch2.git
+    version: 55f08ed4ccd655f55337b5ec2ef37070fe332888
+  rmf/rmf_api_msgs:
+    type: git
+    url: https://github.com/open-rmf/rmf_api_msgs.git
+    version: 3094a265f76f1b5e4c3ac0451025ea107f2476b2
+  rmf/rmf_battery:
+    type: git
+    url: https://github.com/open-rmf/rmf_battery.git
+    version: 6ddf91c2c971177507793c5f0533c6be33b17239
+  rmf/rmf_building_map_msgs:
+    type: git
+    url: https://github.com/open-rmf/rmf_building_map_msgs.git
+    version: c5e0352e2dfd3d11e4d292a1c2901cad867c1441
+  rmf/rmf_internal_msgs:
+    type: git
+    url: https://github.com/open-rmf/rmf_internal_msgs.git
+    version: 4309adc76bd3d0dd5020994529037d449334fe2b
+  rmf/rmf_ros2:
+    type: git
+    url: https://github.com/open-rmf/rmf_ros2
+    version: 7ed2196c37edc444ba065847b399c73891f4d681
+  rmf/rmf_simulation:
+    type: git
+    url: https://github.com/open-rmf/rmf_simulation.git
+    version: 35bf411930d81d2b7fcde7d38d4931e1ca59b763
+  rmf/rmf_task:
+    type: git
+    url: https://github.com/open-rmf/rmf_task.git
+    version: d3e4a1185904b2410abdd16627e7652ca96ca40c
+  rmf/rmf_traffic:
+    type: git
+    url: https://github.com/open-rmf/rmf_traffic.git
+    version: 3eabed7e603c31ef3b94fa0ddff8447f156c115a
+  rmf/rmf_traffic_editor:
+    type: git
+    url: https://github.com/open-rmf/rmf_traffic_editor.git
+    version: 398d39e463c479b5087268106e9191a3f3727215
+  rmf/rmf_utils:
+    type: git
+    url: https://github.com/open-rmf/rmf_utils.git
+    version: 2426ed58f247416bb13ab08cd6f91657f8abe65f
+  rmf/rmf_visualization:
+    type: git
+    url: https://github.com/open-rmf/rmf_visualization.git
+    version: 08806113e1868c0b5fb18889adfd0d752e5db583
+  rmf/rmf_visualization_msgs:
+    type: git
+    url: https://github.com/open-rmf/rmf_visualization_msgs.git
+    version: c5352e03cd47c92f14c62d9947174ba53b67b664
+  thirdparty/menge_vendor:
+    type: git
+    url: https://github.com/open-rmf/menge_vendor.git
+    version: 37c888d8f6f56615efd14f1d354f381d8787c166
+  thirdparty/nlohmann_json_schema_validator_vendor:
+    type: git
+    url: https://github.com/open-rmf/nlohmann_json_schema_validator_vendor.git
+    version: f5fca6cdb98748e372d519f3ab2601e14fa30c06
+  thirdparty/pybind11_json_vendor:
+    type: git
+    url: https://github.com/open-rmf/pybind11_json_vendor.git
+    version: e37861a4033ab7a2d37c4a5c917aa750a800fcf9
