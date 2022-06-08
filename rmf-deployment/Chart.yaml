@@ -1,0 +1,13 @@
+apiVersion: v2
+name: rmf-deployment
+description: Helm Chart for a basic RMF deployment 
+version: 0.1.0
+appVersion: 0.1.0
+maintainers:
+  - name: Akash
+    email: akash@openrobotics.org
+dependencies:
+  - name: rmf-core-modules
+    version: 0.1.0
+  #- name: rmf-web-modules
+    #version: 0.1.0

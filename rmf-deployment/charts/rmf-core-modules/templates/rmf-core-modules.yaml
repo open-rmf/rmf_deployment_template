@@ -1,0 +1,179 @@
+---
+apiVersion: v1
+kind: Pod
+namespace: 
+metadata:
+  name: rmf-traffic-schedule
+spec:
+  restartPolicy: Always
+  hostNetwork: true
+  containers:
+    - name: rmf-traffic-schedule
+      image: {{ .Values.registryUrl }}/rmf_deployment_template/rmf-traffic-schedule
+      imagePullPolicy: Always
+      env:
+        - name: RMF_USE_SIM_TIME
+          value: {{ .Values.global.RMF_USE_SIM_TIME | quote }}
+        - name: {{ .Values.global.DDS_ENV | quote }}
+          value: {{ .Values.global.DDS_CONFIG | quote }}
+        - name: ROS_DOMAIN_ID
+          value: {{ .Values.global.ROS_DOMAIN_ID | quote }}
+        - name: RMW_IMPLEMENTATION
+          value: {{ .Values.global.RMW_IMPLEMENTATION | quote }}
+      volumeMounts:
+        - mountPath: {{ .Values.global.DDS_CONFIG_MOUNTPATH | quote }}
+          name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
+  volumes:
+    - name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
+      configMap:
+        name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
+
+---
+apiVersion: v1
+kind: Pod
+namespace: 
+metadata:
+  name: rmf-task-dispatcher
+spec:
+  restartPolicy: Always
+  hostNetwork: true
+  containers:
+    - name: rmf-task-dispatcher
+      image: {{ .Values.registryUrl }}/rmf_deployment_template/rmf-task-dispatcher
+      imagePullPolicy: Always
+      env:
+        - name: RMF_USE_SIM_TIME
+          value: {{ .Values.global.RMF_USE_SIM_TIME | quote }}
+        - name: {{ .Values.global.DDS_ENV | quote }}
+          value: {{ .Values.global.DDS_CONFIG | quote }}
+        - name: ROS_DOMAIN_ID
+          value: {{ .Values.global.ROS_DOMAIN_ID | quote }}
+        - name: RMW_IMPLEMENTATION
+          value: {{ .Values.global.RMW_IMPLEMENTATION | quote }}
+        - name: RMF_BIDDING_TIME_WINDOW
+          value: {{ .Values.global.RMF_BIDDING_TIME_WINDOW | quote }}
+      volumeMounts:
+        - mountPath: {{ .Values.global.DDS_CONFIG_MOUNTPATH | quote }}
+          name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
+  volumes:
+    - name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
+      configMap:
+        name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
+
+---
+apiVersion: v1
+kind: Pod
+namespace: 
+metadata:
+  name: rmf-door-supervisor
+spec:
+  restartPolicy: Always
+  hostNetwork: true
+  containers:
+    - name: rmf-door-supervisor
+      image: {{ .Values.registryUrl }}/rmf_deployment_template/rmf-door-supervisor
+      imagePullPolicy: Always
+      env:
+        - name: {{ .Values.global.DDS_ENV | quote }}
+          value: {{ .Values.global.DDS_CONFIG | quote }}
+        - name: ROS_DOMAIN_ID
+          value: {{ .Values.global.ROS_DOMAIN_ID | quote }}
+        - name: RMW_IMPLEMENTATION
+          value: {{ .Values.global.RMW_IMPLEMENTATION | quote }}
+      volumeMounts:
+        - mountPath: {{ .Values.global.DDS_CONFIG_MOUNTPATH | quote }}
+          name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
+  volumes:
+    - name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
+      configMap:
+        name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
+
+---
+apiVersion: v1
+kind: Pod
+namespace: 
+metadata:
+  name: rmf-lift-supervisor
+spec:
+  restartPolicy: Always
+  hostNetwork: true
+  containers:
+    - name: rmf-lift-supervisor
+      image: {{ .Values.registryUrl }}/rmf_deployment_template/rmf-lift-supervisor
+      imagePullPolicy: Always
+      env:
+        - name: RMF_USE_SIM_TIME
+          value: {{ .Values.global.RMF_USE_SIM_TIME | quote }}
+        - name: {{ .Values.global.DDS_ENV | quote }}
+          value: {{ .Values.global.DDS_CONFIG | quote }}
+        - name: ROS_DOMAIN_ID
+          value: {{ .Values.global.ROS_DOMAIN_ID | quote }}
+        - name: RMW_IMPLEMENTATION
+          value: {{ .Values.global.RMW_IMPLEMENTATION | quote }}
+      volumeMounts:
+        - mountPath: {{ .Values.global.DDS_CONFIG_MOUNTPATH | quote }}
+          name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
+  volumes:
+    - name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
+      configMap:
+        name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
+
+---
+apiVersion: v1
+kind: Pod
+namespace: 
+metadata:
+  name: rmf-traffic-blockade
+spec:
+  restartPolicy: Always
+  hostNetwork: true
+  containers:
+    - name: rmf-traffic-blockade
+      image: {{ .Values.registryUrl }}/rmf_deployment_template/rmf-traffic-blockade
+      imagePullPolicy: Always
+      env:
+        - name: RMF_USE_SIM_TIME
+          value: {{ .Values.global.RMF_USE_SIM_TIME | quote }}
+        - name: {{ .Values.global.DDS_ENV | quote }}
+          value: {{ .Values.global.DDS_CONFIG | quote }}
+        - name: ROS_DOMAIN_ID
+          value: {{ .Values.global.ROS_DOMAIN_ID | quote }}
+        - name: RMW_IMPLEMENTATION
+          value: {{ .Values.global.RMW_IMPLEMENTATION | quote }}
+      volumeMounts:
+        - mountPath: {{ .Values.global.DDS_CONFIG_MOUNTPATH | quote }}
+          name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
+  volumes:
+    - name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
+      configMap:
+        name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
+
+---
+apiVersion: v1
+kind: Pod
+namespace: 
+metadata:
+  name: rmf-building-map-server
+spec:
+  restartPolicy: Always
+  hostNetwork: true
+  containers:
+    - name: rmf-building-map-server
+      image: {{ .Values.registryUrl }}/rmf_deployment_template/rmf-building-map-server
+      imagePullPolicy: Always
+      env:
+        - name: {{ .Values.global.DDS_ENV | quote }}
+          value: {{ .Values.global.DDS_CONFIG | quote }}
+        - name: ROS_DOMAIN_ID
+          value: {{ .Values.global.ROS_DOMAIN_ID | quote }}
+        - name: RMW_IMPLEMENTATION
+          value: {{ .Values.global.RMW_IMPLEMENTATION | quote }}
+        - name: RMF_BUILDING_MAP_SERVER_CONFIG_PATH
+          value: {{ .Values.global.RMF_BUILDING_MAP_SERVER_CONFIG_PATH | quote }}
+      volumeMounts:
+        - mountPath: {{ .Values.global.DDS_CONFIG_MOUNTPATH | quote }}
+          name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
+  volumes:
+    - name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
+      configMap:
+        name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}

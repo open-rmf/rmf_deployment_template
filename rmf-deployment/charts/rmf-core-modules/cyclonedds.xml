@@ -1,0 +1,23 @@
+<CycloneDDS xmlns="https://cdds.io/config" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://cdds.io/config https://raw.githubusercontent.com/eclipse-cyclonedds/cyclonedds/master/etc/cyclonedds.xsd">
+        <Domain id="any">
+                <General>
+                        <Interfaces>
+                                <NetworkInterface name="cni0" priority="default" multicast="true"/> <!--Cluster network-->
+                                <!-- <NetworkInterface name="wg0" multicast="false"/> --> <!--Example interface for connecting remote devices over wireguard vpn-->
+                        </Interfaces>
+                        <AllowMulticast>default</AllowMulticast>
+                        <MaxMessageSize>8192B</MaxMessageSize>
+                        <Transport>udp</Transport>
+                </General>
+                <Discovery>
+                        <Peers>
+                                <Peer address="10.8.0.1"/> <!-- wg instance -->
+                                <Peer address="10.8.0.4"/> <!-- rmf cluster instance -->
+                                <Peer address="10.8.0.14"/> <!-- temi instance -->
+                                <Peer address="10.8.0.16"/> <!-- gaussian test -->
+                        </Peers>
+                        <ParticipantIndex>auto</ParticipantIndex>
+                        <MaxAutoParticipantIndex>50</MaxAutoParticipantIndex>
+                </Discovery>
+        </Domain>
+</CycloneDDS>

@@ -1,0 +1,7 @@
+apiVersion: v2
+name: rmf-core-modules
+version: 0.1.0
+appVersion: 0.1.0
+maintainers:
+  - name: Akash
+    email: akash@openrobotics.org

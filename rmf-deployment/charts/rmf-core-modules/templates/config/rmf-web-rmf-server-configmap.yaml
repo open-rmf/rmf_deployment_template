@@ -1,0 +1,8 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rmf-web-rmf-server-configmap
+data:
+  rmf_server_config.py: |-
+{{ .Files.Get "rmf_server_config.py" | indent 4 }}
