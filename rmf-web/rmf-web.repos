@@ -6,4 +6,4 @@ repositories:
   rmf/rmf_internal_msgs:
     type: git
     url: https://github.com/open-rmf/rmf_internal_msgs.git
-    version: a9196f457c828aa2f81e5d0b4c82ae8184859c8c
+    version: c0b929db6ca666f7951dc633c573892a7c812c28
