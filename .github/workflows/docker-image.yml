@@ -49,6 +49,22 @@ jobs:
           file: rmf-web/builder-rmf-web.Dockerfile
           # push: true
           tags: ghcr.io/open-rmf/rmf_deployment_template/builder-rmf-web:latest
+      -
+        name: Build builder-rosdep-simulation
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: rmf-simulation/builder-rosdep-simulation.Dockerfile
+          # push: true
+          tags: ghcr.io/open-rmf/rmf_deployment_template/builder-rosdep-simulation:latest
+      -
+        name: Build builder-rmf-simulation
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: rmf-simulation/builder-rmf-simulation.Dockerfile
+          # push: true
+          tags: ghcr.io/open-rmf/rmf_deployment_template/builder-rmf-simulation:latest
       # ###
       # build rmf images
       # ###
