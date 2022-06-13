@@ -12,4 +12,4 @@ RUN apt install \
     python3-pip python3-vcstool cmake python3-colcon-common-extensions -y
 
 RUN apt install clang-13 lldb-13 lld-13 -y
-RUN update-alternatives --install /usr/bin/c c++ /usr/bin/clang++-13 100
+RUN update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-13 100
