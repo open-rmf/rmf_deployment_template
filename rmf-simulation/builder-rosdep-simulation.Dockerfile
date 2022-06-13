@@ -12,4 +12,4 @@ RUN wget https://packages.osrfoundation.org/gazebo.key -O - | sudo apt-key add -
 
 RUN apt update && apt upgrade -y
 RUN apt install \
-    python3-pip python3-vcstool cmake python3-colcon-common-extensions ignition-edifice -y 
+    python3-pip python3-vcstool cmake python3-colcon-common-extensions ignition-fortress -y 

@@ -26,7 +26,9 @@ RUN rosdep install --from-paths src --ignore-src --rosdistro $ROS_DISTRO \
     --skip-keys turtlebot3_bringup \ 
     --skip-keys move_base_msgs \ 
     --skip-keys dwa_local_planner \ 
-    --skip-keys map_server -y
+    --skip-keys map_server \
+    --skip-keys iginition \
+    -y
 
 RUN . /opt/ros/$ROS_DISTRO/setup.sh \
   && colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release

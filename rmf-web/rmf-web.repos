@@ -2,8 +2,8 @@ repositories:
   rmf-web:
     type: git
     url: https://github.com/open-rmf/rmf-web
-    version: 2f3e12f31abdc48619a5df7f1ba4cd125b6b9ffd
+    version: main
   rmf/rmf_internal_msgs:
     type: git
     url: https://github.com/open-rmf/rmf_internal_msgs.git
-    version: c0b929db6ca666f7951dc633c573892a7c812c28
+    version: main

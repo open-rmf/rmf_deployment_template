@@ -1,4 +1,4 @@
-FROM ros:galactic
+FROM ros:humble
 
 RUN apt update -y
 RUN apt install curl git wget -y
@@ -10,3 +10,6 @@ RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/r
 RUN apt update && apt upgrade -y
 RUN apt install \
     python3-pip python3-vcstool cmake python3-colcon-common-extensions -y
+
+RUN apt install clang-13 --install-suggests
+RUN update-alternatives --install /usr/bin/c c++ /usr/bin/clang++-13 100
