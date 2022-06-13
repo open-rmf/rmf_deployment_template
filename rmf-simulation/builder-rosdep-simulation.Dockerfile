@@ -1,4 +1,4 @@
-FROM ros:galactic
+FROM ros:humble
 
 RUN apt update -y
 RUN apt install curl git wget -y
@@ -13,3 +13,6 @@ RUN wget https://packages.osrfoundation.org/gazebo.key -O - | sudo apt-key add -
 RUN apt update && apt upgrade -y
 RUN apt install \
     python3-pip python3-vcstool cmake python3-colcon-common-extensions ignition-fortress -y 
+
+RUN apt install clang-13 lldb-13 lld-13 -y
+RUN update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-13 100
