@@ -11,5 +11,5 @@ RUN apt update && apt upgrade -y
 RUN apt install \
     python3-pip python3-vcstool cmake python3-colcon-common-extensions -y
 
-RUN apt install clang-13 --install-suggests
+RUN apt install clang-13 --install-suggests -y
 RUN update-alternatives --install /usr/bin/c c++ /usr/bin/clang++-13 100
