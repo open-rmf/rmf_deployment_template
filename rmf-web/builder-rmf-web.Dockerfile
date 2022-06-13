@@ -13,7 +13,7 @@ RUN  curl -sL https://deb.nodesource.com/setup_14.x | bash - && \
 RUN pip3 install pipenv
 
 RUN cd /opt/rmf/src/rmf-web &&  \
-  sed -i '/python_version/d' Pipfile && \
+  sed -i '$ d' Pipfile && \
   npm install -g npm@latest && \
   npm config set unsafe-perm && \
   npm ci
