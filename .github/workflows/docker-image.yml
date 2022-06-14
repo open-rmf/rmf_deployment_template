@@ -200,7 +200,7 @@ jobs:
         with:
           context: .
           file: rmf-web/rmf-web-dashboard.Dockerfile
-          build-arg: |
+          build-args: |
             DOMAIN_URL='rmf-deployment-template.open-rmf.org'
           # push: true
           tags: ghcr.io/open-rmf/rmf_deployment_template/rmf-web-dashboard:latest
