@@ -2,7 +2,7 @@ repositories:
   rmf-web:
     type: git
     url: https://github.com/open-rmf/rmf-web
-    version: feature/humble_compatibility
+    version: d9bd9f3a110b51481d2c9567a159e1313edf4d39
   rmf/rmf_internal_msgs:
     type: git
     url: https://github.com/open-rmf/rmf_internal_msgs.git
