@@ -14,6 +14,10 @@ WORKDIR /opt/rmf
 RUN echo ${NETRC} > /root/.netrc
 RUN vcs import src < /root/rmf.repos
 
+# Keep only rmf_demos_maps from rmf_demos repo
+# This is a workaround for sparse checkout that is not supported by vcs
+RUN rm -rf src/rmf/rmf_demos/!(rmf_demos_maps)/
+
 RUN rosdep update --rosdistro $ROS_DISTRO
 RUN rosdep install --from-paths src --ignore-src --rosdistro $ROS_DISTRO \
     --skip-keys roscpp  \
