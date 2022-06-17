@@ -16,6 +16,12 @@ ENV REACT_APP_RMF_SERVER="https://${DOMAIN_URL}/rmf/api/v1"
 ENV REACT_APP_AUTH_PROVIDER="keycloak"
 ENV REACT_APP_KEYCLOAK_CONFIG='{"realm": "rmf-web", "clientId": "dashboard", "url" : "https://'${DOMAIN_URL}'/auth"}'
 
+RUN echo "DOMAIN_URL: $DOMAIN_URL"\ 
+    && echo "REACT_APP_TRAJECTORY_SERVER: $REACT_APP_TRAJECTORY_SERVER"\
+    && echo "REACT_APP_RMF_SERVER: $REACT_APP_RMF_SERVER"\
+    && echo "REACT_APP_AUTH_PROVIDER: $REACT_APP_AUTH_PROVIDER"\
+    && echo "REACT_APP_KEYCLOAK_CONFIG: $REACT_APP_KEYCLOAK_CONFIG"
+
 RUN cd /opt/rmf/src/rmf-web/packages/dashboard && npm run build
 
 ###
