@@ -22,7 +22,7 @@ repositories:
   rmf/rmf_ros2:
     type: git
     url: https://github.com/open-rmf/rmf_ros2
-    version: feature/humble_compatibility
+    version: main
   rmf/rmf_simulation:
     type: git
     url: https://github.com/open-rmf/rmf_simulation.git
@@ -34,11 +34,11 @@ repositories:
   rmf/rmf_traffic:
     type: git
     url: https://github.com/open-rmf/rmf_traffic.git
-    version: fix/humble_nullopt_fix
+    version: main
   rmf/rmf_traffic_editor:
     type: git
     url: https://github.com/open-rmf/rmf_traffic_editor.git
-    version: feature/humble_compatibility
+    version: main
   rmf/rmf_utils:
     type: git
     url: https://github.com/open-rmf/rmf_utils.git
