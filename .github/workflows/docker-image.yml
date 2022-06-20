@@ -2,9 +2,9 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "akash-dev/build/rmf" ]
+    branches: [ "build/rmf" ]
   pull_request:
-    branches: [ "akash-dev/build/rmf" ]
+    branches: [ "build/rmf" ]
 
 jobs:
   build:
