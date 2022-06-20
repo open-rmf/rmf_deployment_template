@@ -1,0 +1,206 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "build/rmf" ]
+  pull_request:
+    branches: [ "build/rmf" ]
+
+jobs:
+  build:
+    runs-on: self-hosted
+    steps:
+      # ###
+      # Login to github packages, our container registry
+      # ###
+      # - name: Login to Github Packages
+      #  uses: docker/login-action@v1
+      #  with:
+      #    registry: ghcr.io
+      #    username: ${{ github.actor }}
+      #    password: ${{ secrets.GHCR_PAT }}
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      # ###
+      # build builder images
+      # ###
+      -
+        name: Build builder-rosdep
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: rmf/builder-rosdep.Dockerfile
+          # push: true
+          tags: ghcr.io/open-rmf/rmf_deployment_template/builder-rosdep:latest
+      -
+        name: Build builder-rmf
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: rmf/builder-rmf.Dockerfile
+          # push: true
+          tags: ghcr.io/open-rmf/rmf_deployment_template/builder-rmf:latest
+      -
+        name: Build builder-rmf-web
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: rmf-web/builder-rmf-web.Dockerfile
+          # push: true
+          tags: ghcr.io/open-rmf/rmf_deployment_template/builder-rmf-web:latest
+      -
+        name: Build builder-rosdep-simulation
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: rmf-simulation/builder-rosdep-simulation.Dockerfile
+          # push: true
+          tags: ghcr.io/open-rmf/rmf_deployment_template/builder-rosdep-simulation:latest
+      -
+        name: Build builder-rmf-simulation
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: rmf-simulation/builder-rmf-simulation.Dockerfile
+          # push: true
+          tags: ghcr.io/open-rmf/rmf_deployment_template/builder-rmf-simulation:latest
+      # ###
+      # build rmf images
+      # ###
+      -
+        name: Build rmf-building-map-server
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: rmf/rmf-building-map-server.Dockerfile
+          # push: true
+          tags: ghcr.io/open-rmf/rmf_deployment_template/rmf-building-map-server:latest
+      -
+        name: Build rmf-door-supervisor
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: rmf/rmf-door-supervisor.Dockerfile
+          # push: true
+          tags: ghcr.io/open-rmf/rmf_deployment_template/rmf-door-supervisor:latest
+      -
+        name: Build rmf-fleet-adapter
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: rmf/rmf-fleet-adapter.Dockerfile
+          # push: true
+          tags: ghcr.io/open-rmf/rmf_deployment_template/rmf-fleet-adapter:latest
+      -
+        name: Build rmf-free-fleet-server
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: rmf/rmf-free-fleet-server.Dockerfile
+          # push: true
+          tags: ghcr.io/open-rmf/rmf_deployment_template/rmf-free-fleet-server:latest
+      -
+        name: Build rmf-lift-supervisor
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: rmf/rmf-lift-supervisor.Dockerfile
+          # push: true
+          tags: ghcr.io/open-rmf/rmf_deployment_template/rmf-lift-supervisor:latest
+      -
+        name: Build rmf-mock-docker
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: rmf/rmf-mock-docker.Dockerfile
+          # push: true
+          tags: ghcr.io/open-rmf/rmf_deployment_template/rmf-mock-docker:latest
+      -
+        name: Build rmf-robot-state-aggregator
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: rmf/rmf-robot-state-aggregator.Dockerfile
+          # push: true
+          tags: ghcr.io/open-rmf/rmf_deployment_template/rmf-robot-state-aggregator:latest
+      -
+        name: Build rmf-task-dispatcher
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: rmf/rmf-task-dispatcher.Dockerfile
+          # push: true
+          tags: ghcr.io/open-rmf/rmf_deployment_template/rmf-task-dispatcher:latest
+      -
+        name: Build rmf-traffic-blockade
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: rmf/rmf-traffic-blockade.Dockerfile
+          # push: true
+          tags: ghcr.io/open-rmf/rmf_deployment_template/rmf-traffic-blockade:latest
+      -
+        name: Build rmf-traffic-schedule-monitor
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: rmf/rmf-traffic-schedule-monitor.Dockerfile
+          # push: true
+          tags: ghcr.io/open-rmf/rmf_deployment_template/rmf-traffic-schedule-monitor:latest
+      -
+        name: Build rmf-traffic-schedule
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: rmf/rmf-traffic-schedule.Dockerfile
+          # push: true
+          tags: ghcr.io/open-rmf/rmf_deployment_template/rmf-traffic-schedule:latest
+      -
+        name: Build rmf-trajectory-visualizer
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: rmf/rmf-trajectory-visualizer.Dockerfile
+          # push: true
+          tags: ghcr.io/open-rmf/rmf_deployment_template/rmf-trajectory-visualizer:latest
+      # ###
+      # build rmf simulation images
+      # ###
+      -
+        name: Build rmf-simulation-gz
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: rmf-simulation/rmf-simulation-gz.Dockerfile
+          # push: true
+          tags: ghcr.io/open-rmf/rmf_deployment_template/rmf-simulation-gz:latest
+      -
+        name: Build rmf-simulation-ign
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: rmf-simulation/rmf-simulation-ign.Dockerfile
+          # push: true
+          tags: ghcr.io/open-rmf/rmf_deployment_template/rmf-simulation-ign:latest
+      # ###
+      # build rmf web images
+      # ###
+      -
+        name: Build rmf-web-rmf-server
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: rmf-web/rmf-web-rmf-server.Dockerfile
+          # push: true
+          tags: ghcr.io/open-rmf/rmf_deployment_template/rmf-web-rmf-server:latest
+      -
+        name: Build rmf-web-dashboard
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: rmf-web/rmf-web-dashboard.Dockerfile
+          build-args: |
+            DOMAIN_URL=rmf-deployment-template.open-rmf.org
+          # push: true
+          tags: ghcr.io/open-rmf/rmf_deployment_template/rmf-web-dashboard:latest
