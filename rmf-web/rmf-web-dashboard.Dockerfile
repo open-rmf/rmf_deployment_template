@@ -1,13 +1,7 @@
-FROM ghcr.io/open-rmf/rmf_deployment_template/builder-rmf-web
+ARG BUILDER
+FROM $BUILDER
 
 SHELL ["bash", "-c"]
-
-RUN mkdir /opt/rmf/src/rmf-web/packages/dashboard/src/assets/resources
-COPY rmf-web/dashboard_resources/* /opt/rmf/src/rmf-web/packages/dashboard/src/assets/resources/
-
-RUN . /opt/rmf/install/setup.bash 
-
-WORKDIR /opt/rmf/src/rmf-web
 
 ARG DOMAIN_URL="rmf-deployment-template.open-rmf.org"
 ENV PUBLIC_URL="/dashboard"
@@ -22,7 +16,7 @@ RUN echo "DOMAIN_URL: $DOMAIN_URL"\
     && echo "REACT_APP_AUTH_PROVIDER: $REACT_APP_AUTH_PROVIDER"\
     && echo "REACT_APP_KEYCLOAK_CONFIG: $REACT_APP_KEYCLOAK_CONFIG"
 
-RUN cd /opt/rmf/src/rmf-web/packages/dashboard && npm run build
+RUN cd packages/dashboard && npm run build
 
 ###
 

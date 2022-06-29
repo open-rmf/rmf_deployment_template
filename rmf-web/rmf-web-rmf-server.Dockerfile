@@ -1,20 +1,20 @@
-FROM ghcr.io/open-rmf/rmf_deployment_template/builder-rmf-web
+ARG BUILDER
+FROM $BUILDER
 
 SHELL ["bash", "-c"]
 
-ENV RMF_SERVER_USE_SIM_TIME=true
+ENV RMF_SERVER_USE_SIM_TIME=false
 
 RUN . /opt/rmf/install/setup.bash && \ 
   cd /opt/rmf/src/rmf-web && \
   cd /opt/rmf/src/rmf-web/packages/api-server && npm run prepack
 
-FROM ghcr.io/open-rmf/rmf_deployment_template/builder-rmf-web
+FROM $BUILDER
 
 COPY --from=0 /opt/rmf/src/rmf-web/packages/api-server/dist/ .
 
 SHELL ["bash", "-c"]
 RUN pip3 install $(ls -1 | grep '.*.whl')[postgres]
-RUN pip3 install paho-mqtt
 
 # cleanup
 RUN rm -rf /opt/rmf/src
