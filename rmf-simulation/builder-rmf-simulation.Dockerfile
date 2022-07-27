@@ -1,4 +1,6 @@
-FROM ghcr.io/open-rmf/rmf_deployment_template/builder-rosdep-simulation
+ARG BUILDER_NS
+
+FROM $BUILDER_NS/builder-rmf
 
 ARG NETRC
 
@@ -9,10 +11,13 @@ SHELL ["bash", "-c"]
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt update
+RUN apt install ignition-fortress -y 
 RUN mkdir -p /opt/rmf/src
 WORKDIR /opt/rmf
 RUN echo ${NETRC} > /root/.netrc
-RUN vcs import src < /root/rmf.repos
+
+# copy rmf-simulation source files
+COPY rmf-simulation-src src
 
 RUN rosdep update --rosdistro $ROS_DISTRO
 RUN rosdep install --from-paths src --ignore-src --rosdistro $ROS_DISTRO \
