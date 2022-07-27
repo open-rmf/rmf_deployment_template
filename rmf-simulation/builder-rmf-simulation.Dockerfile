@@ -4,14 +4,11 @@ FROM $BUILDER_NS/builder-rmf
 
 ARG NETRC
 
-COPY rmf/rmf.repos /root
-
 SHELL ["bash", "-c"]
 
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt update
-RUN apt install ignition-fortress -y 
 RUN mkdir -p /opt/rmf/src
 WORKDIR /opt/rmf
 RUN echo ${NETRC} > /root/.netrc

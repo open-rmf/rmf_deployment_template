@@ -16,7 +16,8 @@ RUN wget https://packages.osrfoundation.org/gazebo.key -O - | sudo apt-key add -
 
 RUN apt update && apt upgrade -y
 RUN apt install \
-    python3-pip python3-vcstool cmake python3-colcon-common-extensions -y
+    python3-pip cmake python3-colcon-common-extensions -y
 
-RUN apt install clang-13 lldb-13 lld-13 -y
-RUN update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-13 100
+# TODO: used in humble
+# RUN apt install clang-13 lldb-13 lld-13 -y
+# RUN update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-13 100
