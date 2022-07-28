@@ -2,9 +2,9 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "build/rmf-cleanups" ]
+    branches: [ "build/rmf", "main" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "build/rmf", "main" ]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -37,8 +37,8 @@ jobs:
           sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
           sudo apt update
           sudo apt install python3-vcstool -y
-          mkdir src
-          vcs import src < rmf/rmf.repos
+          mkdir rmf-src
+          vcs import rmf-src < rmf/rmf.repos
       # ###
       # build builder images
       # ###
@@ -50,6 +50,7 @@ jobs:
           file: rmf/builder-rosdep.Dockerfile
           build-args: |
             REGISTRY=${{ env.registry }}
+            ROS_DISTRO=galactic
           # push: true
           tags: ${{ env.builder_ns }}/builder-rosdep:latest
       -
