@@ -9,7 +9,7 @@ spec:
   hostNetwork: true
   containers:
     - name: rmf-traffic-schedule
-      image: {{ .Values.registryUrl }}/rmf_deployment_template/rmf-traffic-schedule
+      image: {{ .Values.builder_ns }}/rmf
       imagePullPolicy: Always
       env:
         - name: RMF_USE_SIM_TIME
@@ -20,6 +20,13 @@ spec:
           value: {{ .Values.global.ROS_DOMAIN_ID | quote }}
         - name: RMW_IMPLEMENTATION
           value: {{ .Values.global.RMW_IMPLEMENTATION | quote }}
+      command: ["/bin/bash"]
+      args: 
+        - -c
+        - > 
+          /ros_entrypoint.sh
+          ros2 run rmf_traffic_ros2 rmf_traffic_schedule --ros-args
+          -p use_sim_time:=$(RMF_USE_SIM_TIME)
       volumeMounts:
         - mountPath: {{ .Values.global.DDS_CONFIG_MOUNTPATH | quote }}
           name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
@@ -39,7 +46,7 @@ spec:
   hostNetwork: true
   containers:
     - name: rmf-task-dispatcher
-      image: {{ .Values.registryUrl }}/rmf_deployment_template/rmf-task-dispatcher
+      image: {{ .Values.builder_ns }}/rmf
       imagePullPolicy: Always
       env:
         - name: RMF_USE_SIM_TIME
@@ -52,6 +59,15 @@ spec:
           value: {{ .Values.global.RMW_IMPLEMENTATION | quote }}
         - name: RMF_BIDDING_TIME_WINDOW
           value: {{ .Values.global.RMF_BIDDING_TIME_WINDOW | quote }}
+      command: ["/bin/bash"]
+      args: 
+       - -c
+       - >
+        /ros_entrypoint.sh
+        ros2 run rmf_task_ros2 rmf_task_dispatcher --ros-args
+        -p use_sim_time:=$(RMF_USE_SIM_TIME)
+        -p bidding_time_window:=$(RMF_BIDDING_TIME_WINDOW)
+        -p server_uri:=$(RMF_SERVER_URI)
       volumeMounts:
         - mountPath: {{ .Values.global.DDS_CONFIG_MOUNTPATH | quote }}
           name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
@@ -71,7 +87,7 @@ spec:
   hostNetwork: true
   containers:
     - name: rmf-door-supervisor
-      image: {{ .Values.registryUrl }}/rmf_deployment_template/rmf-door-supervisor
+      image: {{ .Values.builder_ns }}/rmf
       imagePullPolicy: Always
       env:
         - name: {{ .Values.global.DDS_ENV | quote }}
@@ -80,6 +96,12 @@ spec:
           value: {{ .Values.global.ROS_DOMAIN_ID | quote }}
         - name: RMW_IMPLEMENTATION
           value: {{ .Values.global.RMW_IMPLEMENTATION | quote }}
+      command: ["/bin/bash"]
+      args: 
+        - -c
+        - >
+          /ros_entrypoint.sh
+          ros2 run rmf_fleet_adapter door_supervisor
       volumeMounts:
         - mountPath: {{ .Values.global.DDS_CONFIG_MOUNTPATH | quote }}
           name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
@@ -99,7 +121,7 @@ spec:
   hostNetwork: true
   containers:
     - name: rmf-lift-supervisor
-      image: {{ .Values.registryUrl }}/rmf_deployment_template/rmf-lift-supervisor
+      image: {{ .Values.builder_ns }}/rmf
       imagePullPolicy: Always
       env:
         - name: RMF_USE_SIM_TIME
@@ -110,6 +132,12 @@ spec:
           value: {{ .Values.global.ROS_DOMAIN_ID | quote }}
         - name: RMW_IMPLEMENTATION
           value: {{ .Values.global.RMW_IMPLEMENTATION | quote }}
+      command: ["/bin/bash"]
+      args: 
+        - -c
+        - >
+          /ros_entrypoint.sh
+          ros2 run rmf_fleet_adapter lift_supervisor
       volumeMounts:
         - mountPath: {{ .Values.global.DDS_CONFIG_MOUNTPATH | quote }}
           name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
@@ -129,7 +157,7 @@ spec:
   hostNetwork: true
   containers:
     - name: rmf-traffic-blockade
-      image: {{ .Values.registryUrl }}/rmf_deployment_template/rmf-traffic-blockade
+      image: {{ .Values.builder_ns }}/rmf
       imagePullPolicy: Always
       env:
         - name: RMF_USE_SIM_TIME
@@ -140,36 +168,13 @@ spec:
           value: {{ .Values.global.ROS_DOMAIN_ID | quote }}
         - name: RMW_IMPLEMENTATION
           value: {{ .Values.global.RMW_IMPLEMENTATION | quote }}
-      volumeMounts:
-        - mountPath: {{ .Values.global.DDS_CONFIG_MOUNTPATH | quote }}
-          name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
-  volumes:
-    - name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
-      configMap:
-        name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
-
----
-apiVersion: v1
-kind: Pod
-namespace: 
-metadata:
-  name: rmf-building-map-server
-spec:
-  restartPolicy: Always
-  hostNetwork: true
-  containers:
-    - name: rmf-building-map-server
-      image: {{ .Values.registryUrl }}/rmf_deployment_template/rmf-building-map-server
-      imagePullPolicy: Always
-      env:
-        - name: {{ .Values.global.DDS_ENV | quote }}
-          value: {{ .Values.global.DDS_CONFIG | quote }}
-        - name: ROS_DOMAIN_ID
-          value: {{ .Values.global.ROS_DOMAIN_ID | quote }}
-        - name: RMW_IMPLEMENTATION
-          value: {{ .Values.global.RMW_IMPLEMENTATION | quote }}
-        - name: RMF_BUILDING_MAP_SERVER_CONFIG_PATH
-          value: {{ .Values.global.RMF_BUILDING_MAP_SERVER_CONFIG_PATH | quote }}
+      command: ["/bin/bash"]
+      args: 
+        - -c
+        - >
+          /ros_entrypoint.sh
+          ros2 run rmf_traffic_ros2 rmf_traffic_blockade --ros-args
+          -p use_sim_time:=$(RMF_USE_SIM_TIME)
       volumeMounts:
         - mountPath: {{ .Values.global.DDS_CONFIG_MOUNTPATH | quote }}
           name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}

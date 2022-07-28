@@ -120,7 +120,7 @@ spec:
     spec:
       containers:
         - name: rmf-web-rmf-server
-          image: {{ .Values.registryUrl }}/rmf_deployment_template/rmf-web-rmf-server
+          image: {{ .Values.builder_ns }}/rmf-web-rmf-server
           imagePullPolicy: Always
           ports:
             - containerPort: 8000
@@ -215,7 +215,7 @@ spec:
     spec:
       containers:
         - name: rmf-web-dashboard
-          image: {{ .Values.registryUrl }}/rmf_deployment_template/rmf-web-dashboard
+          image: {{ .Values.builder_ns }}/rmf-web-dashboard
           ports:
             - containerPort: 80
           env:
@@ -285,7 +285,7 @@ spec:
       hostNetwork: true
       containers:
         - name: rmf-trajectory-visualizer
-          image: {{ .Values.registryUrl }}/rmf_deployment_template/rmf-trajectory-visualizer
+          image: {{ .Values.builder_ns }}/rmf
           imagePullPolicy: Always
           env:
             - name: RMF_USE_SIM_TIME
@@ -298,6 +298,15 @@ spec:
               value: {{ .Values.global.RMW_IMPLEMENTATION | quote }}
             - name: RMF_TRAJECTORY_VISUALIZER_LEVEL_NAME
               value: {{ .Values.global.RMF_TRAJECTORY_VISUALIZER_LEVEL_NAME | quote }}
+          command: ["/bin/bash"]
+          args: 
+            - -c
+            - > 
+              /ros_entrypoint.sh
+              ros2 launch rmf_visualization visualization.launch.xml
+              headless:=1
+              use_sim_time:=$(RMF_USE_SIM_TIME)
+              map_name:=$(RMF_TRAJECTORY_VISUALIZER_LEVEL_NAME)
           ports:
            - containerPort: 8006
           volumeMounts:
@@ -331,4 +340,3 @@ spec:
     - hosts:
         -  {{ .Values.hostName | quote }}
       secretName: tls-certificate-secret-name
-
