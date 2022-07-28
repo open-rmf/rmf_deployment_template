@@ -2,16 +2,10 @@ ARG BUILDER_NS
 
 FROM $BUILDER_NS/builder-rmf
 
-ARG NETRC
-
 SHELL ["bash", "-c"]
 
-ENV DEBIAN_FRONTEND=noninteractive
-
 RUN apt update
-RUN mkdir -p /opt/rmf/src
 WORKDIR /opt/rmf
-RUN echo ${NETRC} > /root/.netrc
 
 # copy rmf-simulation source files
 COPY rmf-simulation-src src

@@ -50,7 +50,6 @@ jobs:
           file: rmf/builder-rosdep.Dockerfile
           build-args: |
             REGISTRY=${{ env.registry }}
-            ROS_DISTRO=galactic
           # push: true
           tags: ${{ env.builder_ns }}/builder-rosdep:latest
       -

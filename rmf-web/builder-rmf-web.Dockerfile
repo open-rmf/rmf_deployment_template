@@ -1,6 +1,5 @@
 ARG BUILDER_NS
 
-# TODO: should use img galactic/humble
 FROM $BUILDER_NS/builder-rmf
 
 SHELL ["bash", "-c"]

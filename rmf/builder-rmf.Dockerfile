@@ -12,6 +12,7 @@ RUN apt update
 RUN mkdir -p /opt/rmf/src
 WORKDIR /opt/rmf
 RUN echo ${NETRC} > /root/.netrc
+
 # copy rmf source repos
 COPY rmf-src src
 
