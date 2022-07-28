@@ -1,7 +1,7 @@
 ARG REGISTRY="docker.io"
+ARG ROS_DISTRO="humble"
 
-# TODO: humble? and should use img from docker registry?
-FROM $REGISTRY/ros:galactic
+FROM $REGISTRY/ros:$ROS_DISTRO
 
 RUN apt update -y
 RUN apt install curl git wget -y
@@ -18,6 +18,8 @@ RUN apt update && apt upgrade -y
 RUN apt install \
     python3-pip cmake python3-colcon-common-extensions -y
 
-# TODO: used in humble
-# RUN apt install clang-13 lldb-13 lld-13 -y
-# RUN update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-13 100
+# use clang for humble
+RUN if [ "$ROS_DISTRO" = "humble" ]; then \
+        apt install clang-13 lldb-13 lld-13 -y && \
+        update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-13 100; \
+    fi
