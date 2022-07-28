@@ -1,12 +1,11 @@
-FROM ghcr.io/open-rmf/rmf_deployment_template/builder-rmf
+ARG BUILDER_NS
 
-COPY rmf-web/rmf-web.repos /root
+FROM $BUILDER_NS/builder-rmf
 
 SHELL ["bash", "-c"]
 
-RUN mkdir -p /opt/rmf/src
-WORKDIR /opt/rmf
-RUN vcs import src < /root/rmf-web.repos
+# copy rmf-web source files
+COPY rmf-web-src src
 
 RUN  curl -sL https://deb.nodesource.com/setup_14.x | bash - && \
   apt-get update && apt-get install -y nodejs

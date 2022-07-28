@@ -1,14 +1,15 @@
-FROM ghcr.io/open-rmf/rmf_deployment_template/builder-rmf-web
+ARG BUILDER_NS
+
+FROM $BUILDER_NS/builder-rmf-web
 
 SHELL ["bash", "-c"]
 
 ENV RMF_SERVER_USE_SIM_TIME=true
 
-RUN . /opt/rmf/install/setup.bash && \ 
-  cd /opt/rmf/src/rmf-web && \
+RUN . /opt/rmf/install/setup.bash && \
   cd /opt/rmf/src/rmf-web/packages/api-server && npm run prepack
 
-FROM ghcr.io/open-rmf/rmf_deployment_template/builder-rmf-web
+FROM $BUILDER_NS/builder-rmf-web
 
 COPY --from=0 /opt/rmf/src/rmf-web/packages/api-server/dist/ .
 
