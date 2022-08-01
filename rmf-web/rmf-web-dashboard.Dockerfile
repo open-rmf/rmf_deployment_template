@@ -1,5 +1,5 @@
-ARG BUILDER_NS
-ARG REGISTRY="docker.io"
+ARG BUILDER_NS="open-rmf/rmf_deployment_template"
+ARG BASE_REGISTRY="docker.io"
 
 ###################################################################
 FROM $BUILDER_NS/builder-rmf-web
@@ -29,7 +29,7 @@ RUN echo "DOMAIN_URL: $DOMAIN_URL"\
 RUN cd /opt/rmf/src/rmf-web/packages/dashboard && npm run build
 
 ###
-FROM $REGISTRY/nginx:stable 
+FROM $BASE_REGISTRY/nginx:stable 
 COPY --from=0 /opt/rmf/src/rmf-web/packages/dashboard/build /usr/share/nginx/html/dashboard
 
 SHELL ["bash", "-c"]

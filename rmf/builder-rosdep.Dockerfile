@@ -1,7 +1,7 @@
-ARG REGISTRY="docker.io"
+ARG BASE_REGISTRY="docker.io"
 ARG ROS_DISTRO="humble"
 
-FROM $REGISTRY/ros:$ROS_DISTRO
+FROM $BASE_REGISTRY/ros:$ROS_DISTRO
 
 RUN apt update -y
 RUN apt install curl git wget -y

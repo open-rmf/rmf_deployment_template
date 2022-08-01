@@ -1,4 +1,4 @@
-ARG BUILDER_NS
+ARG BUILDER_NS="open-rmf/rmf_deployment_template"
 
 FROM $BUILDER_NS/builder-rmf-simulation
 
