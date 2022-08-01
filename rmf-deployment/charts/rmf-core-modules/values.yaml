@@ -15,12 +15,6 @@ global:
   RMF_USE_SIM_TIME: "false"
   RMF_BIDDING_TIME_WINDOW: "2.0"
   RMF_TRAJECTORY_VISUALIZER_LEVEL_NAME: "L1"
-  RMF_BUILDING_MAP_SERVER_CONFIG_PATH: "/opt/rmf/src/rmf/rmf_demos/rmf_demos_maps/maps/office/office.building.yaml"
+  RMF_BUILDING_MAP_SERVER_CONFIG_PATH: "/opt/rmf/install/ctf_maps/share/maps/office/office.building.yaml"
   RMF_FAILOVER_MODE: "false"
   RMF_SERVER_URI: "ws://localhost:8001"
-
-# Not in use
-simulation:
-  RMF_SIMULATION_MAP_NAME: "airport_terminal"
-  RMF_SIMULATION_MAP_PACKAGE: "rmf_demos_maps"
-  GAZEBO_VERSION: "11"
