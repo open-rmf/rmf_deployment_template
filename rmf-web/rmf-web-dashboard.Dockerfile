@@ -1,4 +1,9 @@
-FROM ghcr.io/open-rmf/rmf_deployment_template/builder-rmf-web
+ARG BUILDER_NS
+ARG REGISTRY="docker.io"
+
+###################################################################
+FROM $BUILDER_NS/builder-rmf-web
+ARG DOMAIN_URL="rmf-deployment-template.open-rmf.org"
 
 SHELL ["bash", "-c"]
 
@@ -9,7 +14,6 @@ RUN . /opt/rmf/install/setup.bash
 
 WORKDIR /opt/rmf/src/rmf-web
 
-ARG DOMAIN_URL="rmf-deployment-template.open-rmf.org"
 ENV PUBLIC_URL="/dashboard"
 ENV REACT_APP_TRAJECTORY_SERVER="wss://${DOMAIN_URL}/trajectory"
 ENV REACT_APP_RMF_SERVER="https://${DOMAIN_URL}/rmf/api/v1"
@@ -25,8 +29,7 @@ RUN echo "DOMAIN_URL: $DOMAIN_URL"\
 RUN cd /opt/rmf/src/rmf-web/packages/dashboard && npm run build
 
 ###
-
-FROM nginx:stable
+FROM $REGISTRY/nginx:stable 
 COPY --from=0 /opt/rmf/src/rmf-web/packages/dashboard/build /usr/share/nginx/html/dashboard
 
 SHELL ["bash", "-c"]
@@ -45,4 +48,3 @@ RUN echo -e 'server {\n\
     root /usr/share/nginx/html;\n\
   }\n\
 }\n' > /etc/nginx/conf.d/default.conf
-

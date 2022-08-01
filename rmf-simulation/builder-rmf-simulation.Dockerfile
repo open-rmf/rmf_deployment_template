@@ -1,18 +1,14 @@
-FROM ghcr.io/open-rmf/rmf_deployment_template/builder-rosdep-simulation
+ARG BUILDER_NS
 
-ARG NETRC
-
-COPY rmf/rmf.repos /root
+FROM $BUILDER_NS/builder-rmf
 
 SHELL ["bash", "-c"]
 
-ENV DEBIAN_FRONTEND=noninteractive
-
 RUN apt update
-RUN mkdir -p /opt/rmf/src
 WORKDIR /opt/rmf
-RUN echo ${NETRC} > /root/.netrc
-RUN vcs import src < /root/rmf.repos
+
+# copy rmf-simulation source files
+COPY rmf-simulation-src src
 
 RUN rosdep update --rosdistro $ROS_DISTRO
 RUN rosdep install --from-paths src --ignore-src --rosdistro $ROS_DISTRO \

@@ -1,8 +1,8 @@
-FROM ghcr.io/open-rmf/rmf_deployment_template/builder-rosdep
+ARG BUILDER_NS
+
+FROM $BUILDER_NS/builder-rosdep
 
 ARG NETRC
-
-COPY rmf/rmf.repos /root
 
 SHELL ["bash", "-c"]
 
@@ -12,11 +12,9 @@ RUN apt update
 RUN mkdir -p /opt/rmf/src
 WORKDIR /opt/rmf
 RUN echo ${NETRC} > /root/.netrc
-RUN vcs import src < /root/rmf.repos
 
-# Keep only rmf_demos_maps from rmf_demos repo
-# This is a workaround for sparse checkout that is not supported by vcs
-RUN shopt -s extglob && rm -rf src/rmf/rmf_demos/!"(rmf_demos_maps)"/
+# copy rmf source repos
+COPY rmf-src src
 
 RUN rosdep update --rosdistro $ROS_DISTRO
 RUN rosdep install --from-paths src --ignore-src --rosdistro $ROS_DISTRO \
