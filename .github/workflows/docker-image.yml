@@ -2,9 +2,9 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "build/rmf", "main" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "build/rmf", "main" ]
+    branches: [ "main" ]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -103,7 +103,7 @@ jobs:
           file: rmf/rmf.Dockerfile
           build-args: |
             BUILDER_NS=${{ env.builder_ns }}
-          # push: true
+          push: true
           tags: ${{ env.builder_ns }}/rmf:latest
       # ###
       # build rmf simulation images
@@ -116,7 +116,7 @@ jobs:
           file: rmf-simulation/rmf-simulation.Dockerfile
           build-args: |
             BUILDER_NS=${{ env.builder_ns }}
-          # push: true
+          push: true
           tags: ${{ env.builder_ns }}/rmf-simulation:latest
       # ###
       # build rmf web images
@@ -129,7 +129,7 @@ jobs:
           file: rmf-web/rmf-web-rmf-server.Dockerfile
           build-args: |
             BUILDER_NS=${{ env.builder_ns }}
-          # push: true
+          push: true
           tags: ${{ env.builder_ns }}/rmf-web-rmf-server:latest
       -
         name: Build rmf-web-dashboard
@@ -141,5 +141,5 @@ jobs:
             REGISTRY=${{ env.registry }}
             DOMAIN_URL=${{ env.domain_url }}
             BUILDER_NS=${{ env.builder_ns }}
-          # push: true
+          push: true
           tags: ${{ env.builder_ns }}/rmf-web-dashboard:latest
