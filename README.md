@@ -1,10 +1,12 @@
+[![.github/workflows/docker-image.yml](https://github.com/open-rmf/rmf_deployment_template/actions/workflows/docker-image.yml/badge.svg)](https://github.com/open-rmf/rmf_deployment_template/actions/workflows/docker-image.yml)
+
 # RMF Deployment Template
 This repo provides a sample template to build, deploy and manage an RMF installation (i.e. GitOps for RMF)
 
 This repo is structured as -
-- `main` - Intro
-- `build/rmf` - Build Dockerfiles and CI pipeline
-- `cloud_infra` - Cloud cluster bringup scripts and docs and runtime configs
+- `main` - Contains Dockerfiles and CI pipeline to build images for this example deployment
+- `build/rmf-site` - Contains example rmf-site related resources, dockerfiles and CI process
+- `cloud_infra` - Cloud cluster bringup scripts, resources and runtime configs
 
 _(These branches may be setup as independant repos for a production environment, the intent in having them as branches here is to provide a concise one-stop location for easy reference.)_
 
