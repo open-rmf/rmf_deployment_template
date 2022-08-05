@@ -256,4 +256,3 @@ echo /tmp/jwt-pub-key.pub
 
 echo "uploading pubkey to kubernetes, may not be necessary if you are not using k8s"
 kubectl create configmap jwt-pub-key --from-file=/tmp/jwt-pub-key.pub -o=yaml --dry-run=client | kubectl apply -n $TOKEN_WORKSPACE -f -
-

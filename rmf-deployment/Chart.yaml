@@ -6,8 +6,3 @@ appVersion: 0.1.0
 maintainers:
   - name: Akash
     email: akash@openrobotics.org
-dependencies:
-  - name: rmf-core-modules
-    version: 0.1.0
-  #- name: rmf-web-modules
-    #version: 0.1.0

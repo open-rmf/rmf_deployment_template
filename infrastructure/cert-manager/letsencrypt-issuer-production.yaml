@@ -8,7 +8,7 @@ spec:
     # The ACME server URL
     server: https://acme-v02.api.letsencrypt.org/directory
     # Email address used for ACME registration
-    email: YOUREMAIL@DOMAIN.com
+    email: $ACME_EMAIL
     # Name of a secret used to store the ACME account private key
     privateKeySecretRef:
       name: letsencrypt-prod
@@ -29,6 +29,6 @@ spec:
   issuerRef:
     name: letsencrypt-prod
     kind: ClusterIssuer
-  commonName: rmf-deployment-template.open-rmf.org
+  commonName: $DOMAIN_NAME
   dnsNames:
-    - rmf-deployment-template.open-rmf.org
+    - $DOMAIN_NAME
