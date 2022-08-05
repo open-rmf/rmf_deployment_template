@@ -1,5 +1,6 @@
-# RMF Deployment Template
-This branch contains the bringup instructions and configurations to setup a Kubernetes cluster infrastructure.
+# Infrastructure
+
+This directory contains the bringup instructions and configurations to setup a Kubernetes cluster infrastructure.
 
 The app to deploy is located in `cloud_infra` as `rmf_deployment`. The `rmf_deployment` template is fully configurable and minimally will need following edits prior to bringup. Be sure to edit these prior to running thru the next steps..
 - RMF configuration in `rmf-deployment/`
@@ -79,7 +80,6 @@ kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.pas
 # Now if you sync the app, we should see the full deployment "come alive"
 
 # Add domain url and initial credentials (after keycloak pod is running)
-cd infrastructure
 ./keycloak-setup.bash rmf-deployment-template.open-rmf.org 
 ```
 
