@@ -1,7 +1,7 @@
 # RMF Deployment Template
 This branch contains the bringup instructions and configurations to setup a Kubernetes cluster infrastructure.
 
-The app to deploy is located in `cloud_infra` as `rmf_deployment`. The `rmf_deployment` template is fully configurable and minimally will need following edits prior to bringup. Be sure to edit these prior to running thru the next steps..
+This deployment is fully configurable and minimally will need following edits prior to bringup. Be sure to edit these prior to running thru the next steps..
 - RMF configuration in `rmf-deployment/`
     - `rmf_server_config.py` - replace DNS name `rmf-deployment-template.open-rmf.org` with your own.
     - `values.yaml` - replace registryUrl `ghcr.io/open-rmf` and DNS name `rmf-deployment-template.open-rmf.org` with your own.
@@ -60,7 +60,7 @@ kubectl get certificates # should be true, might need to wait a minute
 ```
 
 ### Continuous Deployment: ArgoCD
-We will use ArgoCD to handle infra changes to the `cloud_infra` branch of this repository. The `rmf_deployment` directory consists of all nessarry helm charts needed for rmf deployment
+We will use ArgoCD to handle infra changes to the `cloud_infra` branch of this repository. The `rmf_deployment` consists of [helm charts](https://helm.sh/docs/topics/charts/) which describes the provisioning of cloud infra.
 
 ```bash
 kubectl create namespace argocd
