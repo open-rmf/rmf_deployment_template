@@ -1,7 +1,7 @@
-ARG BUILDER_NS="open-rmf/rmf_deployment_template"
 ARG ROS_DISTRO="galactic"
+
 FROM ghcr.io/open-rmf/rmf/rmf_demos as builder
-RUN export -p
+# We use tar instead of directly copying the files because the files becuase of some problems with the symlinks (we want to keep as similar as possible)
 RUN cd /usr/lib/x86_64-linux-gnu/ && tar -cvf /tmp/libs.tar .
 RUN cd /usr/lib/ && tar --append --file=/tmp/libs.tar libgdal* libarmadillo* libmfhdfalt* libdfalt* libogdi*
 
@@ -9,10 +9,8 @@ RUN cd /usr/lib/ && tar --append --file=/tmp/libs.tar libgdal* libarmadillo* lib
 #FROM ubi8/python-38 as rhel_ros
 FROM redhat/ubi8 as rhel_ros
 ARG ROS_DISTRO
-ENV ROS_DISTRO=$ROS_DISTRO
 SHELL ["bash", "-c"]
 
-RUN yum install -y python38
 RUN mkdir -p \
     /opt/rmf \
     /opt/ros \
@@ -25,24 +23,21 @@ RUN mkdir -p \
 
 # Copy the needed libraries from the builder
 COPY --from=builder /tmp/libs.tar /tmp/libs.tar
-RUN ls -lah /tmp/libs.tar && cd /usr/lib/ && tar --verbose -xvf  /tmp/libs.tar
+RUN ls -lah /tmp/libs.tar && cd /usr/lib/ && tar -xvf  /tmp/libs.tar
 # In ubuntu libraries blas, lapack, mpi in /usr/lib/x86_64-linux-gnu/ link to /etc so the symlinks fail to be reproduced in redhat machine
-RUN cp -v -arsf /usr/lib/lapack/* /usr/lib || true
-RUN cp -v -arsf /usr/lib/blas/* /usr/lib || true
-RUN cp -v -arsf /usr/lib/openmpi/lib/* /usr/lib || true
-RUN cp -v -arsf /usr/lib/pulseaudio/* /usr/lib || true
-# Easiest way to ensure that the lib64 libraries are copied over is to copy the entire /usr/lib directory
-RUN cp -v -arsf /usr/lib/* /lib64/ || true
+RUN cp -arsf /usr/lib/lapack/* /usr/lib/blas/* /usr/lib/openmpi/lib/* /usr/lib/pulseaudio/* /usr/lib || true
+# Easiest way to ensure that the lib64 libraries are copied over is to copy the entire current /usr/lib directory
+RUN cp -arsf /usr/lib/* /lib64/ || true
 
 # Copy ROS and RMF needed directories from the builder
 COPY --from=builder /opt/ros /opt/ros/
 COPY --from=builder /rmf_demos_ws /rmf_demos_ws/
 COPY --from=builder /ros_entrypoint.sh /
 
-# Copy gazebo and ros related binaries
-COPY --from=builder /usr/bin/gz* /usr/bin/ros* /usr/bin/
+# Copy gazebo and ros related binaries. Also the same python3.8 version as the builder
+COPY --from=builder /usr/bin/gz* /usr/bin/ros* /usr/bin/python* /usr/bin/
 
-# Avoid to install pip and use it
+# Avoid to install pip
 COPY --from=builder /usr/local/lib/python3.8/dist-packages /usr/local/lib/python3.8/dist-packages/
 COPY --from=builder /usr/lib/python3.8 /usr/lib/python3.8/
 COPY --from=builder /usr/lib/python3/dist-packages /usr/lib/python3/dist-packages/
@@ -96,6 +91,7 @@ ENV ROS_VERSION="2"
 # update the location of the shared libraries
 RUN ldconfig
 
+# RMF related environment variables
 # ENV RMF_BUILDING_MAP_SERVER_CONFIG_PATH will get defined in custom rmf-site docker img
 # for: rmf-building-map-server
 # run with: ros2 rmf_building_map_tools building_map_server $RMF_BUILDING_MAP_SERVER_CONFIG_PATH
