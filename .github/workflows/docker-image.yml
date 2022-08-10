@@ -15,6 +15,7 @@ jobs:
       builder_ns: ghcr.io/open-rmf/rmf_deployment_template
       base_registry: docker.io
       domain_url: rmf-deployment-template.open-rmf.org
+      ros_distro: galactic # TODO: switch back to humble
     ##############################################################
     steps:
       # ###
@@ -39,8 +40,9 @@ jobs:
           sudo apt install python3-vcstool -y
           mkdir rmf-src
           vcs import rmf-src < rmf/rmf.repos
+
       # ###
-      # build builder images
+      # build rosdep builder image
       # ###
       -
         name: Build builder-rosdep
@@ -50,18 +52,46 @@ jobs:
           file: rmf/builder-rosdep.Dockerfile
           build-args: |
             BASE_REGISTRY=${{ env.base_registry }}
+            ROS_DISTRO=${{ env.ros_distro }}
           # push: true
           tags: ${{ env.builder_ns }}/builder-rosdep:latest
+
+      # ###
+      # build rmf image
+      # ###
       -
-        name: Build builder-rmf
+        name: Build rmf
         uses: docker/build-push-action@v3
         with:
           context: .
-          file: rmf/builder-rmf.Dockerfile
+          file: rmf/rmf.Dockerfile
           build-args: |
             BUILDER_NS=${{ env.builder_ns }}
-          # push: true
-          tags: ${{ env.builder_ns }}/builder-rmf:latest
+          push: true
+          tags: ${{ env.builder_ns }}/rmf:latest
+
+      # ###
+      # build rmf simulation images
+      # ###
+      - 
+        name: run vcs import rmf-simulation
+        run: |
+          mkdir rmf-simulation-src
+          vcs import rmf-simulation-src < rmf-simulation/rmf-simulation.repos
+      -
+        name: Build rmf-simulation
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: rmf-simulation/rmf-simulation.Dockerfile
+          build-args: |
+            BUILDER_NS=${{ env.builder_ns }}
+          push: true
+          tags: ${{ env.builder_ns }}/rmf-simulation:latest
+
+      # ###
+      # build rmf web images
+      # ###
       - 
         name: run vcs import rmf-web
         run: |
@@ -77,50 +107,6 @@ jobs:
             BUILDER_NS=${{ env.builder_ns }}
           # push: true
           tags: ${{ env.builder_ns }}/builder-rmf-web:latest
-      - 
-        name: run vcs import rmf-simulation
-        run: |
-          mkdir rmf-simulation-src
-          vcs import rmf-simulation-src < rmf-simulation/rmf-simulation.repos
-      -
-        name: Build builder-rmf-simulation
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          file: rmf-simulation/builder-rmf-simulation.Dockerfile
-          build-args: |
-            BUILDER_NS=${{ env.builder_ns }}
-          # push: true
-          tags: ${{ env.builder_ns }}/builder-rmf-simulation:latest
-      # ###
-      # build rmf image
-      # ###
-      -
-        name: Build rmf docker img
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          file: rmf/rmf.Dockerfile
-          build-args: |
-            BUILDER_NS=${{ env.builder_ns }}
-          push: true
-          tags: ${{ env.builder_ns }}/rmf:latest
-      # ###
-      # build rmf simulation images
-      # ###
-      -
-        name: Build rmf-simulation
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          file: rmf-simulation/rmf-simulation.Dockerfile
-          build-args: |
-            BUILDER_NS=${{ env.builder_ns }}
-          push: true
-          tags: ${{ env.builder_ns }}/rmf-simulation:latest
-      # ###
-      # build rmf web images
-      # ###
       -
         name: Build rmf-web-rmf-server
         uses: docker/build-push-action@v3

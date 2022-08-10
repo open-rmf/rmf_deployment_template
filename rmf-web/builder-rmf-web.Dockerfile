@@ -1,6 +1,6 @@
 ARG BUILDER_NS="open-rmf/rmf_deployment_template"
 
-FROM $BUILDER_NS/builder-rmf
+FROM $BUILDER_NS/rmf
 
 SHELL ["bash", "-c"]
 

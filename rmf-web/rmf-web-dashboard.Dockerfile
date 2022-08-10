@@ -15,20 +15,15 @@ RUN . /opt/rmf/install/setup.bash
 
 WORKDIR /opt/rmf/src/rmf-web
 
-# will use custom configs if default rmf-dashboard configuration is false
-# TODO Test
+ENV PUBLIC_URL="/dashboard"
+
+# Will use custom configs if default rmf-dashboard configuration is false
 RUN if [ "$RMF_DASHBOARD_DEFAULT" = "false" ]; then \
       REACT_APP_TRAJECTORY_SERVER="wss://${DOMAIN_URL}/trajectory" \
       REACT_APP_RMF_SERVER="https://${DOMAIN_URL}/rmf/api/v1" \
       REACT_APP_AUTH_PROVIDER="keycloak" \
       REACT_APP_KEYCLOAK_CONFIG='{"realm": "rmf-web", "clientId": "dashboard", "url" : "https://'${DOMAIN_URL}'/auth"}'; \
     fi
-
-ENV PUBLIC_URL="/dashboard"
-# ENV REACT_APP_TRAJECTORY_SERVER="wss://${DOMAIN_URL}/trajectory"
-# ENV REACT_APP_RMF_SERVER="https://${DOMAIN_URL}/rmf/api/v1"
-# ENV REACT_APP_AUTH_PROVIDER="keycloak"
-# ENV REACT_APP_KEYCLOAK_CONFIG='{"realm": "rmf-web", "clientId": "dashboard", "url" : "https://'${DOMAIN_URL}'/auth"}'
 
 RUN echo "DOMAIN_URL: $DOMAIN_URL"\ 
     && echo "REACT_APP_TRAJECTORY_SERVER: $REACT_APP_TRAJECTORY_SERVER"\
