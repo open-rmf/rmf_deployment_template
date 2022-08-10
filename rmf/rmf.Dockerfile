@@ -1,3 +1,5 @@
+# TODO: DELETE THIS DOCKER FILE and "rmf-simulation.Dockerfile"
+
 ARG BUILDER_NS
 
 FROM $BUILDER_NS/builder-rmf

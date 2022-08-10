@@ -10,6 +10,8 @@ WORKDIR /opt/rmf
 # copy rmf-simulation source files
 COPY rmf-simulation-src src
 
+RUN python3 -m pip install flask-socketio fastapi uvicorn
+
 RUN rosdep update --rosdistro $ROS_DISTRO
 RUN rosdep install --from-paths src --ignore-src --rosdistro $ROS_DISTRO \
     --skip-keys roscpp  \

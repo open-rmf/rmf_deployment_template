@@ -19,3 +19,20 @@ We will use the following tools for this example -
 - CD: [ArgoCD](https://argoproj.github.io/cd)
 
 Running thru the steps we should have an RMF deployment accessible on public url.
+
+# Run docker example
+
+Run rmf_demos office world
+```bash
+docker run --network=host -it ghcr.io/open-rmf/rmf_deployment_template/rmf-simulation:latest bash -c "ros2 launch rmf_demos_gz office.launch.xml headless:=1"
+```
+
+Run rmf-api-server
+```bash
+docker run --network=host -it ghcr.io/open-rmf/rmf_deployment_template/rmf-web-rmf-server:latest
+```
+
+Run rmf-web-dashboard
+```bash
+docker run -p 3000:80 -it ghcr.io/open-rmf/rmf_deployment_template/rmf-web-dashboard:latest
+```

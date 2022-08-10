@@ -2,9 +2,9 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "demo-docker-run" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "demo-docker-run" ]
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -139,7 +139,8 @@ jobs:
           file: rmf-web/rmf-web-dashboard.Dockerfile
           build-args: |
             BASE_REGISTRY=${{ env.base_registry }}
-            DOMAIN_URL=${{ env.domain_url }}
+            DOMAIN_URL=${{ env.domain_url }}	
             BUILDER_NS=${{ env.builder_ns }}
+            RMF_DASHBOARD_DEFAULT=true
           push: true
           tags: ${{ env.builder_ns }}/rmf-web-dashboard:latest

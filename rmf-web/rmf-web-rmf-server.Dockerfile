@@ -15,7 +15,6 @@ COPY --from=0 /opt/rmf/src/rmf-web/packages/api-server/dist/ .
 
 SHELL ["bash", "-c"]
 RUN pip3 install $(ls -1 | grep '.*.whl')[postgres]
-RUN pip3 install paho-mqtt
 
 # cleanup
 RUN rm -rf /opt/rmf/src
