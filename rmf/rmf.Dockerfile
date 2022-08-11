@@ -7,6 +7,7 @@ ARG NETRC
 SHELL ["bash", "-c"]
 
 ENV DEBIAN_FRONTEND=noninteractive
+ENV RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
 
 RUN apt update
 RUN mkdir -p /opt/rmf/src

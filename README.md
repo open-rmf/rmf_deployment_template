@@ -22,19 +22,32 @@ Running thru the steps we should have an RMF deployment accessible on public url
 
 # Example: rmf_demos with docker
 
-Run rmf_demos office world
+Pull prebuilt images
 ```bash
-docker run --network=host --env RMW_IMPLEMENTATION=rmw_cyclonedds_cpp -it ghcr.io/open-rmf/rmf_deployment_template/rmf-simulation:latest bash -c "ros2 launch rmf_demos_ign office.launch.xml headless:=1 server_uri:=ws://localhost:8000/_internal"
+docker run ghcr.io/open-rmf/rmf_deployment_template/rmf-simulation:latest
+docker run ghcr.io/open-rmf/rmf_deployment_template/rmf-web-rmf-server:latest
+docker run ghcr.io/open-rmf/rmf_deployment_template/rmf-web-dashboard:latest
+```
+
+Run rmf_demos office world in simulation
+```bash
+docker run --network=host \
+-it ghcr.io/open-rmf/rmf_deployment_template/rmf-simulation:latest \
+bash -c "ros2 launch rmf_demos_gz office.launch.xml \
+headless:=1 \
+server_uri:=ws://localhost:8000/_internal"
 ```
 
 Run `rmf-api-server`
 ```bash
-docker run --network=host --env RMW_IMPLEMENTATION=rmw_cyclonedds_cpp -it ghcr.io/open-rmf/rmf_deployment_template/rmf-web-rmf-server:latest
+docker run --network=host \
+-it ghcr.io/open-rmf/rmf_deployment_template/rmf-web-rmf-server:latest
 ```
 
 Run `rmf-web-dashboard`
 ```bash
-docker run -p 3000:80 -it ghcr.io/open-rmf/rmf_deployment_template/rmf-web-dashboard:latest
+docker run -p 3000:80 \
+-it ghcr.io/open-rmf/rmf_deployment_template/rmf-web-dashboard:latest
 ```
 
-Now access the dashboard with: http://localhost:8000/dashboard
+Now access the dashboard with: http://localhost:3000/dashboard

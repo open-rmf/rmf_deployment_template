@@ -1,6 +1,6 @@
 ARG BUILDER_NS="open-rmf/rmf_deployment_template"
 ARG BASE_REGISTRY="docker.io"
-ARG RMF_DASHBOARD_DEFAULT="false"
+ARG RMF_DASHBOARD_CUSTOM_ENV="true"
 
 ###################################################################
 FROM $BUILDER_NS/builder-rmf-web
@@ -17,8 +17,8 @@ WORKDIR /opt/rmf/src/rmf-web
 
 ENV PUBLIC_URL="/dashboard"
 
-# Will use custom configs if default rmf-dashboard configuration is false
-RUN if [ "$RMF_DASHBOARD_DEFAULT" = "false" ]; then \
+# Will use custom configs react api path and auth config if set true
+RUN if [ "$RMF_DASHBOARD_CUSTOM_ENV" = "true" ]; then \
       REACT_APP_TRAJECTORY_SERVER="wss://${DOMAIN_URL}/trajectory" \
       REACT_APP_RMF_SERVER="https://${DOMAIN_URL}/rmf/api/v1" \
       REACT_APP_AUTH_PROVIDER="keycloak" \
