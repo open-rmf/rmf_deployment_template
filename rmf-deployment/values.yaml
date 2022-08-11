@@ -17,4 +17,4 @@ global:
   RMF_TRAJECTORY_VISUALIZER_LEVEL_NAME: "L1"
   RMF_BUILDING_MAP_SERVER_CONFIG_PATH: "/opt/rmf/install/mysite_maps/share/maps/office/office.building.yaml"
   RMF_FAILOVER_MODE: "false"
-  RMF_SERVER_URI: "ws://localhost:8001"
+  RMF_SERVER_URI: "ws://localhost:8000/_internal"
