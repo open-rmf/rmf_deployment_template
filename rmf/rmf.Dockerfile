@@ -1,6 +1,6 @@
 ARG BUILDER_NS="open-rmf/rmf_deployment_template"
-
-FROM $BUILDER_NS/builder-rosdep
+ARG TAG="latest"
+FROM $BUILDER_NS/builder-rosdep:$TAG
 
 ARG NETRC
 

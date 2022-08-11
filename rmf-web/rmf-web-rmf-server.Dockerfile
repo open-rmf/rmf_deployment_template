@@ -1,6 +1,7 @@
 ARG BUILDER_NS="open-rmf/rmf_deployment_template"
+ARG TAG="latest"
 
-FROM $BUILDER_NS/builder-rmf-web
+FROM $BUILDER_NS/builder-rmf-web:$TAG
 
 SHELL ["bash", "-c"]
 
@@ -9,7 +10,7 @@ ENV RMF_SERVER_USE_SIM_TIME=true
 RUN . /opt/rmf/install/setup.bash && \
   cd /opt/rmf/src/rmf-web/packages/api-server && npm run prepack
 
-FROM $BUILDER_NS/builder-rmf-web
+FROM $BUILDER_NS/builder-rmf-web:$TAG
 
 COPY --from=0 /opt/rmf/src/rmf-web/packages/api-server/dist/ .
 

@@ -1,9 +1,11 @@
 ARG BUILDER_NS="open-rmf/rmf_deployment_template"
+ARG TAG="latest"
 ARG BASE_REGISTRY="docker.io"
+
 ARG RMF_DASHBOARD_CUSTOM_ENV="true"
 
 ###################################################################
-FROM $BUILDER_NS/builder-rmf-web
+FROM $BUILDER_NS/builder-rmf-web:$TAG
 ARG DOMAIN_URL="rmf-deployment-template.open-rmf.org"
 
 SHELL ["bash", "-c"]
