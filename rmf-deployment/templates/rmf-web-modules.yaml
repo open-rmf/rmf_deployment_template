@@ -48,7 +48,7 @@ spec:
     spec:
       containers:
         - name: postgresql
-          image: {{ .Values.registryUrl }}/postgres:13
+          image: postgres:13
           imagePullPolicy: IfNotPresent
           env:
             - name: POSTGRES_USER
