@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: docker-img-latest
 
 on:
   push:
@@ -15,8 +15,8 @@ jobs:
       builder_ns: ghcr.io/open-rmf/rmf_deployment_template
       base_registry: docker.io
       domain_url: rmf-deployment-template.open-rmf.org
-      ros_distro: galactic # TODO: switch back to humble
-      tag: staging # TODO
+      ros_distro: humble
+      tag: latest
     ##############################################################
     steps:
       # ###
@@ -136,3 +136,17 @@ jobs:
             RMF_DASHBOARD_CUSTOM_ENV=false
           push: true
           tags: ${{ env.builder_ns }}/rmf-web-dashboard:${{ env.tag }}
+      -
+        name: Build rmf-web-dashboard without auth
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: rmf-web/rmf-web-dashboard.Dockerfile
+          build-args: |
+            BASE_REGISTRY=${{ env.base_registry }}
+            TAG=${{ env.tag }}
+            DOMAIN_URL=${{ env.domain_url }}
+            BUILDER_NS=${{ env.builder_ns }}
+            RMF_DASHBOARD_CUSTOM_ENV=false
+          push: true
+          tags: ${{ env.builder_ns }}/rmf-web-dashboard-local:${{ env.tag }}

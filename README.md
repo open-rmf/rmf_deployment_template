@@ -22,13 +22,6 @@ Running thru the steps we should have an RMF deployment accessible on public url
 
 # Example: rmf_demos with docker
 
-Pull prebuilt images
-```bash
-docker run ghcr.io/open-rmf/rmf_deployment_template/rmf-simulation:latest
-docker run ghcr.io/open-rmf/rmf_deployment_template/rmf-web-rmf-server:latest
-docker run ghcr.io/open-rmf/rmf_deployment_template/rmf-web-dashboard:latest
-```
-
 Run rmf_demos office world in simulation
 ```bash
 docker run --network=host \
@@ -47,7 +40,7 @@ docker run --network=host \
 Run `rmf-web-dashboard`
 ```bash
 docker run -p 3000:80 \
--it ghcr.io/open-rmf/rmf_deployment_template/rmf-web-dashboard:latest
+-it ghcr.io/open-rmf/rmf_deployment_template/rmf-web-dashboard-local:latest
 ```
 
 Now access the dashboard with: http://localhost:3000/dashboard
