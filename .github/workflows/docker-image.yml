@@ -133,7 +133,6 @@ jobs:
             TAG=${{ env.tag }}
             DOMAIN_URL=${{ env.domain_url }}
             BUILDER_NS=${{ env.builder_ns }}
-            RMF_DASHBOARD_CUSTOM_ENV=false
           push: true
           tags: ${{ env.builder_ns }}/rmf-web-dashboard:${{ env.tag }}
       -

@@ -1,4 +1,5 @@
-![](https://github.com/open-rmf/rmf_deployment_template/workflows/Docker%20Image%20CI/badge.svg)
+![](https://github.com/open-rmf/rmf_deployment_template/workflows/docker-img-galactic/badge.svg)
+![](https://github.com/open-rmf/rmf_deployment_template/workflows/docker-img-latest/badge.svg)
 ![](https://github.com/open-rmf/rmf_deployment_template/workflows/rmf-site-ci/badge.svg)
 
 # RMF Deployment Template
