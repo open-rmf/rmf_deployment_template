@@ -15,6 +15,6 @@ global:
   RMF_USE_SIM_TIME: "false"
   RMF_BIDDING_TIME_WINDOW: "2.0"
   RMF_TRAJECTORY_VISUALIZER_LEVEL_NAME: "L1"
-  RMF_BUILDING_MAP_SERVER_CONFIG_PATH: "/opt/rmf/install/mysite_maps/share/maps/office/office.building.yaml"
+  RMF_BUILDING_MAP_SERVER_CONFIG_PATH: "/opt/rmf/install/mysite_maps/share/mysite_maps/office/office.building.yaml"
   RMF_FAILOVER_MODE: "false"
   RMF_SERVER_URI: "ws://localhost:8000/_internal"
