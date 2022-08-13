@@ -5,8 +5,9 @@ This deployment is fully configurable and minimally will need following edits pr
 - RMF configuration in `rmf-deployment/`
     - `rmf_server_config.py` - replace DNS name `rmf-deployment-template.open-rmf.org` with your own.
     - `values.yaml` - replace registryUrl `ghcr.io/open-rmf` and DNS name `rmf-deployment-template.open-rmf.org` with your own.
-    - `cyclonedds.xml` - if you are using cyclonedds to communicate across multiple nodes on different machines, update the `Peers` in the `.xml`.
     - `rmf-site-modules.yaml` - Add site specific nodes (e.g. fleet and door adapters) to the template.
+    - `cyclonedds.xml` - if you are using cyclonedds to communicate across multiple nodes on different machines, update the `Peers` in the `.xml`.
+    - If you are using ros `galactic`, please switch the corresponding cyclonedds config path to `cyclonedds_galactic.xml`.
 
 ## Provisioning
 We will need the following resources:

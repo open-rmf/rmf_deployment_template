@@ -59,6 +59,8 @@ spec:
           value: {{ .Values.global.RMW_IMPLEMENTATION | quote }}
         - name: RMF_BIDDING_TIME_WINDOW
           value: {{ .Values.global.RMF_BIDDING_TIME_WINDOW | quote }}
+        - name: RMF_SERVER_URI
+          value: {{ .Values.global.RMF_SERVER_URI | quote }}
       command: ["/bin/bash"]
       args: 
        - -c
