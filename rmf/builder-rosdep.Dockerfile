@@ -18,8 +18,9 @@ RUN apt update && apt upgrade -y
 RUN apt install \
     python3-pip cmake python3-colcon-common-extensions -y
 
-# use clang for humble
+# download cyclonedds and use clang for humble
 RUN if [ "$ROS_DISTRO" = "humble" ]; then \
+        apt install ros-humble-rmw-cyclonedds-cpp -y && \
         apt install clang-13 lldb-13 lld-13 -y && \
         update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-13 100; \
     fi

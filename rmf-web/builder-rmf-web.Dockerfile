@@ -1,6 +1,7 @@
 ARG BUILDER_NS="open-rmf/rmf_deployment_template"
 
-FROM $BUILDER_NS/builder-rmf
+ARG TAG="latest"
+FROM $BUILDER_NS/rmf:$TAG
 
 SHELL ["bash", "-c"]
 

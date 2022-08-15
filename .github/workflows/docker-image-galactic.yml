@@ -1,4 +1,4 @@
-name: docker-img-latest
+name: docker-img-galactic
 
 on:
   push:
@@ -15,8 +15,8 @@ jobs:
       builder_ns: ghcr.io/open-rmf/rmf_deployment_template
       base_registry: docker.io
       domain_url: rmf-deployment-template.open-rmf.org
-      ros_distro: humble
-      tag: latest
+      ros_distro: galactic
+      tag: galactic
     ##############################################################
     steps:
       # ###

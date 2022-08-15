@@ -1,4 +1,5 @@
-![](https://github.com/open-rmf/rmf_deployment_template/workflows/Docker%20Image%20CI/badge.svg)
+![](https://github.com/open-rmf/rmf_deployment_template/workflows/docker-img-galactic/badge.svg)
+![](https://github.com/open-rmf/rmf_deployment_template/workflows/docker-img-latest/badge.svg)
 ![](https://github.com/open-rmf/rmf_deployment_template/workflows/rmf-site-ci/badge.svg)
 
 # RMF Deployment Template
@@ -19,4 +20,30 @@ We will use the following tools for this example -
 - Kubernetes distribution: [k3s](https://k3s.io) 
 - CD: [ArgoCD](https://argoproj.github.io/cd)
 
-Running thru the steps we should have an RMF deployment accessible on public url.
+Run thru the setups in `cloud_infra` branch to deploy these images to a cloud instance and access RMF over a public URL
+
+## Example: rmf_demos with docker
+
+Alternatively, run `rmf_demos` simulation locally with docker on your local machine.
+
+```bash
+docker run --network=host \
+-it ghcr.io/open-rmf/rmf_deployment_template/rmf-simulation:galactic \
+bash -c "ros2 launch rmf_demos_gz office.launch.xml \
+headless:=1 \
+server_uri:=ws://localhost:8000/_internal"
+```
+
+Run `rmf-api-server`
+```bash
+docker run --network=host \
+-it ghcr.io/open-rmf/rmf_deployment_template/rmf-web-rmf-server:galactic
+```
+
+Run `rmf-web-dashboard`
+```bash
+docker run -p 3000:80 \
+-it ghcr.io/open-rmf/rmf_deployment_template/rmf-web-dashboard-local:galactic
+```
+
+Now access the dashboard with: http://localhost:3000/dashboard and try dispatch a task.

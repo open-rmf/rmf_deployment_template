@@ -1,9 +1,22 @@
 ARG BUILDER_NS="open-rmf/rmf_deployment_template"
+ARG TAG="latest"
 ARG BASE_REGISTRY="docker.io"
 
 ###################################################################
-FROM $BUILDER_NS/builder-rmf-web
+FROM $BUILDER_NS/builder-rmf-web:$TAG
+
+# Default env used for during build time of static react dashboard
+# Note: When refer to the rmf_deployment_template, user just needs
+#       to specify the correct 'DOMAIN_URL'
 ARG DOMAIN_URL="rmf-deployment-template.open-rmf.org"
+
+ARG PUBLIC_URL="/dashboard"
+ARG REACT_APP_TRAJECTORY_SERVER="wss://${DOMAIN_URL}/trajectory"
+ARG REACT_APP_RMF_SERVER="https://${DOMAIN_URL}/rmf/api/v1"
+ARG REACT_APP_AUTH_PROVIDER="keycloak"
+ARG REACT_APP_KEYCLOAK_CONFIG='{"realm": "rmf-web", "clientId": "dashboard", "url" : "https://'${DOMAIN_URL}'/auth"}'
+
+###################################################################
 
 SHELL ["bash", "-c"]
 
@@ -13,12 +26,6 @@ COPY rmf-web/dashboard_resources/* /opt/rmf/src/rmf-web/packages/dashboard/src/a
 RUN . /opt/rmf/install/setup.bash 
 
 WORKDIR /opt/rmf/src/rmf-web
-
-ENV PUBLIC_URL="/dashboard"
-ENV REACT_APP_TRAJECTORY_SERVER="wss://${DOMAIN_URL}/trajectory"
-ENV REACT_APP_RMF_SERVER="https://${DOMAIN_URL}/rmf/api/v1"
-ENV REACT_APP_AUTH_PROVIDER="keycloak"
-ENV REACT_APP_KEYCLOAK_CONFIG='{"realm": "rmf-web", "clientId": "dashboard", "url" : "https://'${DOMAIN_URL}'/auth"}'
 
 RUN echo "DOMAIN_URL: $DOMAIN_URL"\ 
     && echo "REACT_APP_TRAJECTORY_SERVER: $REACT_APP_TRAJECTORY_SERVER"\
