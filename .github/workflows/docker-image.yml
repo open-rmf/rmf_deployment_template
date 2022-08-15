@@ -136,6 +136,7 @@ jobs:
           push: true
           tags: ${{ env.builder_ns }}/rmf-web-dashboard:${{ env.tag }}
       -
+      ## Dashboard without custom url, use defaults env for react app
         name: Build rmf-web-dashboard without auth
         uses: docker/build-push-action@v3
         with:
@@ -146,6 +147,9 @@ jobs:
             TAG=${{ env.tag }}
             DOMAIN_URL=${{ env.domain_url }}
             BUILDER_NS=${{ env.builder_ns }}
-            RMF_DASHBOARD_CUSTOM_ENV=false
+            REACT_APP_TRAJECTORY_SERVER=ws://localhost:8006
+            REACT_APP_RMF_SERVER=http://localhost:8000
+            REACT_APP_AUTH_PROVIDER=
+            REACT_APP_KEYCLOAK_CONFIG=
           push: true
           tags: ${{ env.builder_ns }}/rmf-web-dashboard-local:${{ env.tag }}

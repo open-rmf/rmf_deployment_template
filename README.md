@@ -24,10 +24,11 @@ Running thru the steps we should have an RMF deployment accessible on public url
 
 # Example: rmf_demos with docker
 
-Run rmf_demos office world in simulation
+Run rmf_demos office world in simulation (use ros `galactic` in this example)
+
 ```bash
 docker run --network=host \
--it ghcr.io/open-rmf/rmf_deployment_template/rmf-simulation:latest \
+-it ghcr.io/open-rmf/rmf_deployment_template/rmf-simulation:galactic \
 bash -c "ros2 launch rmf_demos_gz office.launch.xml \
 headless:=1 \
 server_uri:=ws://localhost:8000/_internal"
@@ -36,13 +37,13 @@ server_uri:=ws://localhost:8000/_internal"
 Run `rmf-api-server`
 ```bash
 docker run --network=host \
--it ghcr.io/open-rmf/rmf_deployment_template/rmf-web-rmf-server:latest
+-it ghcr.io/open-rmf/rmf_deployment_template/rmf-web-rmf-server:galactic
 ```
 
 Run `rmf-web-dashboard`
 ```bash
 docker run -p 3000:80 \
--it ghcr.io/open-rmf/rmf_deployment_template/rmf-web-dashboard-local:latest
+-it ghcr.io/open-rmf/rmf_deployment_template/rmf-web-dashboard-local:galactic
 ```
 
 Now access the dashboard with: http://localhost:3000/dashboard
