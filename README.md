@@ -20,11 +20,11 @@ We will use the following tools for this example -
 - Kubernetes distribution: [k3s](https://k3s.io) 
 - CD: [ArgoCD](https://argoproj.github.io/cd)
 
-Running thru the steps we should have an RMF deployment accessible on public url.
+Run thru the setups in `cloud_infra` branch to deploy these images to a cloud instance and access RMF over a public URL
 
-# Example: rmf_demos with docker
+## Example: rmf_demos with docker
 
-Run rmf_demos office world in simulation (use ros `galactic` in this example)
+Alternatively, run `rmf_demos` simulation locally with docker on your local machine.
 
 ```bash
 docker run --network=host \
@@ -46,4 +46,4 @@ docker run -p 3000:80 \
 -it ghcr.io/open-rmf/rmf_deployment_template/rmf-web-dashboard-local:galactic
 ```
 
-Now access the dashboard with: http://localhost:3000/dashboard
+Now access the dashboard with: http://localhost:3000/dashboard and try dispatch a task.
