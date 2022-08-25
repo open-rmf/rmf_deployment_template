@@ -18,3 +18,4 @@ global:
   RMF_BUILDING_MAP_SERVER_CONFIG_PATH: "/opt/rmf/install/mysite_maps/share/mysite_maps/office/office.building.yaml"
   RMF_FAILOVER_MODE: "false"
   RMF_SERVER_URI: "ws://localhost:8000/_internal"
+  RMF_TIMESTAMP_FOR_TASK_ID: "true"

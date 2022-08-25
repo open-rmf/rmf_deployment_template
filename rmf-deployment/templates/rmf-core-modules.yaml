@@ -61,6 +61,8 @@ spec:
           value: {{ .Values.global.RMF_BIDDING_TIME_WINDOW | quote }}
         - name: RMF_SERVER_URI
           value: {{ .Values.global.RMF_SERVER_URI | quote }}
+        - name: RMF_TIMESTAMP_FOR_TASK_ID
+          value: {{ .Values.global.RMF_TIMESTAMP_FOR_TASK_ID | quote }}
       command: ["/bin/bash"]
       args: 
        - -c
@@ -70,6 +72,7 @@ spec:
         -p use_sim_time:=$(RMF_USE_SIM_TIME)
         -p bidding_time_window:=$(RMF_BIDDING_TIME_WINDOW)
         -p server_uri:=$(RMF_SERVER_URI)
+        -p use_timestamp_for_task_id:=$(RMF_TIMESTAMP_FOR_TASK_ID)
       volumeMounts:
         - mountPath: {{ .Values.global.DDS_CONFIG_MOUNTPATH | quote }}
           name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
