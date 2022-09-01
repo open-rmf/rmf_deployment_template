@@ -1,12 +1,16 @@
 name: docker-img-latest
-
 on:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+  workflow_dispatch:
+
 jobs:
   build:
+    strategy:
+      matrix:
+        ros_distro: [humble, galactic] 
     runs-on: ubuntu-latest
     ##############################################################
     ## Configurations
@@ -15,8 +19,8 @@ jobs:
       builder_ns: ghcr.io/open-rmf/rmf_deployment_template
       base_registry: docker.io
       domain_url: rmf-deployment-template.open-rmf.org
-      ros_distro: humble
-      tag: latest
+      ros_distro: ${{ matrix.ros_distro }}
+      tag: ${{ matrix.ros_distro }}
     ##############################################################
     steps:
       # ###
