@@ -36,6 +36,7 @@ RUN echo "DOMAIN_URL: $DOMAIN_URL"\
 RUN cd /opt/rmf/src/rmf-web/packages/dashboard && npm run build
 
 ###
+ARG BASE_REGISTRY="docker.io"
 FROM $BASE_REGISTRY/nginx:stable 
 COPY --from=0 /opt/rmf/src/rmf-web/packages/dashboard/build /usr/share/nginx/html/dashboard
 
