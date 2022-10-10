@@ -14,7 +14,7 @@ RUN curl -f https://get.pnpm.io/v6.16.js | node - add --global pnpm
 
 RUN cd /opt/rmf/src/rmf-web &&  \
   sed -i '$ d' Pipfile && \
-  pnpm install --frozen-lockfile --prod
+  pnpm install --no-frozen-lockfile --prod
 
 ENTRYPOINT ["/ros_entrypoint.sh"]
 CMD ["bash"]
