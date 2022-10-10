@@ -10,7 +10,7 @@ COPY rmf-web-src src
 
 RUN  curl -sL https://deb.nodesource.com/setup_16.x | bash - && \
   apt-get update && apt-get install -y nodejs python3-venv
-RUN curl -fsSL https://get.pnpm.io/install.sh | sh -
+RUN curl -fsSL https://get.pnpm.io/install.sh | SHELL=`which bash` bash -
 
 RUN cd /opt/rmf/src/rmf-web &&  \
   sed -i '$ d' Pipfile && \
