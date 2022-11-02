@@ -99,7 +99,7 @@ jobs:
         name: run vcs import rmf-web
         run: |
           mkdir rmf-web-src
-          vcs import rmf-web-src < rmf-web/rmf-web.repos
+          vcs import rmf-web-src < rmf-web/rmf-web-galactic.repos
       -
         name: Build builder-rmf-web
         uses: docker/build-push-action@v3
