@@ -2,9 +2,9 @@ name: docker-img-galactic
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "galactic" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "galactic" ]
 jobs:
   build:
     runs-on: ubuntu-latest
