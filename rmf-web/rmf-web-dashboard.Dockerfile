@@ -33,7 +33,8 @@ RUN echo "DOMAIN_URL: $DOMAIN_URL"\
     && echo "REACT_APP_AUTH_PROVIDER: $REACT_APP_AUTH_PROVIDER"\
     && echo "REACT_APP_KEYCLOAK_CONFIG: $REACT_APP_KEYCLOAK_CONFIG"
 
-RUN cd /opt/rmf/src/rmf-web/packages/dashboard && npm run build
+RUN cd /opt/rmf/src/rmf-web/packages/dashboard && \
+  pnpm run --filter rmf-dashboard... build
 
 ###
 ARG BASE_REGISTRY="docker.io"
