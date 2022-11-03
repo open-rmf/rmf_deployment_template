@@ -1,4 +1,3 @@
-![](https://github.com/open-rmf/rmf_deployment_template/workflows/docker-img-galactic/badge.svg)
 ![](https://github.com/open-rmf/rmf_deployment_template/workflows/docker-img-latest/badge.svg)
 ![](https://github.com/open-rmf/rmf_deployment_template/workflows/rmf-site-ci/badge.svg)
 
@@ -17,7 +16,7 @@ We will use the following tools for this example -
 - Container registry: [Github packages](https://github.com/features/packages)
 - VM hosting: [AWS EC2](https://aws.amazon.com/ec2/)
 - DNS: [AWS Route 53](https://aws.amazon.com/route53/)
-- Kubernetes distribution: [k3s](https://k3s.io) 
+- Kubernetes distribution: [k3s](https://k3s.io)
 - CD: [ArgoCD](https://argoproj.github.io/cd)
 
 Run thru the setups in `cloud_infra` branch to deploy these images to a cloud instance and access RMF over a public URL
@@ -59,7 +58,7 @@ flowchart LR
       style start1 height:0px;
       style stop1 height:0px;
       style start2 height:0px;
-      style stop2 height:0px; 
+      style stop2 height:0px;
     end
     ros:$ROS_DISTRO --> builder-rosdep --> rmf
     rmf --> builder-rmf-web
