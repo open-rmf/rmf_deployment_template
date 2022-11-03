@@ -28,7 +28,7 @@ Alternatively, run `rmf_demos` simulation locally with docker on your local mach
 
 ```bash
 docker run --network=host \
--it ghcr.io/open-rmf/rmf_deployment_template/rmf-simulation:galactic \
+-it ghcr.io/open-rmf/rmf_deployment_template/rmf-simulation:latest \
 bash -c "ros2 launch rmf_demos_gz office.launch.xml \
 headless:=1 \
 server_uri:=ws://localhost:8000/_internal"
@@ -37,13 +37,13 @@ server_uri:=ws://localhost:8000/_internal"
 Run `rmf-api-server`
 ```bash
 docker run --network=host \
--it ghcr.io/open-rmf/rmf_deployment_template/rmf-web-rmf-server:galactic
+-it ghcr.io/open-rmf/rmf_deployment_template/rmf-web-rmf-server:latest
 ```
 
 Run `rmf-web-dashboard`
 ```bash
 docker run -p 3000:80 \
--it ghcr.io/open-rmf/rmf_deployment_template/rmf-web-dashboard-local:galactic
+-it ghcr.io/open-rmf/rmf_deployment_template/rmf-web-dashboard-local:latest
 ```
 
 Now access the dashboard with: http://localhost:3000/dashboard and try dispatch a task.
