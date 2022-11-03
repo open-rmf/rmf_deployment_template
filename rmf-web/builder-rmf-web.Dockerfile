@@ -8,13 +8,13 @@ SHELL ["bash", "-c"]
 # copy rmf-web source files
 COPY rmf-web-src src
 
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash && \
-  source /root/.bashrc && \
-  nvm install 16
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash
 
-RUN curl -fsSL https://get.pnpm.io/install.sh | bash - && \
-  source /root/.bashrc && \
-  pnpm env use --global 16
+RUN nvm install 16
+
+RUN curl -fsSL https://get.pnpm.io/install.sh | bash -
+
+RUN pnpm env use --global 16
 
 RUN apt update && apt install python3-venv
 
