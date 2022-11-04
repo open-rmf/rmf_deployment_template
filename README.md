@@ -1,4 +1,3 @@
-![](https://github.com/open-rmf/rmf_deployment_template/workflows/docker-img-galactic/badge.svg)
 ![](https://github.com/open-rmf/rmf_deployment_template/workflows/docker-img-latest/badge.svg)
 ![](https://github.com/open-rmf/rmf_deployment_template/workflows/rmf-site-ci/badge.svg)
 
@@ -17,7 +16,7 @@ We will use the following tools for this example -
 - Container registry: [Github packages](https://github.com/features/packages)
 - VM hosting: [AWS EC2](https://aws.amazon.com/ec2/)
 - DNS: [AWS Route 53](https://aws.amazon.com/route53/)
-- Kubernetes distribution: [k3s](https://k3s.io) 
+- Kubernetes distribution: [k3s](https://k3s.io)
 - CD: [ArgoCD](https://argoproj.github.io/cd)
 
 Run thru the setups in `cloud_infra` branch to deploy these images to a cloud instance and access RMF over a public URL
@@ -28,7 +27,7 @@ Alternatively, run `rmf_demos` simulation locally with docker on your local mach
 
 ```bash
 docker run --network=host \
--it ghcr.io/open-rmf/rmf_deployment_template/rmf-simulation:galactic \
+-it ghcr.io/open-rmf/rmf_deployment_template/rmf-simulation:latest \
 bash -c "ros2 launch rmf_demos_gz office.launch.xml \
 headless:=1 \
 server_uri:=ws://localhost:8000/_internal"
@@ -37,13 +36,13 @@ server_uri:=ws://localhost:8000/_internal"
 Run `rmf-api-server`
 ```bash
 docker run --network=host \
--it ghcr.io/open-rmf/rmf_deployment_template/rmf-web-rmf-server:galactic
+-it ghcr.io/open-rmf/rmf_deployment_template/rmf-web-rmf-server:latest
 ```
 
 Run `rmf-web-dashboard`
 ```bash
 docker run -p 3000:80 \
--it ghcr.io/open-rmf/rmf_deployment_template/rmf-web-dashboard-local:galactic
+-it ghcr.io/open-rmf/rmf_deployment_template/rmf-web-dashboard-local:latest
 ```
 
 Now access the dashboard with: http://localhost:3000/dashboard and try dispatch a task.
@@ -59,7 +58,7 @@ flowchart LR
       style start1 height:0px;
       style stop1 height:0px;
       style start2 height:0px;
-      style stop2 height:0px; 
+      style stop2 height:0px;
     end
     ros:$ROS_DISTRO --> builder-rosdep --> rmf
     rmf --> builder-rmf-web

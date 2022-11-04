@@ -8,7 +8,8 @@ SHELL ["bash", "-c"]
 ENV RMF_SERVER_USE_SIM_TIME=true
 
 RUN . /opt/rmf/install/setup.bash && \
-  cd /opt/rmf/src/rmf-web/packages/api-server && npm run prepack
+  cd /opt/rmf/src/rmf-web/packages/api-server && \
+  pnpm run prepack
 
 FROM $BUILDER_NS/builder-rmf-web:$TAG
 
@@ -20,7 +21,7 @@ RUN pip3 install $(ls -1 | grep '.*.whl')[postgres]
 # cleanup
 RUN rm -rf /opt/rmf/src
 RUN rm -rf /var/lib/apt/lists && \
-  npm cache clean --force
+  pnpm store prune
 
 RUN echo -e '#!/bin/bash\n\
   . /opt/rmf/install/setup.bash\n\
