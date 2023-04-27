@@ -4,6 +4,7 @@
 # RMF Deployment Template
 This repo provides a sample template to build, deploy and manage an RMF installation (i.e. GitOps for RMF)
 
+## The Kubernetes way for cloud deployment
 This repo is structured as -
 - `main` - Contains Dockerfiles and CI pipeline to build images for this example deployment
 - [build/rmf-site](https://github.com/open-rmf/rmf_deployment_template/tree/build/rmf-site) - Contains example rmf-site related resources, dockerfiles and CI process
@@ -21,9 +22,8 @@ We will use the following tools for this example -
 
 Run thru the setups in `cloud_infra` branch to deploy these images to a cloud instance and access RMF over a public URL
 
-## Example: rmf_demos with docker
-
-Alternatively, run `rmf_demos` simulation locally with docker on your local machine.
+## Alternate method for quick local deployment
+If you are planning to run a small local deployment and do not want to setup up a kubernetes cluster for it OR run `rmf_demos` with simulation on your local machine.
 
 ```bash
 docker run --network=host \
@@ -48,7 +48,7 @@ docker run -p 3000:80 \
 Now access the dashboard with: http://localhost:3000/dashboard and try dispatch a task.
 
 
-## Docker images structure
+### Docker images structure
 ```mermaid
 flowchart LR
     subgraph Legend
@@ -67,7 +67,7 @@ flowchart LR
     builder-rmf-web --> rmf-web-dashboard-local
     builder-rmf-web --> rmf-web-rmf-server
 ```
-## Building images
+### Building images
 You can look into the github workflow to get an idea of how to build images:
 [Github Workflow](https://github.com/open-rmf/rmf_deployment_template/blob/main/.github/workflows/docker-image.yml).
 
