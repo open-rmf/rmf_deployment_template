@@ -1,8 +1,8 @@
 ![](https://github.com/open-rmf/rmf_deployment_template/workflows/docker-img-latest/badge.svg)
 ![](https://github.com/open-rmf/rmf_deployment_template/workflows/rmf-site-ci/badge.svg)
 
-# RMF Deployment Template
-This repo provides a sample template to build, deploy and manage an RMF installation (i.e. GitOps for RMF)
+# Open-RMF Deployment Template
+This repo provides a sample template to build, deploy and manage an Open-RMF installation (i.e. GitOps for RMF)
 
 ## The Kubernetes way for cloud deployment
 This repo is structured as -
@@ -20,7 +20,7 @@ We will use the following tools for this example -
 - Kubernetes distribution: [k3s](https://k3s.io)
 - CD: [ArgoCD](https://argoproj.github.io/cd)
 
-Run thru the setups in `cloud_infra` branch to deploy these images to a cloud instance and access RMF over a public URL
+Run thru the setups in `cloud_infra` branch to deploy these images to a cloud instance and access Open-RMF web dashbaord over a public URL
 
 ## Alternate method for quick local deployment
 If you are planning to run a small local deployment and do not want to setup up a kubernetes cluster for it OR run `rmf_demos` with simulation on your local machine.
