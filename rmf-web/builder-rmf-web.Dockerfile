@@ -10,6 +10,8 @@ COPY rmf-web-src src
 
 RUN apt-get update && apt-get install -y python3-venv
 
+RUN pip3 install pipenv
+
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash && \
   . $HOME/.nvm/nvm.sh && \
   nvm install 16
