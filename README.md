@@ -38,7 +38,7 @@ k3sup install --local --user ubuntu --cluster --k3s-extra-args '--flannel-iface=
 git clone git@github.com:open-rmf/rmf_deployment_template.git
 cd rmf_deployment_template
 
-kubectl apply -f infrastructure/nginx/ingress-nginx.yaml
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
 kubectl wait --for=condition=available deployment/ingress-nginx-controller -n ingress-nginx --timeout=2m
 
 # Get ingress IP
