@@ -109,31 +109,35 @@ spec:
     spec:
       containers:
         - name: keycloak
-          image: quay.io/keycloak/keycloak:12.0.4
+          image: quay.io/keycloak/keycloak:22.0.1
+          # --optimized flag fails with postgre https://github.com/keycloak/keycloak/issues/15898
+          args: ["start", "--log-level=DEBUG", "--http-relative-path=/auth"]
           imagePullPolicy: IfNotPresent
           env:
-            - name: KEYCLOAK_USER
+            - name: KEYCLOAK_ADMIN
               valueFrom:
                 secretKeyRef:
                   name: keycloak-secret
                   key: KEYCLOAK_USER
-            - name: KEYCLOAK_PASSWORD
+            - name: KEYCLOAK_ADMIN_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: keycloak-secret
                   key: KEYCLOAK_PASSWORD
-            - name: PROXY_ADDRESS_FORWARDING
-              value: 'true'
-            - name: DB_VENDOR
+            - name: KC_PROXY
+              value: "edge"
+            - name: KC_HOSTNAME
+              value: {{ .Values.hostName | quote }}
+            - name: KC_DB
               value: postgres
-            - name: DB_ADDR
-              value: keycloak-db
-            - name: DB_USER
+            - name: KC_DB_URL
+              value: jdbc:postgresql://keycloak-db/keycloak
+            - name: KC_DB_USERNAME
               valueFrom:
                 secretKeyRef:
                   name: keycloak-secret
                   key: DB_USER
-            - name: DB_PASSWORD
+            - name: KC_DB_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: keycloak-secret
@@ -146,7 +150,10 @@ spec:
           readinessProbe:
             httpGet:
               path: /auth/realms/master
-              port: 8080
+              port: http
+            initialDelaySeconds: 30
+            timeoutSeconds: 1
+
 
 ---
 apiVersion: networking.k8s.io/v1
