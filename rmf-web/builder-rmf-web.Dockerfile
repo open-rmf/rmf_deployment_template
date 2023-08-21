@@ -25,7 +25,6 @@ RUN curl -fsSL https://get.pnpm.io/install.sh | bash - && \
   pnpm env use --global 16
 
 RUN cd /opt/rmf/src/rmf-web &&  \
-  sed -i '$ d' Pipfile && \
   pnpm config set unsafe-perm && \
   pnpm install
 
