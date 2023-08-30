@@ -111,7 +111,8 @@ spec:
         - name: keycloak
           image: quay.io/keycloak/keycloak:22.0.1
           # --optimized flag fails with postgre https://github.com/keycloak/keycloak/issues/15898
-          args: ["start", "--log-level=DEBUG", "--http-relative-path=/auth"]
+          # --log-level=DEBUG can be added for debugging
+          args: ["start", "--http-relative-path=/auth"]
           imagePullPolicy: IfNotPresent
           env:
             - name: KEYCLOAK_ADMIN
