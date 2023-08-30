@@ -2,7 +2,7 @@
 replicas: 1
 registryUrl: ghcr.io/open-rmf
 builder_ns: ghcr.io/open-rmf/rmf_deployment_template
-hostName: localhost
+hostName: rmf-deployment-template.open-rmf.org
 
 global:
   ROS_DOMAIN_ID: 15
