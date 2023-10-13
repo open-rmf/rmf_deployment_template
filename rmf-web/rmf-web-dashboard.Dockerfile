@@ -33,6 +33,8 @@ RUN echo "DOMAIN_URL: $DOMAIN_URL"\
     && echo "REACT_APP_AUTH_PROVIDER: $REACT_APP_AUTH_PROVIDER"\
     && echo "REACT_APP_KEYCLOAK_CONFIG: $REACT_APP_KEYCLOAK_CONFIG"
 
+ENV NODE_OPTIONS "--max_old_space_size=4096"
+
 RUN cd /opt/rmf/src/rmf-web/packages/dashboard && \
   pnpm run --filter rmf-dashboard... build
 
