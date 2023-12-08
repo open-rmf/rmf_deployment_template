@@ -108,8 +108,8 @@ docker build -f rmf-simulation/rmf-simulation.Dockerfile -t open-rmf/rmf_deploym
 #### Build rmf-web
 ```bash
 # Import RMF Web source code
-mkdir rmf-web
-vcs import rmf-web < rmf-web/rmf-web.repos
+mkdir rmf-web-src
+vcs import rmf-web-src < rmf-web/rmf-web.repos
 ```
 ```bash
 # Builds an image for RMF web development environment.
