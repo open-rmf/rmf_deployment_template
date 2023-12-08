@@ -72,18 +72,53 @@ You can look into the github workflow to get an idea of how to build images:
 [Github Workflow](https://github.com/open-rmf/rmf_deployment_template/blob/main/.github/workflows/docker-image.yml).
 
 From the root directory of this repo, you can run the following commands to build the images:
+
+#### Build rmf
+```bash
+# Set ROS distribution and build ROS-related Docker image
+ROS_DISTRO="${ROS_DISTRO:-humble}"
+docker build -f rmf/builder-rosdep.Dockerfile -t open-rmf/rmf_deployment_template/builder-rosdep .
 ```
-# Install and run vcs import rmf
+```bash
+# These commands are executed on your local system to setup ROS 2 and RMF environment
 curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key  -o /usr/share/keyrings/ros-archive-keyring.gpg
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" | \
 sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
 sudo apt update
 sudo apt install python3-vcstool -y
+
+# Create a directory and import RMF source code
 mkdir rmf-src
 vcs import rmf-src < rmf/rmf.repos
 ```
-```
-ROS_DISTRO="${ROS_DISTRO:-humble}"
-docker build -f rmf/builder-rosdep.Dockerfile -t open-rmf/rmf_deployment_template/builder-rosdep .
+```bash
+# Build RMF Docker image
 docker build -f rmf/rmf.Dockerfile -t open-rmf/rmf_deployment_template/rmf .
+```
+#### Build rmf-simulation
+```bash
+# Import RMF Simulation source code
+mkdir rmf-simulation-src
+vcs import rmf-simulation-src < rmf-simulation/rmf-simulation.repos
+```
+```bash
+# Build RMF Simulation Docker image
+docker build -f rmf-simulation/rmf-simulation.Dockerfile -t open-rmf/rmf_deployment_template/rmf-simulation .
+```
+#### Build rmf-web
+```bash
+# Import RMF Web source code
+mkdir rmf-web
+vcs import rmf-web < rmf-web/rmf-web.repos
+```
+```bash
+# Builds an image for RMF web development environment.
+docker build -f rmf-web/builder-rmf-web.Dockerfile -t open-rmf/rmf_deployment_template/builder-rmf-web .
+```
+```bash
+# Builds an image for the RMF web dashboard.
+docker build -f rmf-web/rmf-web-dashboard.Dockerfile -t open-rmf/rmf_deployment_template/rmf-web-dashboard .
+
+# Builds an image for the RMF server, part of the web service.
+docker build -f rmf-web/rmf-web-rmf-server.Dockerfile -t open-rmf/rmf_deployment_template/rmf-web-rmf-server .
 ```
