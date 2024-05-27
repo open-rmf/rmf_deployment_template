@@ -2,7 +2,11 @@
 ![](https://github.com/open-rmf/rmf_deployment_template/workflows/rmf-site-ci/badge.svg)
 
 # Open-RMF Deployment Template
-This repo provides a sample template to build, deploy and manage an Open-RMF installation (i.e. GitOps for RMF)
+This repo provides a sample template to build, deploy and manage an [Open-RMF](https://github.com/open-rmf/rmf) installation (i.e. GitOps for RMF)
+
+
+
+
 
 ## The Kubernetes way for cloud deployment
 This repo is structured as -
