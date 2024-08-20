@@ -29,11 +29,9 @@ Add VM public IP to domain url in DNS records (eg. Route 53 in AWS)
 ### Bootstrap Kubernetes Cluster on Cloud Machine
 We will run Kubernetes on a single node only here, and will be using [k3s](https://k3s.io) to setup the cluster. 
 ```bash
-curl -fsSL get.docker.com -o get-docker.sh && sh get-docker.sh
+curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh
 
-curl -sLS https://get.k3sup.dev | sh
-sudo install k3sup /usr/local/bin/
-k3sup install --local --user ubuntu --cluster --k3s-extra-args '--flannel-iface=ens5 --no-deploy traefik --write-kubeconfig-mode --docker'
+curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--flannel-iface=ens5 --disable=traefik --write-kubeconfig-mode=0644 --docker" sh -s -
 
 git clone git@github.com:open-rmf/rmf_deployment_template.git
 cd rmf_deployment_template
