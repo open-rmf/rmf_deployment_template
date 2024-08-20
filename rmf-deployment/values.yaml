@@ -1,4 +1,3 @@
-
 replicas: 1
 registryUrl: 'ghcr.io/open-rmf'
 builder_ns: 'ghcr.io/open-rmf/rmf_deployment_template'
