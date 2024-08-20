@@ -1,17 +1,19 @@
 replicas: 1
-registryUrl: ghcr.io/open-rmf
-builder_ns: ghcr.io/open-rmf/rmf_deployment_template
-hostName: rmf-deployment-template.open-rmf.org
+registryUrl: 'ghcr.io/open-rmf'
+builder_ns: 'ghcr.io/open-rmf/rmf_deployment_template'
+hostName: 'rmf-deployment-template.open-rmf.org'
+
 global:
-  ROS_DOMAIN_ID: 15
-  DDS_CONFIG_MOUNTPATH: /etc/cyclonedds
-  DDS_CONFIG_VOLUME: cyclonedds-configmap
-  DDS_ENV: CYCLONEDDS_URI
-  DDS_CONFIG: /etc/cyclonedds/cyclonedds.xml
-  RMW_IMPLEMENTATION: rmw_cyclonedds_cpp
-  RMF_USE_SIM_TIME: "false"
-  RMF_BIDDING_TIME_WINDOW: "2.0"
-  RMF_TRAJECTORY_VISUALIZER_LEVEL_NAME: "L1"
-  RMF_BUILDING_MAP_SERVER_CONFIG_PATH: "/opt/rmf/install/mysite_maps/share/mysite_maps/office/office.building.yaml"
-  RMF_FAILOVER_MODE: "false"
-  RMF_SERVER_URI: "ws://localhost:8000/_internal"
+  ROS_DOMAIN_ID: '15'
+  DDS_CONFIG_MOUNTPATH: '/etc/cyclonedds'
+  DDS_CONFIG_VOLUME: 'cyclonedds-configmap'
+  DDS_ENV: 'CYCLONEDDS_URI'
+  DDS_CONFIG: /etc/cyclonedds/cyclonedds.xml'
+  RMW_IMPLEMENTATION: 'rmw_cyclonedds_cpp'
+
+  RMF_USE_SIM_TIME: 'false'
+  RMF_BIDDING_TIME_WINDOW: '2.0'
+  RMF_TRAJECTORY_VISUALIZER_LEVEL_NAME: 'L1'
+  RMF_BUILDING_MAP_SERVER_CONFIG_PATH: '/opt/rmf/install/mysite_maps/share/mysite_maps/office/office.building.yaml'
+  RMF_FAILOVER_MODE: 'false'
+  RMF_SERVER_URI: 'ws://localhost:8000/_internal'
