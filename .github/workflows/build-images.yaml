@@ -1,7 +1,7 @@
 name: Build images
 on:
   push:
-    branches: [deploy]
+    branches: [wip-deploy]
     paths:
       - dockerfiles/**
       - src/**
