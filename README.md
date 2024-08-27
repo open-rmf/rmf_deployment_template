@@ -1,5 +1,6 @@
 # Open-RMF Deployment Template
-This branch provides for a way to deploy Open-RMF for production use, in cloud as well as air-gapped environments
+This branch provides for a way to deploy Open-RMF for production use, in cloud as 
+well as air-gapped environments
 
 # Local Testing
 
@@ -9,9 +10,11 @@ This branch provides for a way to deploy Open-RMF for production use, in cloud a
 
 ## Build
 ### CI
-If you are deploying on a public cloud, it is recommeded to use CI / CD pipelines; you may follow the github actions in this repo to setup CI.
+If you are deploying on a public cloud, it is recommeded to use CI / CD pipelines; 
+you may follow the github actions in this repo to setup CI.
 
-Alternatively, to build manually, follow the steps in `.github/workflows/build-images.yaml` to build dockerfiles for deployment.
+Alternatively, to build manually, follow the steps in `.github/workflows/build-images.yaml`
+to build dockerfiles for deployment.
 
 ## Install k3s and setup infrastructure
 
@@ -30,16 +33,14 @@ curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 # clone this repo
 git clone -b deploy git@github.com:open-rmf/rmf_deployment_template.git
 
-# deploy infrastructure componen\* *Note:* docker push / docker registry uses the [OCI Distribution Spec](https://github.com/opencontainers/distribution-spec/blob/v1.0.1/spec.md)
-that uses the URL/v2 as entrypoint to receive requests.
-ts
-cd rmf_deployment_template/charts/infrastructure/tools
-bash helm_charts_build.bash
-cd ../../
+# deploy infrastructure components
+cd rmf_deployment_template/charts/
+./infrastructure/tools/helm_charts_build.bash
 helm install -n=infra --create-namespace rmf-infra infrastructure
 ```
 
-If you are deploying locally, add your cluster's IP to `/etc/hosts` to point to be able to resolve https://rmf.test
+If you are deploying locally, add your cluster's IP to `/etc/hosts` to point to be 
+able to resolve https://rmf.test
 ```bash
 sudo bash -c "echo $(kubectl get svc rmf-infra-ingress-nginx-controller -n infra -o jsonpath="{.spec.clusterIP}") rmf.test >> /etc/hosts"
 ```
@@ -47,9 +48,11 @@ sudo bash -c "echo $(kubectl get svc rmf-infra-ingress-nginx-controller -n infra
 ## Setup SSL certifications
 
 ### Internet
-If you are deploying on the internet, letsencrypt provides an easy way of obtaining SSL certificates
+If you are deploying on the internet, letsencrypt provides an easy way of obtaining 
+SSL certificates
 ```bash
-# IMPORTANT: Before you proceed to the next steps, make sure your DNS is indeed setup and resolving; this is to avoid hitting letsencrypt's rate limits on DNS failure.
+# IMPORTANT: Before you proceed to the next steps, make sure your DNS is indeed setup 
+# and resolving; this is to avoid hitting letsencrypt's rate limits on DNS failure.
 # NOTE: Specify your `ACME_EMAIL` and `DOMAIN_NAME` for letsencrypt-issuer-production
 export DOMAIN_NAME=rmf.test
 export ACME_EMAIL=YOUREMAIL@DOMAIN.com
@@ -59,7 +62,8 @@ envsubst < charts/infrastructure/tools/letsencrypt-issuer-production.yaml | kube
 kubectl get certificates # should be true, if not, might need to wait a couple minutes.
 ```
 ### Local
-The cluster provides a certification authority that signs different certificates used in different services by the cluster. The root ca certificate can be obtained by:
+The cluster provides a certification authority that signs different certificates used 
+in different services by the cluster. The root ca certificate can be obtained by:
 ```bash
 # create testing ca
 kubectl apply -f devel/certs.yaml
@@ -72,19 +76,13 @@ kubectl -n=infra get secrets rmf-dev-secret --template='{{index .data "ca.crt"}}
 
 Tell your browser to trust the ca.crt cert (instructions depends on the browser).
 
-#### Docker regisry operations
-
-For using SSL docker, the ca.cert needs to be installed locally:
-
-```
-sudo mkdir -p /etc/docker/certs.d/rmf.test
-sudo cp ca.crt /etc/docker/certs.d/rmf.test/
-```
-
 ## DEPLOY
 
 ### CD
-We will use [ArgoCD](https://argoproj.github.io/cd) to handle chart changes on this branch of the repository and apply to the cluster. The `charts` directory consists of [helm charts](https://helm.sh/docs/topics/charts/) which describes the provisioning of the deployment.
+We will use [ArgoCD](https://argoproj.github.io/cd) to handle chart changes on this 
+branch of the repository and apply to the cluster. The `charts` directory consists of 
+[helm charts](https://helm.sh/docs/topics/charts/) which describes the provisioning 
+of the deployment.
 
 ```bash
 kubectl create namespace rmf
@@ -92,8 +90,12 @@ kubectl create namespace argocd
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 kubectl port-forward svc/argocd-server -n argocd 9090:443
 
-# Start a new ssh session with port forward 9090 to the VM, you should now be able to view the admin panel on port localhost:9090 (eg. ssh -L 9090:localhost:9090 my-awesome-server.tld and then open ArgoCD web UI by going to localhost:9090 on your workstation)
-# In case you have problems with port forwarding, you may be missing socat on the server, install by sudo apt install -y socat 
+# Start a new ssh session with port forward 9090 to the VM, you should now be able
+# to view the admin panel on port localhost:9090 
+# (eg. ssh -L 9090:localhost:9090 my-awesome-server.tld and then open ArgoCD web UI 
+# by going to localhost:9090 on your workstation)
+# In case you have problems with port forwarding, you may be missing socat on the 
+# server, install by sudo apt install -y socat 
 
 # Get the initial password for ArgoCD
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
@@ -102,7 +104,9 @@ For more on ArgoCD, vist their [readthedocs](https://argo-cd.readthedocs.io/en/s
 ```bash
 # Connect the repository
 
-## When adding a "new app" on argocd, we will specify the repo, this branch and `charts/rmf` directory. Similarly to deploy the monitoring tools, use `charts/monitoring` directory.
+## When adding a "new app" on argocd, we will specify the repo, this branch and 
+## `charts/rmf` directory. Similarly to deploy the monitoring tools, use 
+## `charts/monitoring` directory.
 
 ## Now if you sync the app, we should see the full deployment "come alive"
 ```
@@ -144,7 +148,8 @@ kubectl taint node <node-name> reserved=rmf:NoSchedule
 ```
 ## Grafana (using Prometheus and Loki)
 
-The deployment includes a prometheus stack (with grafana). It can be accessed from https://rmf.test/grafana.
+The deployment includes a prometheus stack (with grafana). It can be accessed from
+https://rmf.test/grafana.
 
 To get the admin password, run
 
@@ -168,9 +173,11 @@ List of ports and URIs used by the different services:
 
 ### API server crash loop backoff and jwt-pub-key missing
 
-It is generally normal for the first deployment to see this happening, as it has to wait for keycloak to be ready and the `keycloak-setup` job to be completed.
+It is generally normal for the first deployment to see this happening, as it has to wait 
+for keycloak to be ready and the `keycloak-setup` job to be completed.
 
-If this issue is persisting and the `keycloak-setup` job does not show up on `kubectl get jobs -A`, it means the job was somehow not started. It can be manually spun up again using
+If this issue is persisting and the `keycloak-setup` job does not show up on `kubectl get jobs -A`,
+it means the job was somehow not started. It can be manually spun up again using
 
 ```
 helm upgrade rmf rmf-deployment -n rmf
