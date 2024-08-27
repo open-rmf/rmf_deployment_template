@@ -1,0 +1,66 @@
+# These are "default" values for local deployment, edit per your available DNS.
+
+hostName: rmf.test
+baseUrl: https://rmf.test
+ENABLE_RMF: false # mutually exclusive with `ENABLE_RMF_SIM`
+ENABLE_RMF_SIM: true # mutually exclusive with `ENABLE_RMF`
+ENABLE_RMF_WEB: true
+CERT_MANAGER_ISSUER: rmf-dev-issuer
+
+global:
+  # change these in prod to the registry you are using (eg. locally deployed Harbor registry)
+  # REGISTRY_DOCKER: docker.io
+  # REGISTRY_QUAY: quay.io
+  # REGISTRY_RMF: localhost
+
+  ROS_DOMAIN_ID: 15
+  DDS_CONFIG_MOUNTPATH: /etc/cyclonedds
+  DDS_CONFIG_VOLUME: cyclonedds-configmap
+  DDS_ENV: CYCLONEDDS_URI
+  DDS_CONFIG: /etc/cyclonedds/cyclonedds.xml
+  DDS_NETWORK_INTERFACE: lo
+  RMW_IMPLEMENTATION: rmw_cyclonedds_cpp
+
+  RMF_USE_SIM_TIME: "true"
+  RMF_BIDDING_TIME_WINDOW: "2.0"
+  RMF_TRAJECTORY_VISUALIZER_LEVEL_NAME: "L1"
+  RMF_FAILOVER_MODE: "false"
+  RMF_SERVER_URI: "ws://rmf-web-rmf-server:8000/_internal"
+
+rmf:
+  RMF_IMAGE: rmf/rmf:dev
+  RMF_SITE_IMAGE: rmf/rmf-site:dev
+
+rmf_sim:
+  RMF_SIM_IMAGE: rmf/rmf-sim:dev
+  RMF_SIM_PACKAGE: rmf_demos_gz
+  RMF_SIM_LAUNCH_FILE: office.launch.xml
+
+rmf_web:
+  POSTGRES_IMAGE: postgres:16.2
+  API_SERVER_IMAGE: rmf/api-server:dev
+  API_SERVER_DB_PASSWD: lDflqwQuIMP167Xo7Hbyo0STvlebfoEe
+  DASHBOARD_IMAGE: rmf/dashboard:dev
+  ADMIN_PASSWD: admin
+
+keycloak:
+  POSTGRES_IMAGE: postgres:16.2
+  KEYCLOAK_IMAGE: keycloak/keycloak:25.0.4
+  KEYCLOAK_ADMIN_PASSWD: 00w2n1Nk01b3fbDrOSLDGYx0W4tlyiHl
+  KEYCLOAK_DB_PASSWD: TbCmjx3hYadXBJrk9x5XxeTmp6mwQbzY
+  KEYCLOAK_SETUP_IMAGE: rmf/keycloak-setup:dev
+
+map:
+  LOCALHOST_MAP_STORAGE_PATH: TODO
+  MAP_CONFIG_VOLUME: map-configmap
+  POD_MAP_STORAGE_PATH: TODO
+  ## Edits may happen here:
+  RMF_BUILDING_MAP: TODO
+  RMF_NAV_GRAPH_OT: TODO
+
+# adapters:
+#   LOCALHOST_ADAPTER_CONFIG_STORAGE_PATH: TODO
+#   POD_ADAPTER_CONFIG_STORAGE_PATH: TODO
+#   ADAPTER_CONFIG_VOLUME: adapter-configmap
+#   NAV_GRAPH_FILE_PATH: TODO
+

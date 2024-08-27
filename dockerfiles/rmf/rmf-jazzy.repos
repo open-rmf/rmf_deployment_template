@@ -1,0 +1,5 @@
+repositories:
+  rmf/rmf_traffic_editor:
+    type: git
+    url: https://github.com/open-rmf/rmf_traffic_editor.git
+    version: fc525156f7f533a939fc509d94d8a5b688ac0cbf

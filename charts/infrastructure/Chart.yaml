@@ -1,0 +1,12 @@
+apiVersion: v2
+name: rmf-deployment-infra
+description: Helm Chart for RMF deployment infrastructure
+version: 1.0.0
+dependencies:
+  - name: ingress-nginx
+    repository: https://kubernetes.github.io/ingress-nginx
+    version: 4.10.1
+    condition: ingress-nginx.enabled
+  - name: cert-manager
+    repository: https://charts.jetstack.io
+    version: 1.14.5

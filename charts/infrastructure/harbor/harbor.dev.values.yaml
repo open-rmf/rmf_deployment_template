@@ -1,0 +1,86 @@
+expose:
+  type: ingress
+  tls:
+    enabled: true
+    certSource: auto
+  ingress:
+    hosts:
+      core: rmf.test
+    annotations:
+      cert-manager.io/cluster-issuer: rmf-dev-issuer
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    className: nginx
+
+externalURL: https://rmf.test
+
+harborAdminPassword: "Harbor12345"  # change in prod!
+
+trivy:
+  enabled: false
+
+metrics:
+  enabled: true
+
+nginx:
+  internal:
+    tolerations:
+    - key: reserved
+      operator: Equal
+      value: rmf
+      effect: NoSchedule
+
+portal:
+  internal:
+    tolerations:
+    - key: reserved
+      operator: Equal
+      value: rmf
+      effect: NoSchedule
+
+core:
+  internal:
+    tolerations:
+    - key: reserved
+      operator: Equal
+      value: rmf
+      effect: NoSchedule
+
+jobservice:
+  internal:
+    tolerations:
+    - key: reserved
+      operator: Equal
+      value: rmf
+      effect: NoSchedule
+
+registry:
+  internal:
+    tolerations:
+    - key: reserved
+      operator: Equal
+      value: rmf
+      effect: NoSchedule
+
+database:
+  internal:
+    tolerations:
+    - key: reserved
+      operator: Equal
+      value: rmf
+      effect: NoSchedule
+
+redis:
+  internal:
+    tolerations:
+    - key: reserved
+      operator: Equal
+      value: rmf
+      effect: NoSchedule
+
+exporter:
+  internal:
+    tolerations:
+    - key: reserved
+      operator: Equal
+      value: rmf
+      effect: NoSchedule

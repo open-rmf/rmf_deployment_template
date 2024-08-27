@@ -1,0 +1,18 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: keycloak-setup
+spec:
+  completions: 1
+  parallelism: 1
+  activeDeadlineSeconds: 60
+  ttlSecondsAfterFinished: 60
+  template:
+    spec:
+      serviceAccount: keycloak-setup-sa
+      containers:
+      - name: keycloak-setup
+        image: localhost/rmf/keycloak-setup:dev
+        command: ["/keycloak-setup.bash"]
+      restartPolicy: Never

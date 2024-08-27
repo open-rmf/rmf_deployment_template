@@ -1,0 +1,52 @@
+{{- if .Values.ENABLE_RMF_SIM -}}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rmf-sim
+  labels:
+    app: rmf-sim
+spec:
+  selector:
+    matchLabels:
+      app: rmf-sim
+  template:
+    metadata:
+      labels:
+        app: rmf-sim
+    spec:
+      containers:
+        - name: rmf-sim
+          image: {{ .Values.global.REGISTRY_RMF | default "localhost" }}/{{ .Values.rmf_sim.RMF_SIM_IMAGE }}
+          env:
+            - name: RMF_USE_SIM_TIME
+              value: {{ .Values.global.RMF_USE_SIM_TIME | quote }}
+            - name: {{ .Values.global.DDS_ENV | quote }}
+              value: {{ .Values.global.DDS_CONFIG | quote }}
+            - name: ROS_DOMAIN_ID
+              value: {{ .Values.global.ROS_DOMAIN_ID | quote }}
+            - name: RMW_IMPLEMENTATION
+              value: {{ .Values.global.RMW_IMPLEMENTATION | quote }}
+          command: ["/bin/bash"]
+          args:
+            - -c
+            - >
+              /ros_entrypoint.sh
+              ros2 launch {{ .Values.rmf_sim.RMF_SIM_PACKAGE }} {{ .Values.rmf_sim.RMF_SIM_LAUNCH_FILE }}
+              headless:=true
+              use_sim_time:={{ .Values.global.RMF_USE_SIM_TIME }}
+              failover_mode:={{ .Values.global.RMF_FAILOVER_MODE }}
+              server_uri:={{ .Values.global.RMF_SERVER_URI }}
+          volumeMounts:
+            - mountPath: {{ .Values.global.DDS_CONFIG_MOUNTPATH | quote }}
+              name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
+      volumes:
+        - name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
+          configMap:
+            name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
+      tolerations:
+        - key: reserved
+          operator: Equal
+          value: rmf
+          effect: NoSchedule
+{{- end -}}

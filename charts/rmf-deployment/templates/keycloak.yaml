@@ -1,0 +1,274 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: keycloak-db
+  labels:
+    app: keycloak
+    component: db
+spec:
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: keycloak-db
+  labels:
+    app: keycloak
+    component: db
+spec:
+  selector:
+    app: keycloak
+    component: db
+  ports:
+    - port: 5432
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak-db
+  labels:
+    app: keycloak
+    component: db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keycloak
+      component: db
+  template:
+    metadata:
+      labels:
+        app: keycloak
+        component: db
+    spec:
+      containers:
+        - name: postgresql
+          image: {{ .Values.global.REGISTRY_DOCKER | default "docker.io" }}/{{ .Values.keycloak.POSTGRES_IMAGE }}
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-secret
+                  key: DB_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-secret
+                  key: DB_PASSWORD
+            - name: POSTGRES_DB
+              value: keycloak
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: keycloak-db
+            - mountPath: /etc/localtime
+              subPath: localtime
+              name: vol-tz-singapore
+              readOnly: true
+      volumes:
+        - name: keycloak-db
+          persistentVolumeClaim:
+            claimName: keycloak-db
+        - name: vol-tz-singapore
+          configMap:
+            name: cm-tz-singapore
+      tolerations:
+        - key: reserved
+          operator: Equal
+          value: rmf
+          effect: NoSchedule
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: keycloak
+  labels:
+    app: keycloak
+    component: app
+spec:
+  ports:
+    - name: http
+      port: 8080
+  selector:
+    app: keycloak
+    component: app
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak
+  labels:
+    app: keycloak
+    component: app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keycloak
+      component: app
+  template:
+    metadata:
+      labels:
+        app: keycloak
+        component: app
+    spec:
+      containers:
+        - name: keycloak
+          image: {{ .Values.global.REGISTRY_QUAY | default "quay.io" }}/{{ .Values.keycloak.KEYCLOAK_IMAGE }}
+          args:
+            - start
+          env:
+            - name: KEYCLOAK_ADMIN
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-secret
+                  key: KEYCLOAK_ADMIN
+            - name: KEYCLOAK_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-secret
+                  key: KEYCLOAK_ADMIN_PASSWORD
+            - name: PROXY_ADDRESS_FORWARDING
+              value: 'true'
+            - name: KC_DB
+              value: postgres
+            - name: KC_DB_URL
+              value: jdbc:postgresql://keycloak-db/keycloak
+            - name: KC_DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-secret
+                  key: DB_USER
+            - name: KC_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-secret
+                  key: DB_PASSWORD
+            - name: KC_HOSTNAME_URL
+              value: {{ .Values.baseUrl }}/auth
+            - name: KC_HTTP_RELATIVE_PATH
+              value: /auth
+            - name: KC_HOSTNAME_ADMIN_URL
+              value: {{ .Values.baseUrl }}/auth
+            - name: KC_HEALTH_ENABLED
+              value: "true"
+            - name: KC_HTTP_ENABLED
+              value: "true"
+            # We CANNOT tell keycloak that we are behind a proxy even though we are as doing so causes
+            # it to use "X-Forwarded-*" and "Forwarded" headers to build the base url. The problem is
+            # that in devel, the ingress thinks it is hosting at port 80 and 443 but
+            # in fact we are using port remapping so the real url is different.
+            # While we could technically change the port of the ingress (by using our own ingress image etc),
+            # kubernetes ingress are designed to be served on the standard ports so it is better to
+            # not mess with it. Also note that this only affects the devel deploy, a prod deploy will
+            # be on the standard ports and can tell keycloak it is behind a proxy (but doesn't need to).
+            # - name: KC_PROXY
+            #   value: edge
+          volumeMounts:
+            - mountPath: /etc/localtime
+              subPath: localtime
+              name: vol-tz-singapore
+              readOnly: true
+          ports:
+            - name: http
+              containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /auth/realms/master
+              port: 8080
+      volumes:
+        - name: vol-tz-singapore
+          configMap:
+            name: cm-tz-singapore
+      tolerations:
+        - key: reserved
+          operator: Equal
+          value: rmf
+          effect: NoSchedule
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: keycloak
+  annotations:
+    cert-manager.io/cluster-issuer: {{ .Values.CERT_MANAGER_ISSUER }}
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: {{ .Values.hostName | quote }}
+      http:
+        paths:
+          - path: /auth
+            pathType: Prefix
+            backend:
+              service:
+                name: keycloak
+                port:
+                  number: 8080
+  tls:
+    - hosts:
+      - {{ .Values.hostName | quote }}
+      secretName: rmf-web-ingress-tls
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: keycloak-setup-sa
+  annotations:
+    kubernetes.io/enforce-mountable-secrets: "true"
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: keycloak-setup-role
+rules:
+  - apiGroups: [""]
+    resources: ["secrets"]
+    resourceNames:
+      - keycloak-secret
+      - rmf-web-rmf-server-secret
+    verbs: ["get"]
+  - apiGroups: ["apps"]
+    resources: ["deployments"]
+    resourceNames:
+      - keycloak
+    verbs: ["get", "list", "watch"]
+  - apiGroups: [""]
+    resources: ["configmaps"]
+    resourceNames:
+      - jwt-pub-key
+    verbs: ["*"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: keycloak-setup-rb
+subjects:
+  - kind: ServiceAccount
+    name: keycloak-setup-sa
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: keycloak-setup-role
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: keycloak-setup
+spec:
+  completions: 1
+  parallelism: 1
+  activeDeadlineSeconds: 120
+  ttlSecondsAfterFinished: 120
+  template:
+    spec:
+      serviceAccount: keycloak-setup-sa
+      containers:
+      - name: keycloak-setup
+        image: {{ .Values.global.REGISTRY_RMF | default "localhost" }}/{{ .Values.keycloak.KEYCLOAK_SETUP_IMAGE }}
+        command: ["/keycloak-setup.bash", "{{ .Values.baseUrl }}"]
+      restartPolicy: Never

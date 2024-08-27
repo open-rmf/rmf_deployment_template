@@ -1,0 +1,4 @@
+apiVersion: v2
+name: openrmf-deployment
+description: Helm Chart for Open-RMF deployment
+version: 1.0.0

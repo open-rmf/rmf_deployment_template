@@ -1,0 +1,149 @@
+name: Build images
+on:
+  push:
+    branches: [deploy]
+    paths:
+      - dockerfiles/**
+      - src/**
+  workflow_dispatch:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+permissions:
+  contents: read
+  id-token: write
+env:
+  IMAGE_NS: ghcr.io/open-rmf/rmf_deployment_template/rmf-deployment
+  IMAGE_TAG: ${{ github.sha }}
+  IMAGE_TAG-LATEST: latest
+jobs:
+  builder:
+    name: builder
+    runs-on: ubuntu-latest
+    steps:
+      - name: Login to Github Packages
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_PAT }}
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: build and push
+        run: |
+          IMAGE=$IMAGE_NS/builder:$IMAGE_TAG
+          IMAGE-LATEST=$IMAGE_NS/builder:$IMAGE_TAG-LATEST
+          docker build -t $IMAGE dockerfiles/builder
+          docker push $IMAGE
+          docker tag $IMAGE $IMAGE-LATEST
+          docker push $IMAGE-LATEST
+  rmf:
+    name: rmf
+    runs-on: ubuntu-latest
+    needs: builder
+    steps:
+      - name: Login to Github Packages
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_PAT }}
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: build and push
+        run: |
+          IMAGE=$IMAGE_NS/rmf:$IMAGE_TAG
+          IMAGE-LATEST=$IMAGE_NS/rmf:$IMAGE_TAG-LATEST
+          BUILDER_IMAGE=$IMAGE_NS/builder:$IMAGE_TAG
+          . dockerfiles/build-args.sh
+          docker build -t $IMAGE $RMF_BUILD_ARGS dockerfiles/rmf
+          docker push $IMAGE
+          docker tag $IMAGE $IMAGE-LATEST
+          docker push $IMAGE-LATEST
+  rmf-site:
+    name: rmf-site
+    runs-on: ubuntu-latest
+    needs: rmf
+    steps:
+      - name: Login to Github Packages
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_PAT }}
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: build and push
+        run: |
+          IMAGE=$IMAGE_NS/rmf-site:$IMAGE_TAG
+          IMAGE-LATEST=$IMAGE_NS/rmf-site:$IMAGE_TAG-LATEST
+          BUILDER_IMAGE=$IMAGE_NS/rmf:$IMAGE_TAG
+          . dockerfiles/build-args.sh
+          docker build -t $IMAGE $RMF_BUILD_ARGS dockerfiles/rmf-site
+          docker push $IMAGE
+          docker tag $IMAGE $IMAGE-LATEST
+          docker push $IMAGE-LATEST
+  api_server:
+    name: api-server
+    runs-on: ubuntu-latest
+    needs: builder
+    steps:
+      - name: Login to Github Packages
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_PAT }}
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: build and push
+        run: |
+          IMAGE=$IMAGE_NS/api-server:$IMAGE_TAG
+          IMAGE-LATEST=$IMAGE_NS/api-server:$IMAGE_TAG-LATEST
+          BUILDER_IMAGE=$IMAGE_NS/builder:$IMAGE_TAG
+          . dockerfiles/build-args.sh
+          docker build -t $IMAGE $API_SERVER_BUILD_ARGS dockerfiles/rmf-web/api-server
+          docker push $IMAGE
+          docker tag $IMAGE $IMAGE-LATEST
+          docker push $IMAGE-LATEST
+  dashboard:
+    name: dashboard
+    runs-on: ubuntu-latest
+    steps:
+      - name: Login to Github Packages
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_PAT }}
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: build and push
+        run: |
+          IMAGE=$IMAGE_NS/dashboard:$IMAGE_TAG
+          IMAGE-LATEST=$IMAGE_NS/dashboard:$IMAGE_TAG-LATEST
+          . dockerfiles/build-args.sh
+          docker build -t $IMAGE $DASHBOARD_BUILD_ARGS dockerfiles/rmf-web/dashboard
+          docker push $IMAGE
+          docker tag $IMAGE $IMAGE-LATEST
+          docker push $IMAGE-LATEST
+  keycloak_setup:
+    name: keycloak-setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Login to Github Packages
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_PAT }}
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: build and push
+        run: |
+          IMAGE=$IMAGE_NS/keycloak-setup:$IMAGE_TAG
+          IMAGE-LATEST=$IMAGE_NS/keycloak-setup:$IMAGE_TAG-LATEST
+          docker build -t $IMAGE dockerfiles/rmf-web/keycloak-setup
+          docker push $IMAGE
+          docker tag $IMAGE $IMAGE-LATEST
+          docker push $IMAGE-LATEST

@@ -1,0 +1,20 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cyclonedds-configmap
+data:
+  cyclonedds.xml: |
+    <CycloneDDS xmlns="https://cdds.io/config" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://cdds.io/config https://raw.githubusercontent.com/eclipse-cyclonedds/cyclonedds/master/etc/cyclonedds.xsd">
+      <Domain id="any">
+        <General>
+          <AllowMulticast>default</AllowMulticast>
+          <MaxMessageSize>8192B</MaxMessageSize>
+          <Transport>udp</Transport>
+        </General>
+        <Discovery>
+          <ParticipantIndex>auto</ParticipantIndex>
+          <MaxAutoParticipantIndex>50</MaxAutoParticipantIndex>
+        </Discovery>
+      </Domain>
+    </CycloneDDS>

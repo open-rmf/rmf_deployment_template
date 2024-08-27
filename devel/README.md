@@ -1,0 +1,1 @@
+Local dev and simulation related assets live here (kept out of src/ or dockerfiles/ for ease of exclusion from CI)
