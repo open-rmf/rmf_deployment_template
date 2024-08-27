@@ -15,7 +15,7 @@ permissions:
 env:
   IMAGE_NS: ghcr.io/open-rmf/rmf_deployment_template/rmf-deployment
   IMAGE_TAG: ${{ github.sha }}
-  IMAGE_TAG-LATEST: latest
+  IMAGE_TAG_LATEST: latest
 jobs:
   builder:
     name: builder
@@ -32,11 +32,11 @@ jobs:
       - name: build and push
         run: |
           IMAGE=$IMAGE_NS/builder:$IMAGE_TAG
-          IMAGE-LATEST=$IMAGE_NS/builder:$IMAGE_TAG-LATEST
+          IMAGE_LATEST=$IMAGE_NS/builder:$IMAGE_TAG_LATEST
           docker build -t $IMAGE dockerfiles/builder
           docker push $IMAGE
-          docker tag $IMAGE $IMAGE-LATEST
-          docker push $IMAGE-LATEST
+          docker tag $IMAGE $IMAGE_LATEST
+          docker push $IMAGE_LATEST
   rmf:
     name: rmf
     runs-on: ubuntu-latest
@@ -53,13 +53,13 @@ jobs:
       - name: build and push
         run: |
           IMAGE=$IMAGE_NS/rmf:$IMAGE_TAG
-          IMAGE-LATEST=$IMAGE_NS/rmf:$IMAGE_TAG-LATEST
+          IMAGE_LATEST=$IMAGE_NS/rmf:$IMAGE_TAG_LATEST
           BUILDER_IMAGE=$IMAGE_NS/builder:$IMAGE_TAG
           . dockerfiles/build-args.sh
           docker build -t $IMAGE $RMF_BUILD_ARGS dockerfiles/rmf
           docker push $IMAGE
-          docker tag $IMAGE $IMAGE-LATEST
-          docker push $IMAGE-LATEST
+          docker tag $IMAGE $IMAGE_LATEST
+          docker push $IMAGE_LATEST
   rmf-site:
     name: rmf-site
     runs-on: ubuntu-latest
@@ -76,13 +76,13 @@ jobs:
       - name: build and push
         run: |
           IMAGE=$IMAGE_NS/rmf-site:$IMAGE_TAG
-          IMAGE-LATEST=$IMAGE_NS/rmf-site:$IMAGE_TAG-LATEST
+          IMAGE_LATEST=$IMAGE_NS/rmf-site:$IMAGE_TAG_LATEST
           BUILDER_IMAGE=$IMAGE_NS/rmf:$IMAGE_TAG
           . dockerfiles/build-args.sh
           docker build -t $IMAGE $RMF_BUILD_ARGS dockerfiles/rmf-site
           docker push $IMAGE
-          docker tag $IMAGE $IMAGE-LATEST
-          docker push $IMAGE-LATEST
+          docker tag $IMAGE $IMAGE_LATEST
+          docker push $IMAGE_LATEST
   api_server:
     name: api-server
     runs-on: ubuntu-latest
@@ -99,13 +99,13 @@ jobs:
       - name: build and push
         run: |
           IMAGE=$IMAGE_NS/api-server:$IMAGE_TAG
-          IMAGE-LATEST=$IMAGE_NS/api-server:$IMAGE_TAG-LATEST
+          IMAGE_LATEST=$IMAGE_NS/api-server:$IMAGE_TAG_LATEST
           BUILDER_IMAGE=$IMAGE_NS/builder:$IMAGE_TAG
           . dockerfiles/build-args.sh
           docker build -t $IMAGE $API_SERVER_BUILD_ARGS dockerfiles/rmf-web/api-server
           docker push $IMAGE
-          docker tag $IMAGE $IMAGE-LATEST
-          docker push $IMAGE-LATEST
+          docker tag $IMAGE $IMAGE_LATEST
+          docker push $IMAGE_LATEST
   dashboard:
     name: dashboard
     runs-on: ubuntu-latest
@@ -121,12 +121,12 @@ jobs:
       - name: build and push
         run: |
           IMAGE=$IMAGE_NS/dashboard:$IMAGE_TAG
-          IMAGE-LATEST=$IMAGE_NS/dashboard:$IMAGE_TAG-LATEST
+          IMAGE_LATEST=$IMAGE_NS/dashboard:$IMAGE_TAG_LATEST
           . dockerfiles/build-args.sh
           docker build -t $IMAGE $DASHBOARD_BUILD_ARGS dockerfiles/rmf-web/dashboard
           docker push $IMAGE
-          docker tag $IMAGE $IMAGE-LATEST
-          docker push $IMAGE-LATEST
+          docker tag $IMAGE $IMAGE_LATEST
+          docker push $IMAGE_LATEST
   keycloak_setup:
     name: keycloak-setup
     runs-on: ubuntu-latest
@@ -142,8 +142,8 @@ jobs:
       - name: build and push
         run: |
           IMAGE=$IMAGE_NS/keycloak-setup:$IMAGE_TAG
-          IMAGE-LATEST=$IMAGE_NS/keycloak-setup:$IMAGE_TAG-LATEST
+          IMAGE_LATEST=$IMAGE_NS/keycloak-setup:$IMAGE_TAG_LATEST
           docker build -t $IMAGE dockerfiles/rmf-web/keycloak-setup
           docker push $IMAGE
-          docker tag $IMAGE $IMAGE-LATEST
-          docker push $IMAGE-LATEST
+          docker tag $IMAGE $IMAGE_LATEST
+          docker push $IMAGE_LATEST
