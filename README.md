@@ -1,4 +1,4 @@
-[![Build images](https://github.com/open-rmf/rmf_deployment_template/actions/workflows/build-images.yaml/badge.svg?branch=wip-deploy)](https://github.com/open-rmf/rmf_deployment_template/actions/workflows/build-images.yaml)
+[![CI image builder](https://github.com/open-rmf/rmf_deployment_template/actions/workflows/build-images.yaml/badge.svg?branch=wip-deploy)](https://github.com/open-rmf/rmf_deployment_template/actions/workflows/build-images.yaml)
 
 # Open-RMF Deployment Template
 This branch provides for a way to deploy Open-RMF for production use, in cloud as 
