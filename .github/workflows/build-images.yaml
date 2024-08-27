@@ -79,7 +79,7 @@ jobs:
           IMAGE_LATEST=$IMAGE_NS/rmf-site:$IMAGE_TAG_LATEST
           BUILDER_IMAGE=$IMAGE_NS/rmf:$IMAGE_TAG
           . dockerfiles/build-args.sh
-          docker build -t $IMAGE $RMF_BUILD_ARGS dockerfiles/rmf-site
+          docker build -t $IMAGE $RMF_SITE_BUILD_ARGS dockerfiles/rmf-site
           docker push $IMAGE
           docker tag $IMAGE $IMAGE_LATEST
           docker push $IMAGE_LATEST
