@@ -12,7 +12,7 @@ jobs:
   lint-test:
     runs-on: ubuntu-latest
     env:
-      chart_configuration: --charts charts/
+      chart_configuration: --charts charts/infrastructure charts/infrastructure/harbor charts/monitoring charts/rmf-deployment 
     steps:
       - name: Checkout
         uses: actions/checkout@v3
