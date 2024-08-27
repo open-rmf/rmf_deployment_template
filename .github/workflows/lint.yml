@@ -2,12 +2,12 @@ name: Lint all charts
 
 on: 
   pull_request:
-    paths:
-      - charts/**
+#    paths:
+#      - charts/**
   push:
     branches: [wip-deploy]
-    paths:
-      - charts/**
+#    paths:
+#      - charts/**
 jobs:
   lint-test:
     runs-on: ubuntu-latest
