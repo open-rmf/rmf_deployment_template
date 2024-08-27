@@ -30,7 +30,9 @@ curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 # clone this repo
 git clone -b deploy git@github.com:open-rmf/rmf_deployment_template.git
 
-# deploy infrastructure components
+# deploy infrastructure componen\* *Note:* docker push / docker registry uses the [OCI Distribution Spec](https://github.com/opencontainers/distribution-spec/blob/v1.0.1/spec.md)
+that uses the URL/v2 as entrypoint to receive requests.
+ts
 cd rmf_deployment_template/charts/infrastructure/tools
 bash helm_charts_build.bash
 cd ../../
@@ -112,12 +114,7 @@ In case it is not feasible to deploy via CD, a manual deployment is possible via
 # deploy monitoring stack
 helm install -n=monitoring --create-namespace rmf-monitoring charts/monitoring
 
-# deploy the harbor stack
-helm install harbor charts/infrastructure/harbor \
-    -n harbor --create-namespace \
-    -f charts/infrastructure/harbor/harbor.dev.values.yaml
-
-# install helm chart
+# install rmf stack
 helm install -n=rmf --create-namespace rmf charts/rmf-deployment
 
 # wait for keycloak to be ready
@@ -155,39 +152,6 @@ To get the admin password, run
 kubectl -n=monitoring get secrets rmf-monitoring-grafana -o=jsonpath='{.data.admin-password}' | base64 -d -
 ```
 
-## Harbor
-
-The access to Harbor UI can be done from the host running the cluster:
-
-```
-https://rmf.test/harbor/
-```
-
-The login with the default harbor user/password is `admin:Harbor12345`.
-
-### Configure Docker registry to use Harbor
-
-```bash
-export REGISTRY_HTTP_HOST=https://rmf.test
-```
-
-**Note for production:** the k3s registry should be configured using https://docs.k3s.io/installation/private-registry#registries-configuration-file
-
-### Check the push of images in Harbor
-
-For using SSL docker, the ca.cert needs to be trusted locally. See the instructions
-under the section "Trusting the CA certificate".
-
-A test with busybox for the existing `library` project in Harbor:
-
-```bash
-# !! remember to open a new terminal to avoid the problem above
-docker login rmf.test # enter credentials admin:Harbor12345
-docker pull busybox:latest
-docker tag busybox:latest rmf.ttsh.test/library/busybox:latest
-docker push rmf.test/library/busybox:latest
-```
-
 # Services
 
 List of ports and URIs used by the different services:
@@ -197,14 +161,9 @@ List of ports and URIs used by the different services:
 | RMF http        | 80       | ingress-nginx http  | 127.0.0.1   | http://${URL}          |
 | RMF https       | 443      | ingress-nginx https | 127.0.0.1   | https://${URL}:443     |
 | Grafana UI      | 443      | ingress-nginx https | cluster IP  | https://${URL}/grafana |
-| Harbor UI       | 443      | ingress-nginx https | cluster IP  | https://${URL}/harbor  |
-| Harbor registry | 443      | ingress-nginx https | cluster IP  | ${URL}/v2*             |
-| Harbor Other    | 443      | ingress-nginx https | cluster IP  | ${URL}/api, ${URL}/service, ${URL}/chartrepo/, ${URL}/c/ |
 | Keycloak UI     | 443      | ingress-nginx https | cluster IP  | https://${URL}/auth |
 
-\* *Note:* docker push / docker registry uses the [OCI Distribution Spec](https://github.com/opencontainers/distribution-spec/blob/v1.0.1/spec.md)
-that uses the URL/v2 as entrypoint to receive requests.
-   
+  
 # Troubleshooting
 
 ### API server crash loop backoff and jwt-pub-key missing
