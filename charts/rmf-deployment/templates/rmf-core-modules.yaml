@@ -10,7 +10,7 @@ spec:
   restartPolicy: Always
   containers:
     - name: rmf-traffic-schedule
-      image: {{ .Values.global.REGISTRY_RMF | default "localhost" }}/{{ .Values.rmf.RMF_IMAGE }}
+      image: {{ .Values.global.REGISTRY_RMF | default "localhost" }}/{{ .Values.rmf.RMF_IMAGE }}:{{ .Values.global.DEPLOYMENT_IMAGE_TAG }}
       env:
         - name: RMF_USE_SIM_TIME
           value: {{ .Values.global.RMF_USE_SIM_TIME | quote }}
@@ -48,7 +48,7 @@ spec:
   restartPolicy: Always
   containers:
     - name: rmf-task-dispatcher
-      image: {{ .Values.global.REGISTRY_RMF | default "localhost" }}/{{ .Values.rmf.RMF_IMAGE }}
+      image: {{ .Values.global.REGISTRY_RMF | default "localhost" }}/{{ .Values.rmf.RMF_IMAGE }}:{{ .Values.global.DEPLOYMENT_IMAGE_TAG }}
       env:
         - name: RMF_USE_SIM_TIME
           value: {{ .Values.global.RMF_USE_SIM_TIME | quote }}
@@ -93,7 +93,7 @@ spec:
   restartPolicy: Always
   containers:
     - name: rmf-lift-supervisor
-      image: {{ .Values.global.REGISTRY_RMF | default "localhost" }}/{{ .Values.rmf.RMF_IMAGE }}
+      image: {{ .Values.global.REGISTRY_RMF | default "localhost" }}/{{ .Values.rmf.RMF_IMAGE }}:{{ .Values.global.DEPLOYMENT_IMAGE_TAG }}
       env:
         - name: RMF_USE_SIM_TIME
           value: {{ .Values.global.RMF_USE_SIM_TIME | quote }}
@@ -130,7 +130,7 @@ spec:
   restartPolicy: Always
   containers:
     - name: rmf-traffic-blockade
-      image: {{ .Values.global.REGISTRY_RMF | default "localhost" }}/{{ .Values.rmf.RMF_IMAGE }}
+      image: {{ .Values.global.REGISTRY_RMF | default "localhost" }}/{{ .Values.rmf.RMF_IMAGE }}:{{ .Values.global.DEPLOYMENT_IMAGE_TAG }}
       env:
         - name: RMF_USE_SIM_TIME
           value: {{ .Values.global.RMF_USE_SIM_TIME | quote }}
@@ -191,7 +191,7 @@ spec:
       restartPolicy: Always
       containers:
         - name: rmf-trajectory-visualizer
-          image: {{ .Values.global.REGISTRY_RMF | default "localhost" }}/{{ .Values.rmf.RMF_IMAGE }}
+          image: {{ .Values.global.REGISTRY_RMF | default "localhost" }}/{{ .Values.rmf.RMF_IMAGE }}:{{ .Values.global.DEPLOYMENT_IMAGE_TAG }}
           env:
             - name: RMF_USE_SIM_TIME
               value: {{ .Values.global.RMF_USE_SIM_TIME | quote }}

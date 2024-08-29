@@ -113,7 +113,7 @@ spec:
     spec:
       containers:
         - name: rmf-web-rmf-server
-          image: {{ .Values.global.REGISTRY_RMF | default "localhost" }}/{{ .Values.rmf_web.API_SERVER_IMAGE }}
+          image: {{ .Values.global.REGISTRY_RMF | default "localhost" }}/{{ .Values.rmf_web.API_SERVER_IMAGE }}:{{ .Values.global.DEPLOYMENT_IMAGE_TAG }}
           ports:
             - containerPort: 8000
           env:
@@ -216,7 +216,7 @@ spec:
     spec:
       containers:
         - name: rmf-web-dashboard
-          image: {{ .Values.global.REGISTRY_RMF | default "localhost" }}/{{ .Values.rmf_web.DASHBOARD_IMAGE }}
+          image: {{ .Values.global.REGISTRY_RMF | default "localhost" }}/{{ .Values.rmf_web.DASHBOARD_IMAGE }}:{{ .Values.global.DEPLOYMENT_IMAGE_TAG }}
           env:
             - name: RMF_SERVER_URL
               value: {{ .Values.baseUrl }}/rmf/api/v1

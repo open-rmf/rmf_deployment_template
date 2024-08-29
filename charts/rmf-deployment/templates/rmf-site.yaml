@@ -9,7 +9,7 @@ spec:
   hostNetwork: true
   containers:
     - name: rmf-building-map-server
-      image: {{ .Values.global.REGISTRY_RMF | default "localhost" }}/{{ .Values.rmf.RMF_SITE_IMAGE }}
+      image: {{ .Values.global.REGISTRY_RMF | default "localhost" }}/{{ .Values.rmf.RMF_SITE_IMAGE }}:{{ .Values.global.DEPLOYMENT_IMAGE_TAG }}
       imagePullPolicy: Always
       env:
         - name: {{ .Values.global.DDS_ENV | quote }}

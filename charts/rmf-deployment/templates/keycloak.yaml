@@ -269,6 +269,6 @@ spec:
       serviceAccount: keycloak-setup-sa
       containers:
       - name: keycloak-setup
-        image: {{ .Values.global.REGISTRY_RMF | default "localhost" }}/{{ .Values.keycloak.KEYCLOAK_SETUP_IMAGE }}
+        image: {{ .Values.global.REGISTRY_RMF | default "localhost" }}/{{ .Values.keycloak.KEYCLOAK_SETUP_IMAGE }}:{{ .Values.global.DEPLOYMENT_IMAGE_TAG }}
         command: ["/keycloak-setup.bash", "{{ .Values.baseUrl }}"]
       restartPolicy: Never
