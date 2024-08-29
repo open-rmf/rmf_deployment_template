@@ -1,4 +1,4 @@
-name: Build images
+name: Build template images
 on:
   push:
     branches: [wip-deploy]
@@ -144,6 +144,29 @@ jobs:
           IMAGE=$IMAGE_NS/keycloak-setup:$IMAGE_TAG
           IMAGE_LATEST=$IMAGE_NS/keycloak-setup:$IMAGE_TAG_LATEST
           docker build -t $IMAGE dockerfiles/rmf-web/keycloak-setup
+          docker push $IMAGE
+          docker tag $IMAGE $IMAGE_LATEST
+          docker push $IMAGE_LATEST
+  rmf-sim:
+    name: rmf-sim
+    runs-on: ubuntu-latest
+    needs: rmf
+    steps:
+      - name: Login to Github Packages
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_PAT }}
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: build and push
+        run: |
+          IMAGE=$IMAGE_NS/rmf-sim:$IMAGE_TAG
+          IMAGE_LATEST=$IMAGE_NS/rmf-sim:$IMAGE_TAG_LATEST
+          BUILDER_IMAGE=$IMAGE_NS/rmf:$IMAGE_TAG
+          . dockerfiles/build-args.sh
+          docker build -t $IMAGE $RMF_SITE_BUILD_ARGS dockerfiles/rmf-sim
           docker push $IMAGE
           docker tag $IMAGE $IMAGE_LATEST
           docker push $IMAGE_LATEST
