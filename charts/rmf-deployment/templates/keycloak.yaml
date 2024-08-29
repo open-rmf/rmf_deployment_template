@@ -120,9 +120,9 @@ spec:
         - name: keycloak
           image: {{ .Values.global.REGISTRY_QUAY | default "quay.io" }}/{{ .Values.keycloak.KEYCLOAK_IMAGE }}
           args:
-            - start
-            - --hostname-strict
-            - false
+            - 'start'
+            - '--hostname-strict'
+            - 'false'
           env:
             - name: KEYCLOAK_ADMIN
               valueFrom:
