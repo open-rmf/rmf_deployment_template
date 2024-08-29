@@ -121,6 +121,7 @@ spec:
           image: {{ .Values.global.REGISTRY_QUAY | default "quay.io" }}/{{ .Values.keycloak.KEYCLOAK_IMAGE }}
           args:
             - start
+            - --verbose
           env:
             - name: KEYCLOAK_ADMIN
               valueFrom:
