@@ -8,10 +8,10 @@ ENABLE_RMF_WEB: true
 CERT_MANAGER_ISSUER: rmf-dev-issuer
 
 global:
-  # change these in prod to the registry you are using (eg. locally deployed Harbor registry)
+  # change these to the registry you are using 
   # REGISTRY_DOCKER: docker.io
   # REGISTRY_QUAY: quay.io
-  # REGISTRY_RMF: localhost
+  # REGISTRY_RMF: ghcr.io
 
   ROS_DOMAIN_ID: 15
   DDS_CONFIG_MOUNTPATH: /etc/cyclonedds
@@ -43,6 +43,12 @@ rmf_web:
   DASHBOARD_IMAGE: rmf/dashboard:dev
   ADMIN_PASSWD: admin
 
+adapters:
+  LOCALHOST_ADAPTER_CONFIG_STORAGE_PATH: /rmf/adapter_configs
+  POD_ADAPTER_CONFIG_STORAGE_PATH: TODO
+  ADAPTER_CONFIG_VOLUME: adapter-configmap
+  NAV_GRAPH_FILE_PATH: TODO
+
 keycloak:
   POSTGRES_IMAGE: postgres:16.2
   KEYCLOAK_IMAGE: keycloak/keycloak:25.0.4
@@ -51,16 +57,8 @@ keycloak:
   KEYCLOAK_SETUP_IMAGE: rmf/keycloak-setup:dev
 
 map:
-  LOCALHOST_MAP_STORAGE_PATH: TODO
-  MAP_CONFIG_VOLUME: map-configmap
-  POD_MAP_STORAGE_PATH: TODO
+  LOCALHOST_MAP_STORAGE_PATH: /rmf/mysite_maps
+  POD_MAP_STORAGE_PATH: /opt/rmf/install/mysite_maps
   ## Edits may happen here:
-  RMF_BUILDING_MAP: TODO
+  RMF_BUILDING_MAP: /opt/rmf/install/mysite_maps/office/office.building.yaml
   RMF_NAV_GRAPH_OT: TODO
-
-# adapters:
-#   LOCALHOST_ADAPTER_CONFIG_STORAGE_PATH: TODO
-#   POD_ADAPTER_CONFIG_STORAGE_PATH: TODO
-#   ADAPTER_CONFIG_VOLUME: adapter-configmap
-#   NAV_GRAPH_FILE_PATH: TODO
-
