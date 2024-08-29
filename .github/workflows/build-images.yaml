@@ -3,6 +3,7 @@ on:
   push:
     branches: [wip-deploy]
     paths:
+      - .github/workflows/**
       - dockerfiles/**
       - src/**
   workflow_dispatch:
