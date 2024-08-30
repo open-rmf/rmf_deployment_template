@@ -128,6 +128,28 @@ jobs:
           docker push $IMAGE
           docker tag $IMAGE $IMAGE_LATEST
           docker push $IMAGE_LATEST
+  ## Dashboard without custom url, use defaults env for react app for local testing
+  dashboard-local:
+    name: dashboard-local
+    runs-on: ubuntu-latest
+    steps:
+      - name: Login to Github Packages
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_PAT }}
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: build and push
+        run: |
+          IMAGE=$IMAGE_NS/dashboard-local:$IMAGE_TAG
+          IMAGE_LATEST=$IMAGE_NS/dashboard-local:$IMAGE_TAG_LATEST
+          . dockerfiles/build-args.sh
+          docker build -t $IMAGE $DASHBOARD_LOCAL_BUILD_ARGS dockerfiles/rmf-web/dashboard
+          docker push $IMAGE
+          docker tag $IMAGE $IMAGE_LATEST
+          docker push $IMAGE_LATEST
   keycloak_setup:
     name: keycloak-setup
     runs-on: ubuntu-latest

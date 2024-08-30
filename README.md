@@ -1,24 +1,23 @@
 [![CI image builder](https://github.com/open-rmf/rmf_deployment_template/actions/workflows/build-images.yaml/badge.svg?branch=wip-deploy)](https://github.com/open-rmf/rmf_deployment_template/actions/workflows/build-images.yaml)
 
 # Open-RMF Deployment Template
-This branch provides for a way to deploy Open-RMF for production use, in cloud as 
-well as air-gapped environments
+This repo provides a reference template to build, deploy and manage an [Open-RMF](https://github.com/open-rmf/rmf) installation for production use, in cloud as 
+well as on-prem environments
 
-# Local Testing
+![](../media/rmf_banner.png?raw=true)
 
-[Local testing](src/mysite/mysite/README.md)
+## The Kubernetes way of deployment
 
-# Deployment
-
-## Build
-### CI
+### Build
+#### CI
 If you are deploying on a public cloud, it is recommeded to use CI / CD pipelines; 
 you may follow the github actions in this repo to setup CI.
 
-Alternatively, to build manually, follow the steps in `.github/workflows/build-images.yaml`
-to build dockerfiles for deployment.
+#### (Alternate method) Manual
+To build manually, follow the steps in `.github/workflows/build-images.yaml` to build dockerfiles for deployment.
 
-## Install k3s and setup infrastructure
+### Install kubernetes and setup infrastructure
+There are various kubernetes distributions available, we will be using [k3s](https://k3s.io/) for this template; please feel free to use alternates you may be comfortable with.
 
 ```bash
 # install docker
@@ -47,11 +46,10 @@ able to resolve https://rmf.test
 sudo bash -c "echo $(kubectl get svc rmf-infra-ingress-nginx-controller -n infra -o jsonpath="{.spec.clusterIP}") rmf.test >> /etc/hosts"
 ```
 
-## Setup SSL certifications
+### Setup SSL certifications
 
-### Internet
-If you are deploying on the internet, letsencrypt provides an easy way of obtaining 
-SSL certificates
+#### Installation on public cloud
+If you are deploying on the internet (eg. Cloud VM / managed cluser / etc), letsencrypt provides an easy way of obtaining SSL certificates
 ```bash
 # IMPORTANT: Before you proceed to the next steps, make sure your DNS is indeed setup 
 # and resolving; this is to avoid hitting letsencrypt's rate limits on DNS failure.
@@ -63,8 +61,8 @@ envsubst < charts/infrastructure/tools/letsencrypt-issuer-production.yaml | kube
 # Verify if certificate was issued successfully.
 kubectl get certificates # should be true, if not, might need to wait a couple minutes.
 ```
-### Local
-The cluster provides a certification authority that signs different certificates used 
+#### (Alternate method) Local installation
+If you are deploying locally (eg. on your computer / on-prem server / etc) the cluster provides a certification authority that signs different certificates used 
 in different services by the cluster. The root ca certificate can be obtained by:
 ```bash
 # create testing ca
@@ -74,13 +72,12 @@ kubectl apply -f devel/certs.yaml
 kubectl -n=infra get secrets rmf-dev-secret --template='{{index .data "ca.crt"}}' | base64 -dw0 > ca.crt
 ```
 
-#### Browser https connections
+##### Browser https connections
+For self signed certificates, tell your browser to trust the ca.crt cert (instructions depends on the browser).
 
-Tell your browser to trust the ca.crt cert (instructions depends on the browser).
+### DEPLOY
 
-## DEPLOY
-
-### CD
+#### CD
 We will use [ArgoCD](https://argoproj.github.io/cd) to handle chart changes on this 
 branch of the repository and apply to the cluster. The `charts` directory consists of 
 [helm charts](https://helm.sh/docs/topics/charts/) which describes the provisioning 
@@ -107,13 +104,13 @@ For more on ArgoCD, vist their [readthedocs](https://argo-cd.readthedocs.io/en/s
 # Connect the repository
 
 ## When adding a "new app" on argocd, we will specify the repo, this branch and 
-## `charts/rmf` directory. Similarly to deploy the monitoring tools, use 
+## `charts/rmf-deployment` directory. Similarly to deploy the monitoring tools, use 
 ## `charts/monitoring` directory.
 
 ## Now if you sync the app, we should see the full deployment "come alive"
 ```
 
-### Manual deployment
+#### (Alternate method) Manual deployment
 In case it is not feasible to deploy via CD, a manual deployment is possible via helm
 
 ```bash
@@ -127,7 +124,85 @@ helm install -n=rmf --create-namespace rmf charts/rmf-deployment
 kubectl -n=rmf wait --for=condition=Complete --timeout=5m jobs keycloak-setup
 ```
 
-## Deleting and Removing the local deployment / installation
+### Grafana (using Prometheus and Loki)
+The deployment includes a prometheus stack (with grafana). It can be accessed from
+https://rmf.test/grafana.
+
+To get the admin password, run
+
+```
+kubectl -n=monitoring get secrets rmf-monitoring-grafana -o=jsonpath='{.data.admin-password}' | base64 -d -
+```
+
+## (Alternate method) Quick local deployment
+If you are planning to run a small local deployment and do not want to setup up a kubernetes cluster for it OR run `rmf_demos` with simulation on your local machine.
+
+```bash
+docker run --network=host \
+-it ghcr.io/open-rmf/rmf_deployment_template/rmf-deployment/rmf-simulation:latest \
+bash -c "ros2 launch rmf_demos_gz office.launch.xml \
+headless:=1 \
+server_uri:=ws://localhost:8000/_internal"
+```
+
+Run `rmf-api-server`
+```bash
+docker run --network=host \
+-it ghcr.io/open-rmf/rmf_deployment_template/rmf-deployment/rmf-web-rmf-server:latest
+```
+
+Run `rmf-web-dashboard`
+```bash
+docker run -p 3000:80 \
+-it ghcr.io/open-rmf/rmf_deployment_template/rmf-deployment/rmf-web-dashboard-local:latest
+```
+
+Now access the dashboard with: http://localhost:3000/dashboard and try dispatch a task.
+
+
+### Docker images structure
+```mermaid
+flowchart LR
+    subgraph Legend
+      direction LR
+      start1[ ] -..->|copy| stop1[ ]
+      start2[ ] --->|base| stop2[ ]
+      style start1 height:0px;
+      style stop1 height:0px;
+      style start2 height:0px;
+      style stop2 height:0px;
+    end
+    ros:$ROS_DISTRO --> builder-rosdep --> rmf
+    rmf --> builder-rmf-web
+    rmf --> rmf-simulation
+    builder-rmf-web --> rmf-web-dashboard
+    builder-rmf-web --> rmf-web-dashboard-local
+    builder-rmf-web --> rmf-web-rmf-server
+```
+
+  
+# Troubleshooting
+
+### Services
+
+List of ports and URIs used by the different services:
+
+| Service         | Port     | Port handled by     | Test Env IP | Production access      |
+|-----------------|----------|---------------------|-------------|------------------------|
+| RMF http        | 80       | ingress-nginx http  | 127.0.0.1   | http://${URL}          |
+| RMF https       | 443      | ingress-nginx https | 127.0.0.1   | https://${URL}:443     |
+| Grafana UI      | 443      | ingress-nginx https | cluster IP  | https://${URL}/grafana/ |
+| Keycloak UI     | 443      | ingress-nginx https | cluster IP  | https://${URL}/auth/ |
+
+### Production Deployment
+
+To reserve a node for rmf.
+
+```bash
+kubectl taint node <node-name> reserved=rmf:NoSchedule
+```
+
+### Deleting and Removing the local deployment / installation
 
 To delete the local deployment
 
@@ -140,38 +215,6 @@ To delete the entire cluster
 ```bash
 minikube delete -p dev
 ```
-
-## Production Deployment
-
-To reserve a node for rmf.
-
-```bash
-kubectl taint node <node-name> reserved=rmf:NoSchedule
-```
-## Grafana (using Prometheus and Loki)
-
-The deployment includes a prometheus stack (with grafana). It can be accessed from
-https://rmf.test/grafana.
-
-To get the admin password, run
-
-```
-kubectl -n=monitoring get secrets rmf-monitoring-grafana -o=jsonpath='{.data.admin-password}' | base64 -d -
-```
-
-# Services
-
-List of ports and URIs used by the different services:
-
-| Service         | Port     | Port handled by     | Test Env IP | Production access      |
-|-----------------|----------|---------------------|-------------|------------------------|
-| RMF http        | 80       | ingress-nginx http  | 127.0.0.1   | http://${URL}          |
-| RMF https       | 443      | ingress-nginx https | 127.0.0.1   | https://${URL}:443     |
-| Grafana UI      | 443      | ingress-nginx https | cluster IP  | https://${URL}/grafana |
-| Keycloak UI     | 443      | ingress-nginx https | cluster IP  | https://${URL}/auth |
-
-  
-# Troubleshooting
 
 ### API server crash loop backoff and jwt-pub-key missing
 
