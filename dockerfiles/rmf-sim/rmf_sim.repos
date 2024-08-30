@@ -2,8 +2,8 @@ repositories:
   rmf/rmf_demos:
     type: git
     url: https://github.com/open-rmf/rmf_demos.git
-    version: d6ae16da51940a3406b5c89eab2b50a21a753340
+    version: main
   rmf/rmf_simulation:
     type: git
-    url: https://github.com/open-rmf/rmf_simulation.git
-    version: a39e65825164fbc989d4a99ffdcf8ad4a678b1c3
+    url: https://github.com/open-rmf/rmf_simulation.git    
+    version: main

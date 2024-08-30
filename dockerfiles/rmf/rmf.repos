@@ -2,52 +2,57 @@ repositories:
   rmf/ament_cmake_catch2:
     type: git
     url: https://github.com/open-rmf/ament_cmake_catch2.git
-    version: be87d611bc91e089221fb209864ce77705958c2e
+    #version: be87d611bc91e089221fb209864ce77705958c2e
+    version: main
   rmf/rmf_api_msgs:
     type: git
     url: https://github.com/open-rmf/rmf_api_msgs.git
-    version: 0141ab64e03bf08aba79be76b31ea02a55a3b296
+    #version: 0141ab64e03bf08aba79be76b31ea02a55a3b296
+    version: main
   rmf/rmf_battery:
     type: git
     url: https://github.com/open-rmf/rmf_battery.git
-    version: c9caa39b1a6b6c65ec6be49908af31d2baa9acc9
+    #version: c9caa39b1a6b6c65ec6be49908af31d2baa9acc9
+    version: main
   rmf/rmf_building_map_msgs:
     type: git
     url: https://github.com/open-rmf/rmf_building_map_msgs.git
-    version: e26cf73ec7b1f61bbd450a4f85450e0db20d6c72
+    #version: e26cf73ec7b1f61bbd450a4f85450e0db20d6c72
+    version: main
   rmf/rmf_internal_msgs:
     type: git
     url: https://github.com/open-rmf/rmf_internal_msgs.git
-    version: e3f2dc688dcba79d2def064bae542fa0cadfd4dc
+    #version: e3f2dc688dcba79d2def064bae542fa0cadfd4dc
+    version: main
   rmf/rmf_ros2:
     type: git
-    url: https://github.com/open-rmf/rmf_ros2
-    version: 0180dc78ef7b97266d873686d93deca12602413d
+    url: https://github.com/open-rmf/rmf_ros2    
+    version: main
   rmf/rmf_task:
     type: git
     url: https://github.com/open-rmf/rmf_task.git
-    version: 31904099ecb244eb63dfb537515eca6b9b20cb68
+    version: main
   rmf/rmf_traffic:
     type: git
     url: https://github.com/open-rmf/rmf_traffic.git
-    version: 9c7747dce1bcae8042b201ff16c82b26a886914f
+    version: main
   rmf/rmf_utils:
     type: git
     url: https://github.com/open-rmf/rmf_utils.git
-    version: 0b45fe5a24f495c82370e2baac904bfd30f18df2
+    version: main
   rmf/rmf_visualization:
     type: git
     url: https://github.com/open-rmf/rmf_visualization.git
-    version: 1130f2cc491736f7dc395abe032d364008c24900
+    version: main
   rmf/rmf_visualization_msgs:
     type: git
     url: https://github.com/open-rmf/rmf_visualization_msgs.git
-    version: efa8a164823f93b3cf743602cb532917cc4b5e42
+    version: main
   thirdparty/nlohmann_json_schema_validator_vendor:
     type: git
     url: https://github.com/open-rmf/nlohmann_json_schema_validator_vendor.git
-    version: 4839757c3efb29fec59593034df317f0659e473e
+    version: main
   thirdparty/pybind11_json_vendor:
     type: git
     url: https://github.com/open-rmf/pybind11_json_vendor.git
-    version: 830f769f63e5bd458a8d4565c21fcd6ae3a86b04
+    version: main

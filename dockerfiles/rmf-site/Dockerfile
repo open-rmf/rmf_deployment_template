@@ -4,6 +4,10 @@ FROM $RMF_IMAGE as build
 RUN mkdir -p /ws/src
 WORKDIR /ws
 
+# fetch sources
+COPY rmf_site.repos rmf_site.repos
+RUN vcs import src < rmf_site.repos
+
 RUN apt-get update && apt-get install -y \
   python3-dev python3-pip libffi-dev libssl-dev cargo clang clang-tools lldb lld libstdc++-12-dev \
   python3-websocket python3-websockets \

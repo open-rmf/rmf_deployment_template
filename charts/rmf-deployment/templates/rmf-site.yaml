@@ -34,6 +34,76 @@ spec:
     - name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
       configMap:
         name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
-
 ---
-# Any site specific fleet adapters may be added here
+apiVersion: v1
+kind: Pod
+namespace: 
+metadata:
+  name: rmf-tinyrobot-fleet-adapter
+spec:
+  restartPolicy: Always
+  hostNetwork: true
+  containers:
+    - name: rmf-tinyrobot-fleet-adapter
+      image: {{ .Values.global.REGISTRY_RMF | default "localhost" }}/{{ .Values.rmf.RMF_SITE_IMAGE }}:{{ .Values.global.DEPLOYMENT_IMAGE_TAG }}
+      imagePullPolicy: Always
+      env:
+        - name: {{ .Values.global.DDS_ENV | quote }}
+          value: {{ .Values.global.DDS_CONFIG | quote }}
+        - name: ROS_DOMAIN_ID
+          value: {{ .Values.global.ROS_DOMAIN_ID | quote }}
+        - name: RMW_IMPLEMENTATION
+          value: {{ .Values.global.RMW_IMPLEMENTATION | quote }}
+        - name: RMF_SERVER_URI
+          value: {{ .Values.global.RMF_SERVER_URI | quote }}
+        - name: NAV_GRAPH
+          value: {{ .Values.adapters.NAV_GRAPH | quote }}
+        - name: FLEET_ADAPTER_CONFIG
+          value: {{ .Values.adapters.FLEET_ADAPTER_CONFIG | quote }}
+      command: ["/bin/bash"]
+      args: 
+        - -c
+        - >
+          /ros_entrypoint.sh
+          ros2 run rmf_demos_fleet_adapter fleet_adapter -c $(FLEET_ADAPTER_CONFIG) -n $(NAV_GRAPH) --ros-args -p server_uri:=$(RMF_SERVER_URI)
+      volumeMounts:
+        - mountPath: {{ .Values.global.DDS_CONFIG_MOUNTPATH | quote }}
+          name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
+  volumes:
+    - name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
+      configMap:
+        name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
+---
+apiVersion: v1
+kind: Pod
+namespace:
+metadata:
+  name: rmf-mutex-group-supervisor
+spec:
+  restartPolicy: Always
+  hostNetwork: true
+  containers:
+    - name: rmf-mutex-group-supervisor
+      image: {{ .Values.global.REGISTRY_RMF | default "localhost" }}/{{ .Values.rmf.RMF_SITE_IMAGE }}:{{ .Values.global.DEPLOYMENT_IMAGE_TAG }}
+      imagePullPolicy: Always
+      env:
+        - name: {{ .Values.global.DDS_ENV | quote }}
+          value: {{ .Values.global.DDS_CONFIG | quote }}
+        - name: ROS_DOMAIN_ID
+          value: {{ .Values.global.ROS_DOMAIN_ID | quote }}
+        - name: RMW_IMPLEMENTATION
+          value: {{ .Values.global.RMW_IMPLEMENTATION | quote }}
+      command: ["/bin/bash"]
+      args:
+        - -c
+        - >
+          /ros_entrypoint.sh
+          ros2 run rmf_fleet_adapter mutex_group_supervisor
+      volumeMounts:
+        - mountPath: {{ .Values.global.DDS_CONFIG_MOUNTPATH | quote }}
+          name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
+  volumes:
+    - name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
+      configMap:
+        name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
+---
