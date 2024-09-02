@@ -47,10 +47,10 @@ rmf_web:
 
 adapters:
   LOCALHOST_ADAPTER_CONFIG_STORAGE_PATH: /rmf/adapter_configs
-  POD_ADAPTER_CONFIG_STORAGE_PATH: TODO
+  POD_ADAPTER_CONFIG_STORAGE_PATH: /etc/rmf-site/adapter_configs
   ADAPTER_CONFIG_VOLUME: adapter-configmap
-  NAV_GRAPH: /opt/rmf/install/rmf_demos_maps/share/rmf_demos_maps/maps/office/nav_graphs/0.yaml
-  FLEET_ADAPTER_CONFIG: /opt/rmf/install/rmf_demos/rmf_demos/config/hotel/tinyRobot_config.yaml
+  NAV_GRAPH: /opt/rmf-site/share/rmf_demos_maps/maps/office/nav_graphs/0.yaml
+  FLEET_ADAPTER_CONFIG: /opt/rmf-site/share/rmf_demos/config/office/tinyRobot_config.yaml
 
 keycloak:
   POSTGRES_IMAGE: postgres:16.2
@@ -61,5 +61,5 @@ keycloak:
 
 map:
   LOCALHOST_MAP_STORAGE_PATH: /rmf/mysite_maps
-  POD_MAP_STORAGE_PATH: /opt/rmf/install/mysite_maps
-  RMF_BUILDING_MAP: /opt/rmf/install/rmf_demos_maps/share/rmf_demos_maps/office/office.building.yaml
+  POD_MAP_STORAGE_PATH: /etc/rmf-site/mysite_maps
+  RMF_BUILDING_MAP: /opt/rmf-site/share/rmf_demos_maps/office/office.building.yaml
