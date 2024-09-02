@@ -138,23 +138,7 @@ kubectl -n=monitoring get secrets rmf-monitoring-grafana -o=jsonpath='{.data.adm
 If you are planning to run a small local deployment and do not want to setup up a kubernetes cluster for it OR run `rmf_demos` with simulation on your local machine.
 
 ```bash
-docker run --network=host \
--it ghcr.io/open-rmf/rmf_deployment_template/rmf-deployment/rmf-simulation:latest \
-bash -c "ros2 launch rmf_demos_gz office.launch.xml \
-headless:=1 \
-server_uri:=ws://localhost:8000/_internal"
-```
-
-Run `rmf-api-server`
-```bash
-docker run --network=host \
--it ghcr.io/open-rmf/rmf_deployment_template/rmf-deployment/rmf-web-rmf-server:latest
-```
-
-Run `rmf-web-dashboard`
-```bash
-docker run -p 3000:80 \
--it ghcr.io/open-rmf/rmf_deployment_template/rmf-deployment/rmf-web-dashboard-local:latest
+docker-compose -f devel/docker-compose-local.yaml up -d
 ```
 
 Now access the dashboard with: http://localhost:3000/dashboard and try dispatch a task.

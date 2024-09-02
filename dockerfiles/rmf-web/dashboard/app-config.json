@@ -3,8 +3,8 @@
   "trajectoryServerUrl": "__TRAJECTORY_SERVER_URL__",
   "authConfig": {
     "url": "__KEYCLOAK_URL__",
-    "realm": "rmf-web",
-    "clientId": "dashboard"
+    "realm": "__REALM__",
+    "clientId": "__CLIENT_ID__"
   },
   "helpLink": "https://github.com/open-rmf/rmf-web",
   "reportIssue": "https://github.com/open-rmf/rmf-web/issues",
@@ -45,7 +45,7 @@
   "cartIds": [],
   "buildConfig": {
     "baseUrl": "/dashboard/",
-    "authProvider": "keycloak",
+    "authProvider": "__AUTH_PROVIDER__",
     "customTabs": false,
     "adminTab": false
   }
