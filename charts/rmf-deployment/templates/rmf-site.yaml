@@ -1,3 +1,4 @@
+{{- if .Values.ENABLE_RMF -}}
 ---
 apiVersion: v1
 kind: Pod

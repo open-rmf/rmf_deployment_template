@@ -1,4 +1,3 @@
-{{- if .Values.ENABLE_RMF_WEB -}}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim

@@ -3,7 +3,7 @@
 hostName: rmf.test
 baseUrl: https://rmf.test
 ENABLE_RMF_SIM: true # mutually exclusive with `ENABLE_RMF`
-ENABLE_RMF_WEB: true
+ENABLE_RMF: false # mutually exclusive with `ENABLE_RMF_SIM`
 CERT_MANAGER_ISSUER: rmf-dev-issuer
 
 global:
@@ -54,7 +54,7 @@ adapters:
 keycloak:
   POSTGRES_IMAGE: postgres:16.2
   #KEYCLOAK_IMAGE: keycloak/keycloak:25.0.4
-  KEYCLOAK_IMAGE: keycloak/keycloak@sha256:aefd0843ff5f4800df05c6fc48af3f8aa50e319451fa4a0f2417ba2b938ed7de
+  KEYCLOAK_IMAGE: keycloak/keycloak:24.0.2
   KEYCLOAK_ADMIN_PASSWD: 00w2n1Nk01b3fbDrOSLDGYx0W4tlyiHl
   KEYCLOAK_DB_PASSWD: TbCmjx3hYadXBJrk9x5XxeTmp6mwQbzY
   KEYCLOAK_SETUP_IMAGE: rmf-deployment/keycloak-setup
