@@ -173,8 +173,8 @@ List of ports and URIs used by the different services:
 
 | Service         | Port     | Port handled by     | Test Env IP | Production access      |
 |-----------------|----------|---------------------|-------------|------------------------|
-| RMF http        | 80       | ingress-nginx http  | 127.0.0.1   | http://${URL}          |
-| RMF https       | 443      | ingress-nginx https | 127.0.0.1   | https://${URL}:443     |
+| RMF http        | 80       | ingress-nginx http  | 127.0.0.1   | http://${URL}/dashboard/ |
+| RMF https       | 443      | ingress-nginx https | 127.0.0.1   | https://${URL}:443/dashboard/ |
 | Grafana UI      | 443      | ingress-nginx https | cluster IP  | https://${URL}/grafana/ |
 | Keycloak UI     | 443      | ingress-nginx https | cluster IP  | https://${URL}/auth/ |
 

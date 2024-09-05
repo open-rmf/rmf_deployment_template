@@ -11,7 +11,7 @@ services:
   web-dashboard:
     image: "ghcr.io/open-rmf/rmf_deployment_template/rmf-deployment/dashboard-local:latest"
     environment:
-      RMF_SERVER_URL: "http://localhost:8000/rmf/api/v1"
+      RMF_SERVER_URL: "http://localhost:8000"
       TRAJECTORY_SERVER_URL: "ws://localhost:8006"
       KEYCLOAK_URL: ""
     ports:

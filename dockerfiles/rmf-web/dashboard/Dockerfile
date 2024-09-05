@@ -1,8 +1,9 @@
 FROM docker.io/ubuntu:24.04
 
 ARG RMF_WEB_COMMIT="main"
-# If we are not using auth provider (eg. keycloak)
-ARG AUTH_PROVIDER="stub"
+
+# If we are building for deployment use with auth
+ARG APP_CONFIG="app-config.json"
 ###################################################################
 
 ENV CI=1
@@ -29,8 +30,7 @@ RUN cd /ws \
   && pnpm install --filter rmf-dashboard...
 
 # copy in app config
-COPY app-config.json /ws/packages/dashboard/app-config.json
-RUN sed -i "s,__AUTH_PROVIDER__,${AUTH_PROVIDER},g" /ws/packages/dashboard/app-config.json
+COPY $APP_CONFIG /ws/packages/dashboard/app-config.json
 
 # copy in dashoard resources
 COPY dashboard_resources/* /ws/packages/dashboard/public/resources
@@ -43,8 +43,6 @@ RUN cd /ws/packages/dashboard \
 
 FROM docker.io/nginx:stable
 COPY --from=0 --chown=root:nginx /ws/packages/dashboard/dist /usr/share/nginx/html/dashboard
-
-ARG KEYCLOAK_URL=""
 
 COPY nginx.default.conf /etc/nginx/conf.d/default.conf
 COPY 99-inject-env.sh /docker-entrypoint.d

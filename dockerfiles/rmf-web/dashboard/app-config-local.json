@@ -1,12 +1,8 @@
 {
   "rmfServerUrl": "__RMF_SERVER_URL__",
   "trajectoryServerUrl": "__TRAJECTORY_SERVER_URL__",
-  "authConfig": {
-    "url": "__KEYCLOAK_URL__",
-    "realm": "rmf-web",
-    "clientId": "dashboard"
-  },
-  "helpLink": "https://github.com/open-rmf/rmf-web",
+  "authConfig": {},
+  "helpLink": "https://osrf.github.io/ros2multirobotbook/rmf-core.html",
   "reportIssue": "https://github.com/open-rmf/rmf-web/issues",
   "pickupZones": [],
   "defaultZoom": 5,
@@ -45,7 +41,7 @@
   "cartIds": [],
   "buildConfig": {
     "baseUrl": "/dashboard/",
-    "authProvider": "keycloak",
+    "authProvider": "stub",
     "customTabs": false,
     "adminTab": false
   }
