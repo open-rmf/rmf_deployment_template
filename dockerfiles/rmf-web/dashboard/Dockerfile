@@ -1,9 +1,14 @@
 FROM docker.io/ubuntu:24.04
 
-ARG RMF_WEB_COMMIT
+ARG RMF_WEB_COMMIT="main"
 
 # Url or path where the dashboard is being served.
 ARG BASE_URL="/dashboard"
+
+# The default auth provider
+ARG AUTH_PROVIDER="stub"
+
+ARG DOMAIN_NAME=""
 
 ###################################################################
 
@@ -44,6 +49,10 @@ RUN cd /ws/packages/dashboard \
 
 FROM docker.io/nginx:stable
 COPY --from=0 --chown=root:nginx /ws/packages/dashboard/dist /usr/share/nginx/html/dashboard
+
+ARG DOMAIN_NAME=""
+ARG AUTH_CONFIG="{}"
+ARG AUTH_PROVIDER="stub"
 
 COPY nginx.default.conf /etc/nginx/conf.d/default.conf
 COPY 99-inject-env.sh /docker-entrypoint.d

@@ -1,5 +1,5 @@
 ARG ROS_DISTRO="jazzy"
-# must be an image built from romih-production-ttsh/builder
+# must be an image built from rmf-deployment/builder
 ARG BUILDER
 FROM $BUILDER as build
 

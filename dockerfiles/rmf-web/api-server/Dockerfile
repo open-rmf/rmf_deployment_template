@@ -1,10 +1,10 @@
 ARG ROS_DISTRO="jazzy"
-# must be an image built from romih-production-ttsh/builder
+# must be an image built from rmf-deployment/builder
 ARG BUILDER
 FROM $BUILDER as rmf
 
-ARG RMF_INTERNAL_MSGS_COMMIT
-ARG RMF_BUILDING_MAP_MSGS_COMMIT
+ARG RMF_INTERNAL_MSGS_COMMIT="main"
+ARG RMF_BUILDING_MAP_MSGS_COMMIT="main"
 
 # fetch sources
 RUN mkdir -p /ws && cd /ws \
@@ -29,7 +29,7 @@ RUN mkdir -p /ws/install/local
 
 FROM rmf as api_server
 
-ARG RMF_WEB_COMMIT
+ARG RMF_WEB_COMMIT="main"
 
 # install pnpm
 RUN curl -fsSL https://get.pnpm.io/install.sh | bash -
