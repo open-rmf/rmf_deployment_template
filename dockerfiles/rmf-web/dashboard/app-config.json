@@ -1,7 +1,11 @@
 {
   "rmfServerUrl": "__RMF_SERVER_URL__",
   "trajectoryServerUrl": "__TRAJECTORY_SERVER_URL__",
-  "authConfig": __AUTHCONFIG__,
+  "authConfig": {
+    "url": "__KEYCLOAK_URL__",
+    "realm": "rmf-web",
+    "clientId": "dashboard"
+  },
   "helpLink": "https://github.com/open-rmf/rmf-web",
   "reportIssue": "https://github.com/open-rmf/rmf-web/issues",
   "pickupZones": [],

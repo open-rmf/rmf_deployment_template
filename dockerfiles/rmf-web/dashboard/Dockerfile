@@ -1,15 +1,8 @@
 FROM docker.io/ubuntu:24.04
 
 ARG RMF_WEB_COMMIT="main"
-
-# Url or path where the dashboard is being served.
-ARG BASE_URL="/dashboard"
-
-# The default auth provider
+# If we are not using auth provider (eg. keycloak)
 ARG AUTH_PROVIDER="stub"
-
-ARG DOMAIN_NAME=""
-
 ###################################################################
 
 ENV CI=1
@@ -37,6 +30,7 @@ RUN cd /ws \
 
 # copy in app config
 COPY app-config.json /ws/packages/dashboard/app-config.json
+RUN sed -i "s,__AUTH_PROVIDER__,${AUTH_PROVIDER},g" /ws/packages/dashboard/app-config.json
 
 # copy in dashoard resources
 COPY dashboard_resources/* /ws/packages/dashboard/public/resources
@@ -50,9 +44,7 @@ RUN cd /ws/packages/dashboard \
 FROM docker.io/nginx:stable
 COPY --from=0 --chown=root:nginx /ws/packages/dashboard/dist /usr/share/nginx/html/dashboard
 
-ARG DOMAIN_NAME=""
-ARG AUTH_CONFIG="{}"
-ARG AUTH_PROVIDER="stub"
+ARG KEYCLOAK_URL=""
 
 COPY nginx.default.conf /etc/nginx/conf.d/default.conf
 COPY 99-inject-env.sh /docker-entrypoint.d

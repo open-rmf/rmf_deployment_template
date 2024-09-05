@@ -23,16 +23,11 @@ while true; do
 done
 
 API_SERVER_BUILD_ARGS="--build-arg=BUILDER=$BUILDER_IMAGE --build-arg=ROS_DISTRO=$ROS_DISTRO --build-arg=RMF_WEB_COMMIT=$RMF_WEB_COMMIT --build-arg=RMF_INTERNAL_MSGS_COMMIT=$RMF_INTERNAL_MSGS_COMMIT --build-arg=RMF_BUILDING_MAP_MSGS_COMMIT=$RMF_BUILDING_MAP_MSGS_COMMIT"
-DASHBOARD_BUILD_ARGS="--build-arg=RMF_WEB_COMMIT=$RMF_WEB_COMMIT --build-arg=DOMAIN_NAME=rmf.test"
+DASHBOARD_BUILD_ARGS="--build-arg=RMF_WEB_COMMIT=$RMF_WEB_COMMIT --AUTH_PROVIDER=keycloak"
 DASHBOARD_LOCAL_BUILD_ARGS="--build-arg=RMF_WEB_COMMIT=$RMF_WEB_COMMIT"
 RMF_BUILD_ARGS="--build-arg=BUILDER=$BUILDER_IMAGE --build-arg=ROS_DISTRO=$ROS_DISTRO"
 RMF_SITE_BUILD_ARGS="--build-arg=RMF_IMAGE=$BUILDER_IMAGE --build-arg=ROS_DISTRO=$ROS_DISTRO"
 RMF_SIM_BUILD_ARGS="--build-arg=RMF_IMAGE=$BUILDER_IMAGE --build-arg=ROS_DISTRO=$ROS_DISTRO"
 
 
-# for deployment with keycloak
-#AUTH_CONFIG="{"url": "/auth", "realm": "rmf-web", "clientId": "dashboard"}"
-#AUTH_PROVIDER="keycloak"
-
-# Without keycloak
 
