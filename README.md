@@ -1,4 +1,4 @@
-[![CI image builder](https://github.com/open-rmf/rmf_deployment_template/actions/workflows/build-images.yaml/badge.svg?branch=wip-deploy)](https://github.com/open-rmf/rmf_deployment_template/actions/workflows/build-images.yaml)
+[![CI image builder](https://github.com/open-rmf/rmf_deployment_template/actions/workflows/build-images.yaml/badge.svg?branch=main)](https://github.com/open-rmf/rmf_deployment_template/actions/workflows/build-images.yaml)
 
 # Open-RMF Deployment Template
 This repo provides a reference template to build, deploy and manage an [Open-RMF](https://github.com/open-rmf/rmf) installation for production use, in cloud as 
@@ -144,7 +144,7 @@ docker-compose -f devel/docker-compose-local.yaml up -d
 Now access the dashboard with: http://localhost:3000/dashboard and try dispatch a task.
 
 
-### Docker images structure
+## Docker images structure
 ```mermaid
 flowchart LR
     subgraph Legend
