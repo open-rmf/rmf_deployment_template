@@ -48,30 +48,13 @@ RUN mkdir -p /ws \
   && curl -sL https://github.com/open-rmf/rmf-web/archive/$RMF_WEB_COMMIT.tar.gz -o rmf_web.tar.gz \
   && tar zxf rmf_web.tar.gz -C /ws --strip-components=1
 
-# install deps
-# RUN <<EOF
-#   if [ $ROS_DISTRO = humble ]; then
-#     pip3 install -U packaging
-#   fi
-# EOF
+# # build api-server
 RUN cd /ws \
   && pnpm install -w --filter api-server...
-
-# # build api-server
-# RUN cd /ws/packages/api-server \
-#   && pnpm run prepack
 
 # FROM docker.io/library/ros:$ROS_DISTRO-ros-core
 
 # RUN apt update && apt install -y python3-pip ros-$ROS_DISTRO-rmw-cyclonedds-cpp
-
-# COPY --from=api_server /ws/packages/api-server/dist/* dist/
-# RUN <<EOF
-#   if [ $ROS_DISTRO != humble ]; then
-#     PIP_ARGS='--break-system-packages'
-#   fi
-#   pip3 install $PIP_ARGS $(find dist -name "api_server-*.whl")[postgres]
-# EOF
 
 # # according to rosdep, the messages have no deps so we can just copy the files directly in!
 # # this reduces the image size by ~50%.
