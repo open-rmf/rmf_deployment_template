@@ -14,7 +14,7 @@ permissions:
   contents: read
   id-token: write
 env:
-  IMAGE_NS: ghcr.io/akash-roboticist/rmf_deployment_template/rmf-deployment
+  IMAGE_NS: ghcr.io/aaronchongth/rmf_deployment_template/rmf-deployment
   IMAGE_TAG: ${{ github.sha }}
   IMAGE_TAG_LATEST: latest
 jobs:

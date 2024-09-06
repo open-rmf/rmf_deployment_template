@@ -18,7 +18,7 @@ ENV PATH "$PNPM_HOME:$PATH"
 # setup pnpm and install node
 # this needs to be a separate step so that pnpm can be found
 RUN pnpm config set unsafe-perm \
-  && pnpm env use --global 20
+  && pnpm env use --global lts
 
 # fetch sources
 RUN mkdir -p /ws \
@@ -33,7 +33,7 @@ RUN cd /ws \
 COPY $APP_CONFIG /ws/packages/dashboard/app-config.json
 
 # copy in dashoard resources
-COPY dashboard_resources/* /ws/packages/dashboard/public/resources
+COPY dashboard_resources/* /ws/packages/dashboard/public/resources/
 
 # build
 RUN cd /ws/packages/dashboard \
