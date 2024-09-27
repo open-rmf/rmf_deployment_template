@@ -107,4 +107,4 @@ spec:
     - name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
       configMap:
         name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
----
+{{- end -}}
