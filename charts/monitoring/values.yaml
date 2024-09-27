@@ -50,7 +50,7 @@ grafana:
     path: /grafana(/|$)(.*)
     pathType: ImplementationSpecific
     hosts:
-      - rmf.ttsh.test
+      - rmf.test
     ingressClassName: nginx
 
 loki:
