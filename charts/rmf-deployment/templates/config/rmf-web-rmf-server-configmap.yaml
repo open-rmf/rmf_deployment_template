@@ -22,6 +22,7 @@ data:
     config["jwt_public_key"] = "/jwt-configmap/jwt-pub-key.pub"
     config["aud"] = "dashboard"
     config["iss"] = "{{ .Values.baseUrl }}/auth/realms/rmf-web"
+    config["jwt_secret"] = None
 ---
 # a dummy so that keycloak-setup does not need "create" permissions
 apiVersion: v1
