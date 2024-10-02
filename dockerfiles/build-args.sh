@@ -3,7 +3,7 @@
 ROS_DISTRO=jazzy
 : ${BUILDER_IMAGE:=localhost/rmf/builder:latest}
 RMF_INTERNAL_MSGS_COMMIT="main"
-RMF_WEB_COMMIT="fix/url"
+RMF_WEB_COMMIT="fix/auth"
 RMF_BUILDING_MAP_MSGS_COMMIT="main"
 
 ARGS=$(getopt --options= --longoptions=ros-distro: --name="$0" -- "$@")
