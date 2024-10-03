@@ -65,7 +65,7 @@ COPY --from=rmf /ws/install/share /opt/ros/$ROS_DISTRO/share
 
 # Copy over ws alongside the python virtual environment
 RUN mkdir /ws
-COPY --from=rmf /ws /ws
+COPY --from=api_server /ws /ws
 
 # cleanup
 RUN rm -rf \
