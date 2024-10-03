@@ -2,8 +2,8 @@
 
 hostName: rmf.test
 baseUrl: https://rmf.test
-ENABLE_RMF_SIM: false # mutually exclusive with `ENABLE_RMF`
-ENABLE_RMF: true # mutually exclusive with `ENABLE_RMF_SIM`
+ENABLE_RMF_SIM: true # mutually exclusive with `ENABLE_RMF`
+ENABLE_RMF: false # mutually exclusive with `ENABLE_RMF_SIM`
 CERT_MANAGER_ISSUER: rmf-dev-issuer
 
 global:
