@@ -50,6 +50,7 @@ spec:
       containers:
         - name: postgresql
           image: {{ .Values.global.REGISTRY_DOCKER | default "docker.io" }}/{{ .Values.keycloak.POSTGRES_IMAGE }}
+          imagePullPolicy: ifNotPresent
           env:
             - name: POSTGRES_USER
               valueFrom:
@@ -113,6 +114,7 @@ spec:
       containers:
         - name: rmf-web-rmf-server
           image: {{ .Values.global.REGISTRY_RMF | default "localhost" }}/{{ .Values.rmf_web.API_SERVER_IMAGE }}:{{ .Values.global.DEPLOYMENT_IMAGE_TAG }}
+          imagePullPolicy: ifNotPresent
           ports:
             - containerPort: 8000
           env:
@@ -216,6 +218,7 @@ spec:
       containers:
         - name: rmf-web-dashboard
           image: {{ .Values.global.REGISTRY_RMF | default "localhost" }}/{{ .Values.rmf_web.DASHBOARD_IMAGE }}:{{ .Values.global.DEPLOYMENT_IMAGE_TAG }}
+          imagePullPolicy: ifNotPresent
           env:
             - name: RMF_SERVER_URL
               value: {{ .Values.baseUrl }}/rmf/api/v1
