@@ -37,6 +37,7 @@ git clone -b deploy git@github.com:open-rmf/rmf_deployment_template.git
 # deploy infrastructure components
 cd rmf_deployment_template/charts/
 ./infrastructure/tools/helm_charts_build.bash
+export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
 helm install -n=infra --create-namespace rmf-infra infrastructure
 ```
 
