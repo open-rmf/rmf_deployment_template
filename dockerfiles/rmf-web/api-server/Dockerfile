@@ -48,7 +48,7 @@ RUN mkdir -p /ws \
   && curl -sL https://github.com/open-rmf/rmf-web/archive/$RMF_WEB_COMMIT.tar.gz -o rmf_web.tar.gz \
   && tar zxf rmf_web.tar.gz -C /ws --strip-components=1
 
-# # build api-server
+# build api-server
 RUN cd /ws \
   && pnpm install -w --filter api-server...
 
@@ -72,4 +72,5 @@ RUN rm -rf \
     /var/lib/apt/lists \
     /dist
 
-ENTRYPOINT ["bash", "-c", ". /opt/ros/$ROS_DISTRO/setup.bash && rmf_api_server"]
+WORKDIR /ws/packages/api-server
+ENTRYPOINT ["bash", "-c", ". /opt/ros/$ROS_DISTRO/setup.bash && ../../.venv/bin/pipenv run python -m api_server"]
