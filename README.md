@@ -168,6 +168,21 @@ flowchart LR
   
 # Troubleshooting
 
+### Unable to list resources on kubectl cli
+
+The kubeconfig file stored at `/etc/rancher/k3s/k3s.yaml` is used to configure access to the Kubernetes cluster. If you have installed upstream Kubernetes command line tools such as kubectl or helm you will need to configure them with the correct kubeconfig path. This can be done by either exporting the `KUBECONFIG` environment variable or by invoking the `--kubeconfig` command line flag. Refer to the examples below for details.
+
+Leverage the KUBECONFIG environment variable:
+```bash
+export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+kubectl get pods --all-namespaces
+helm ls --all-namespaces
+```
+Or specify the location of the kubeconfig file in the command:
+```bash
+kubectl --kubeconfig /etc/rancher/k3s/k3s.yaml get pods --all-namespaces
+helm --kubeconfig /etc/rancher/k3s/k3s.yaml ls --all-namespaces
+```
 ### Services
 
 List of ports and URIs used by the different services:
