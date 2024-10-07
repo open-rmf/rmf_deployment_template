@@ -225,7 +225,7 @@ spec:
             - name: TRAJECTORY_SERVER_URL
               value: {{ .Values.baseUrl }}/trajectory
             - name: KEYCLOAK_URL
-              value: {{ .Values.baseUrl }}/auth
+              value: {{ .Values.baseUrl }}/auth/
           ports:
             - containerPort: 80
       tolerations:
