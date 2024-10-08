@@ -125,6 +125,8 @@ spec:
             - 'start'
             - '--hostname'
             - {{ .Values.baseUrl }}
+            - '--hostname-backchannel-dynamic'
+            - 'true'
             - '--http-enabled'
             - 'true'
           env:
@@ -209,6 +211,13 @@ spec:
       http:
         paths:
           - path: /auth
+            pathType: Prefix
+            backend:
+              service:
+                name: keycloak
+                port:
+                  number: 8080
+          - path: /admin
             pathType: Prefix
             backend:
               service:
