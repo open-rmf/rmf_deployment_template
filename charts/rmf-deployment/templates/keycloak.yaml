@@ -123,8 +123,8 @@ spec:
           imagePullPolicy: IfNotPresent
           args:
             - 'start'
-            - '--hostname-strict'
-            - 'false'
+            - '--hostname'
+            - {{ .Values.hostName }}
             - '--http-enabled'
             - 'true'
           env:
