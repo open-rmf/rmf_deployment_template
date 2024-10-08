@@ -123,8 +123,10 @@ spec:
           imagePullPolicy: IfNotPresent
           args:
             - 'start'
-            - '--hostname-strict false'
-            - '--http-enabled true'
+            - '--hostname-strict'
+            - 'false'
+            - '--http-enabled'
+            - 'true'
           env:
             - name: KEYCLOAK_ADMIN
               valueFrom:
