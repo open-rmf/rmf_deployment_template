@@ -123,12 +123,6 @@ spec:
           imagePullPolicy: IfNotPresent
           args:
             - 'start'
-            - '--hostname'
-            - {{ .Values.baseUrl }}
-            - '--hostname-backchannel-dynamic'
-            - 'true'
-            - '--http-enabled'
-            - 'true'
             - '--hostname-strict'
             - 'false'
           env:
@@ -159,11 +153,11 @@ spec:
                   name: keycloak-secret
                   key: DB_PASSWORD
             - name: KC_HOSTNAME_URL
-              value: {{ .Values.baseUrl }}/admin
+              value: {{ .Values.baseUrl }}/auth
             - name: KC_HTTP_RELATIVE_PATH
-              value: /admin
+              value: /auth
             - name: KC_HOSTNAME_ADMIN_URL
-              value: {{ .Values.baseUrl }}/admin
+              value: {{ .Values.baseUrl }}/auth
             - name: KC_HEALTH_ENABLED
               value: "true"
             - name: KC_HTTP_ENABLED
@@ -188,7 +182,7 @@ spec:
               containerPort: 8080
           readinessProbe:
             httpGet:
-              path: /realms/master
+              path: /auth/realms/master
               port: 8080
       volumes:
         - name: vol-tz-singapore
@@ -212,7 +206,7 @@ spec:
     - host: {{ .Values.hostName | quote }}
       http:
         paths:
-          - path: /admin
+          - path: /auth
             pathType: Prefix
             backend:
               service:
