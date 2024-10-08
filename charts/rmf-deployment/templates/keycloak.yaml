@@ -157,11 +157,11 @@ spec:
                   name: keycloak-secret
                   key: DB_PASSWORD
             - name: KC_HOSTNAME_URL
-              value: {{ .Values.baseUrl }}/auth
+              value: {{ .Values.baseUrl }}/admin
             - name: KC_HTTP_RELATIVE_PATH
-              value: /auth
+              value: /admin
             - name: KC_HOSTNAME_ADMIN_URL
-              value: {{ .Values.baseUrl }}/auth
+              value: {{ .Values.baseUrl }}/admin
             - name: KC_HEALTH_ENABLED
               value: "true"
             - name: KC_HTTP_ENABLED
