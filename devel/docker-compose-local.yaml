@@ -2,15 +2,15 @@ services:
   simulation:
     image: "ghcr.io/akash-roboticist/rmf_deployment_template/rmf-deployment/rmf-sim:latest"
     entrypoint: ["/ros_entrypoint.sh", "ros2", "launch", "rmf_demos_gz", "office.launch.xml", "headless:=1", "server_uri:=ws://localhost:8000/_internal"]
-    network_mode: "host"
     environment:
       RMW_IMPLEMENTATION: "rmw_cyclonedds_cpp"
+    network_mode: "host"
 
   api-server:
     image: "ghcr.io/akash-roboticist/rmf_deployment_template/rmf-deployment/api-server:latest"
-    network_mode: "host"
     environment:
       RMW_IMPLEMENTATION: "rmw_cyclonedds_cpp"
+    network_mode: "host"
 
   web-dashboard:
     image: "ghcr.io/akash-roboticist/rmf_deployment_template/rmf-deployment/dashboard-local:latest"
