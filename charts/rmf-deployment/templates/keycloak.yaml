@@ -49,6 +49,7 @@ spec:
       containers:
         - name: postgresql
           image: {{ .Values.global.REGISTRY_DOCKER | default "docker.io" }}/{{ .Values.keycloak.POSTGRES_IMAGE }}
+          imagePullPolicy: IfNotPresent
           env:
             - name: POSTGRES_USER
               valueFrom:
@@ -119,6 +120,7 @@ spec:
       containers:
         - name: keycloak
           image: {{ .Values.global.REGISTRY_QUAY | default "quay.io" }}/{{ .Values.keycloak.KEYCLOAK_IMAGE }}
+          imagePullPolicy: IfNotPresent
           args:
             - 'start'
             - '--hostname-strict'
@@ -272,5 +274,6 @@ spec:
       containers:
       - name: keycloak-setup
         image: {{ .Values.global.REGISTRY_RMF | default "localhost" }}/{{ .Values.keycloak.KEYCLOAK_SETUP_IMAGE }}:{{ .Values.global.DEPLOYMENT_IMAGE_TAG }}
+        imagePullPolicy: IfNotPresent
         command: ["/keycloak-setup.bash", "{{ .Values.baseUrl }}"]
       restartPolicy: Never
