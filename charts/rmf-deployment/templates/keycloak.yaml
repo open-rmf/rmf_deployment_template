@@ -129,7 +129,7 @@ spec:
             - 'true'
             - '--http-enabled'
             - 'true'
-            - 'hostname-strict'
+            - '--hostname-strict'
             - 'false'
           env:
             - name: KEYCLOAK_ADMIN
