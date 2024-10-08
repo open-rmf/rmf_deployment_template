@@ -123,10 +123,8 @@ spec:
           imagePullPolicy: IfNotPresent
           args:
             - 'start'
-            - '--hostname'
-            - {{ .Values.hostName }}
-            - '--http-enabled'
-            - 'true'
+            - '--hostname rmf.test'
+            - '--http-enabled true'
           env:
             - name: KEYCLOAK_ADMIN
               valueFrom:
