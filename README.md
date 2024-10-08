@@ -210,12 +210,6 @@ To delete the local deployment
 helm uninstall -n=rmf rmf
 ```
 
-To delete the entire cluster
-
-```bash
-minikube delete -p dev
-```
-
 ### API server crash loop backoff and jwt-pub-key missing
 
 It is generally normal for the first deployment to see this happening, as it has to wait 
