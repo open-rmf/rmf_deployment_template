@@ -11,7 +11,7 @@ spec:
   containers:
     - name: rmf-building-map-server
       image: {{ .Values.global.REGISTRY_RMF | default "localhost" }}/{{ .Values.rmf.RMF_SITE_IMAGE }}:{{ .Values.global.DEPLOYMENT_IMAGE_TAG }}
-      imagePullPolicy: Always
+      imagePullPolicy: IfNotPresent
       env:
         - name: {{ .Values.global.DDS_ENV | quote }}
           value: {{ .Values.global.DDS_CONFIG | quote }}
@@ -47,7 +47,7 @@ spec:
   containers:
     - name: rmf-tinyrobot-fleet-adapter
       image: {{ .Values.global.REGISTRY_RMF | default "localhost" }}/{{ .Values.rmf.RMF_SITE_IMAGE }}:{{ .Values.global.DEPLOYMENT_IMAGE_TAG }}
-      imagePullPolicy: Always
+      imagePullPolicy: IfNotPresent
       env:
         - name: {{ .Values.global.DDS_ENV | quote }}
           value: {{ .Values.global.DDS_CONFIG | quote }}
@@ -86,7 +86,7 @@ spec:
   containers:
     - name: rmf-mutex-group-supervisor
       image: {{ .Values.global.REGISTRY_RMF | default "localhost" }}/{{ .Values.rmf.RMF_SITE_IMAGE }}:{{ .Values.global.DEPLOYMENT_IMAGE_TAG }}
-      imagePullPolicy: Always
+      imagePullPolicy: IfNotPresent
       env:
         - name: {{ .Values.global.DDS_ENV | quote }}
           value: {{ .Values.global.DDS_CONFIG | quote }}
