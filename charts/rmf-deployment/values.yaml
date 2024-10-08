@@ -35,7 +35,7 @@ rmf:
 rmf_sim:
   RMF_SIM_IMAGE: rmf-deployment/rmf-sim
   RMF_SIM_PACKAGE: rmf_demos_gz
-  RMF_SIM_LAUNCH_FILE: hotel.launch.xml
+  RMF_SIM_LAUNCH_FILE: office.launch.xml
 
 rmf_web:
   POSTGRES_IMAGE: postgres:16.2
