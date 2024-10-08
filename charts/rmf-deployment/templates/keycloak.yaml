@@ -125,6 +125,8 @@ spec:
             - 'start'
             - '--hostname-strict'
             - 'false'
+            - '--http-enabled'
+            - 'true'
           env:
             - name: KEYCLOAK_ADMIN
               valueFrom:
