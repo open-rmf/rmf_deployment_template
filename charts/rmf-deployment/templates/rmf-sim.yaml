@@ -18,6 +18,7 @@ spec:
       containers:
         - name: rmf-sim
           image: {{ .Values.global.REGISTRY_RMF | default "localhost" }}/{{ .Values.rmf_sim.RMF_SIM_IMAGE }}:{{ .Values.global.DEPLOYMENT_IMAGE_TAG }}
+          imagePullPolicy: IfNotPresent
           env:
             - name: RMF_USE_SIM_TIME
               value: {{ .Values.global.RMF_USE_SIM_TIME | quote }}
