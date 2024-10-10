@@ -1,0 +1,13 @@
+repositories:
+  rmf/rmf_simulation:
+    type: git
+    url: https://github.com/open-rmf/rmf_simulation.git
+    version: main
+  rmf/rmf_demos:
+    type: git
+    url: https://github.com/open-rmf/rmf_demos.git
+    version: main
+  thirdparty/menge_vendor:
+    type: git
+    url: https://github.com/open-rmf/menge_vendor.git
+    version: master

@@ -164,8 +164,7 @@ flowchart LR
     builder-rmf-web --> rmf-web-dashboard-local
     builder-rmf-web --> rmf-web-rmf-server
 ```
-
-  
+ 
 # Troubleshooting
 
 ### Unable to list resources on kubectl cli
