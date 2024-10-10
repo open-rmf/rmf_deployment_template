@@ -1,5 +1,0 @@
-repositories:
-  rmf-web:
-    type: git
-    url: https://github.com/open-rmf/rmf-web
-    version: main

@@ -2,27 +2,22 @@ repositories:
   rmf/ament_cmake_catch2:
     type: git
     url: https://github.com/open-rmf/ament_cmake_catch2.git
-    #version: be87d611bc91e089221fb209864ce77705958c2e
     version: main
   rmf/rmf_api_msgs:
     type: git
     url: https://github.com/open-rmf/rmf_api_msgs.git
-    #version: 0141ab64e03bf08aba79be76b31ea02a55a3b296
     version: main
   rmf/rmf_battery:
     type: git
     url: https://github.com/open-rmf/rmf_battery.git
-    #version: c9caa39b1a6b6c65ec6be49908af31d2baa9acc9
     version: main
   rmf/rmf_building_map_msgs:
     type: git
     url: https://github.com/open-rmf/rmf_building_map_msgs.git
-    #version: e26cf73ec7b1f61bbd450a4f85450e0db20d6c72
     version: main
   rmf/rmf_internal_msgs:
     type: git
     url: https://github.com/open-rmf/rmf_internal_msgs.git
-    #version: e3f2dc688dcba79d2def064bae542fa0cadfd4dc
     version: main
   rmf/rmf_ros2:
     type: git
