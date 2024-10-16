@@ -1,0 +1,18 @@
+cert-manager:
+  installCRDs: true
+
+ingress-nginx:
+  enabled: true
+  controller:
+    hostPort:
+      enabled: true
+      ports:
+        http: 80
+        https: 443
+    service:
+      type: ClusterIP
+    metrics:
+      enabled: true
+    podAnnotations:
+      prometheus.io/port: "10254"
+      prometheus.io/scrape: "true"

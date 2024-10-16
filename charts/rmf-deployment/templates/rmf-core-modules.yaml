@@ -1,0 +1,233 @@
+{{- if .Values.ENABLE_RMF -}}
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: rmf-traffic-schedule
+  labels:
+    app: rmf-traffic-schedule
+spec:
+  restartPolicy: Always
+  containers:
+    - name: rmf-traffic-schedule
+      image: {{ .Values.global.REGISTRY_RMF | default "localhost" }}/{{ .Values.rmf.RMF_IMAGE }}:{{ .Values.global.DEPLOYMENT_IMAGE_TAG }}
+      imagePullPolicy: IfNotPresent
+      env:
+        - name: RMF_USE_SIM_TIME
+          value: {{ .Values.global.RMF_USE_SIM_TIME | quote }}
+        - name: {{ .Values.global.DDS_ENV | quote }}
+          value: {{ .Values.global.DDS_CONFIG | quote }}
+        - name: ROS_DOMAIN_ID
+          value: {{ .Values.global.ROS_DOMAIN_ID | quote }}
+        - name: RMW_IMPLEMENTATION
+          value: {{ .Values.global.RMW_IMPLEMENTATION | quote }}
+      command: ["/bin/bash"]
+      args:
+        - -c
+        - >
+          /ros_entrypoint.sh
+          ros2 run rmf_traffic_ros2 rmf_traffic_schedule --ros-args
+          -p use_sim_time:=$(RMF_USE_SIM_TIME)
+      volumeMounts:
+        - mountPath: {{ .Values.global.DDS_CONFIG_MOUNTPATH | quote }}
+          name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
+  volumes:
+    - name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
+      configMap:
+        name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
+  tolerations:
+    - key: reserved
+      operator: Equal
+      value: rmf
+      effect: NoSchedule
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: rmf-task-dispatcher
+spec:
+  restartPolicy: Always
+  containers:
+    - name: rmf-task-dispatcher
+      image: {{ .Values.global.REGISTRY_RMF | default "localhost" }}/{{ .Values.rmf.RMF_IMAGE }}:{{ .Values.global.DEPLOYMENT_IMAGE_TAG }}
+      env:
+        - name: RMF_USE_SIM_TIME
+          value: {{ .Values.global.RMF_USE_SIM_TIME | quote }}
+        - name: {{ .Values.global.DDS_ENV | quote }}
+          value: {{ .Values.global.DDS_CONFIG | quote }}
+        - name: ROS_DOMAIN_ID
+          value: {{ .Values.global.ROS_DOMAIN_ID | quote }}
+        - name: RMW_IMPLEMENTATION
+          value: {{ .Values.global.RMW_IMPLEMENTATION | quote }}
+        - name: RMF_BIDDING_TIME_WINDOW
+          value: {{ .Values.global.RMF_BIDDING_TIME_WINDOW | quote }}
+        - name: RMF_SERVER_URI
+          value: {{ .Values.global.RMF_SERVER_URI | quote }}
+      command: ["/bin/bash"]
+      args:
+       - -c
+       - >
+        /ros_entrypoint.sh
+        ros2 run rmf_task_ros2 rmf_task_dispatcher --ros-args
+        -p use_sim_time:=$(RMF_USE_SIM_TIME)
+        -p bidding_time_window:=$(RMF_BIDDING_TIME_WINDOW)
+        # -p server_uri:=$(RMF_SERVER_URI) # remove ws connection as it causes a data race when writing task states
+        -p use_unique_hex_string_with_task_id:=true
+      volumeMounts:
+        - mountPath: {{ .Values.global.DDS_CONFIG_MOUNTPATH | quote }}
+          name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
+  volumes:
+    - name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
+      configMap:
+        name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
+  tolerations:
+    - key: reserved
+      operator: Equal
+      value: rmf
+      effect: NoSchedule
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: rmf-lift-supervisor
+spec:
+  restartPolicy: Always
+  containers:
+    - name: rmf-lift-supervisor
+      image: {{ .Values.global.REGISTRY_RMF | default "localhost" }}/{{ .Values.rmf.RMF_IMAGE }}:{{ .Values.global.DEPLOYMENT_IMAGE_TAG }}
+      imagePullPolicy: IfNotPresent
+      env:
+        - name: RMF_USE_SIM_TIME
+          value: {{ .Values.global.RMF_USE_SIM_TIME | quote }}
+        - name: {{ .Values.global.DDS_ENV | quote }}
+          value: {{ .Values.global.DDS_CONFIG | quote }}
+        - name: ROS_DOMAIN_ID
+          value: {{ .Values.global.ROS_DOMAIN_ID | quote }}
+        - name: RMW_IMPLEMENTATION
+          value: {{ .Values.global.RMW_IMPLEMENTATION | quote }}
+      command: ["/bin/bash"]
+      args:
+        - -c
+        - >
+          /ros_entrypoint.sh
+          ros2 run rmf_fleet_adapter lift_supervisor
+      volumeMounts:
+        - mountPath: {{ .Values.global.DDS_CONFIG_MOUNTPATH | quote }}
+          name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
+  volumes:
+    - name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
+      configMap:
+        name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
+  tolerations:
+    - key: reserved
+      operator: Equal
+      value: rmf
+      effect: NoSchedule
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: rmf-traffic-blockade
+spec:
+  restartPolicy: Always
+  containers:
+    - name: rmf-traffic-blockade
+      image: {{ .Values.global.REGISTRY_RMF | default "localhost" }}/{{ .Values.rmf.RMF_IMAGE }}:{{ .Values.global.DEPLOYMENT_IMAGE_TAG }}
+      imagePullPolicy: IfNotPresent
+      env:
+        - name: RMF_USE_SIM_TIME
+          value: {{ .Values.global.RMF_USE_SIM_TIME | quote }}
+        - name: {{ .Values.global.DDS_ENV | quote }}
+          value: {{ .Values.global.DDS_CONFIG | quote }}
+        - name: ROS_DOMAIN_ID
+          value: {{ .Values.global.ROS_DOMAIN_ID | quote }}
+        - name: RMW_IMPLEMENTATION
+          value: {{ .Values.global.RMW_IMPLEMENTATION | quote }}
+      command: ["/bin/bash"]
+      args:
+        - -c
+        - >
+          /ros_entrypoint.sh
+          ros2 run rmf_traffic_ros2 rmf_traffic_blockade --ros-args
+          -p use_sim_time:=$(RMF_USE_SIM_TIME)
+      volumeMounts:
+        - mountPath: {{ .Values.global.DDS_CONFIG_MOUNTPATH | quote }}
+          name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
+  volumes:
+    - name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
+      configMap:
+        name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
+  tolerations:
+    - key: reserved
+      operator: Equal
+      value: rmf
+      effect: NoSchedule
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rmf-trajectory-visualizer
+  labels:
+    app: rmf-trajectory-visualizer
+spec:
+  selector:
+    app: rmf-trajectory-visualizer
+  ports:
+    - protocol: TCP
+      port: 8006
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rmf-trajectory-visualizer
+  labels:
+    app: rmf-trajectory-visualizer
+spec:
+  selector:
+    matchLabels:
+      app: rmf-trajectory-visualizer
+  template:
+    metadata:
+      labels:
+        app: rmf-trajectory-visualizer
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: rmf-trajectory-visualizer
+          image: {{ .Values.global.REGISTRY_RMF | default "localhost" }}/{{ .Values.rmf.RMF_IMAGE }}:{{ .Values.global.DEPLOYMENT_IMAGE_TAG }}
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: RMF_USE_SIM_TIME
+              value: {{ .Values.global.RMF_USE_SIM_TIME | quote }}
+            - name: {{ .Values.global.DDS_ENV | quote }}
+              value: {{ .Values.global.DDS_CONFIG | quote }}
+            - name: ROS_DOMAIN_ID
+              value: {{ .Values.global.ROS_DOMAIN_ID | quote }}
+            - name: RMW_IMPLEMENTATION
+              value: {{ .Values.global.RMW_IMPLEMENTATION | quote }}
+            - name: RMF_TRAJECTORY_VISUALIZER_LEVEL_NAME
+              value: {{ .Values.global.RMF_TRAJECTORY_VISUALIZER_LEVEL_NAME | quote }}
+          command: ["/bin/bash"]
+          args:
+            - -c
+            - >
+              /ros_entrypoint.sh
+              ros2 launch rmf_visualization visualization.launch.xml
+              headless:=1
+              use_sim_time:=$(RMF_USE_SIM_TIME)
+              map_name:=$(RMF_TRAJECTORY_VISUALIZER_LEVEL_NAME)
+          ports:
+           - containerPort: 8006
+          volumeMounts:
+            - mountPath: {{ .Values.global.DDS_CONFIG_MOUNTPATH | quote }}
+              name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
+      volumes:
+        - name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
+          configMap:
+            name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
+      tolerations:
+        - key: reserved
+          operator: Equal
+          value: rmf
+          effect: NoSchedule
+{{- end -}}

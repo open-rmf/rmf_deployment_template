@@ -1,0 +1,64 @@
+# These are "default" values for local deployment, edit per your available DNS.
+
+hostName: rmf.test
+baseUrl: https://rmf.test
+ENABLE_RMF_SIM: true # mutually exclusive with `ENABLE_RMF`
+ENABLE_RMF: false # mutually exclusive with `ENABLE_RMF_SIM`
+CERT_MANAGER_ISSUER: rmf-dev-issuer
+
+global:
+  # change these to the registry you are using 
+  # REGISTRY_DOCKER: docker.io
+  # REGISTRY_QUAY: quay.io
+  REGISTRY_RMF: ghcr.io/open-rmf/rmf_deployment_template
+
+  ROS_DOMAIN_ID: 15
+  DDS_CONFIG_MOUNTPATH: /etc/cyclonedds
+  DDS_CONFIG_VOLUME: cyclonedds-configmap
+  DDS_ENV: CYCLONEDDS_URI
+  DDS_CONFIG: /etc/cyclonedds/cyclonedds.xml
+  DDS_NETWORK_INTERFACE: lo
+  RMW_IMPLEMENTATION: rmw_cyclonedds_cpp
+
+  RMF_USE_SIM_TIME: "true"
+  RMF_BIDDING_TIME_WINDOW: "2.0"
+  RMF_TRAJECTORY_VISUALIZER_LEVEL_NAME: "L1"
+  RMF_FAILOVER_MODE: "false"
+  RMF_SERVER_URI: "ws://rmf-web-rmf-server:8000/_internal"
+
+  DEPLOYMENT_IMAGE_TAG: "latest"
+
+rmf:
+  RMF_IMAGE: rmf-deployment/rmf
+  RMF_SITE_IMAGE: rmf-deployment/rmf-site
+
+rmf_sim:
+  RMF_SIM_IMAGE: rmf-deployment/rmf-sim
+  RMF_SIM_PACKAGE: rmf_demos_gz
+  RMF_SIM_LAUNCH_FILE: office.launch.xml
+
+rmf_web:
+  POSTGRES_IMAGE: postgres:16.2
+  API_SERVER_IMAGE: rmf-deployment/api-server
+  API_SERVER_DB_PASSWD: lDflqwQuIMP167Xo7Hbyo0STvlebfoEe
+  DASHBOARD_IMAGE: rmf-deployment/dashboard
+  ADMIN_PASSWD: admin
+
+adapters:
+  LOCALHOST_ADAPTER_CONFIG_STORAGE_PATH: /rmf/adapter_configs
+  POD_ADAPTER_CONFIG_STORAGE_PATH: /etc/rmf-site/adapter_configs
+  ADAPTER_CONFIG_VOLUME: adapter-configmap
+  NAV_GRAPH: /opt/rmf-site/share/rmf_demos_maps/maps/office/nav_graphs/0.yaml
+  FLEET_ADAPTER_CONFIG: /opt/rmf-site/share/rmf_demos/config/office/tinyRobot_config.yaml
+
+keycloak:
+  POSTGRES_IMAGE: postgres:16.2
+  KEYCLOAK_IMAGE: keycloak/keycloak:24.0.5
+  KEYCLOAK_ADMIN_PASSWD: 00w2n1Nk01b3fbDrOSLDGYx0W4tlyiHl
+  KEYCLOAK_DB_PASSWD: TbCmjx3hYadXBJrk9x5XxeTmp6mwQbzY
+  KEYCLOAK_SETUP_IMAGE: rmf-deployment/keycloak-setup
+
+map:
+  LOCALHOST_MAP_STORAGE_PATH: /rmf/mysite_maps
+  POD_MAP_STORAGE_PATH: /etc/rmf-site/mysite_maps
+  RMF_BUILDING_MAP: /opt/rmf-site/share/rmf_demos_maps/office/office.building.yaml

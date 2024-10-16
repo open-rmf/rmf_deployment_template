@@ -1,0 +1,23 @@
+# Custom template to generate the configmap from
+# locally hosted json files.
+{{- if .Values.dashboards }}
+
+{{ $files := .Files }}
+{{ $chart := .Chart }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: k8s-all-config-map
+  labels:
+    helm.sh/chart: "{{ $chart.Name }}-{{ $chart.Version }}"
+    dashboard-provider: default
+    grafana_dashboard: "1"
+data:
+{{- range $key, $value := .Values.dashboards }}
+{{ print $key | indent 2 }}.json:
+{{- if hasKey $value "file" }}
+{{ toYaml ( $files.Get $value.file ) | indent 4}}
+{{- end }}
+{{- end }}
+
+{{- end }}

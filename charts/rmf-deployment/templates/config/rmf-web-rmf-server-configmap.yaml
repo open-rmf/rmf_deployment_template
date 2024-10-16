@@ -1,0 +1,31 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rmf-web-rmf-server-configmap
+data:
+  rmf_server_config.py: |
+    from copy import deepcopy
+
+    from api_server.default_config import config as default_config
+
+
+    config = deepcopy(default_config)
+    config["host"] = "0.0.0.0"
+    config["port"] = 8000
+    config["db_url"] = (
+        "postgres://rmf-web-rmf-server:{{ .Values.rmf_web.API_SERVER_DB_PASSWD }}@rmf-web-rmf-server-db/rmf-web-rmf-server"
+    )
+    config["public_url"] = "/rmf/api/v1"
+    config["log_level"] = "INFO"
+    config["builtin_admin"] = "admin"
+    config["jwt_public_key"] = "/jwt-configmap/jwt-pub-key.pub"
+    config["aud"] = "dashboard"
+    config["iss"] = "{{ .Values.baseUrl }}/auth/realms/rmf-web"
+    config["jwt_secret"] = None
+---
+# a dummy so that keycloak-setup does not need "create" permissions
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: jwt-pub-key

@@ -1,0 +1,109 @@
+grafana:
+  adminPassword: admin
+  datasources:
+    datasources.yaml:
+      apiVersion: 1
+      datasources:
+        - name: Prometheus
+          type: prometheus
+          url: "http://{{ tpl .Release.Name . }}-prometheus-server"
+          access: proxy
+          isDefault: true
+        - name: Loki
+          type: loki
+          access: proxy
+          url: "http://{{ tpl .Release.Name . }}-loki:3100"
+  sidecar: # needed for https://github.com/dotdc/grafana-dashboards-kubernetes?tab=readme-ov-file#installation
+    dashboards:
+      enabled: true
+      defaultFolderName: "General"
+      label: grafana_dashboard
+      labelValue: "1"
+      folderAnnotation: grafana_folder
+      searchNamespace: ALL
+      provider:
+        foldersFromFilesStructure: true
+  # Provision grafana-dashboards-kubernetes
+  dashboardProviders:
+    dashboardproviders.yaml:
+      apiVersion: 1
+      providers:
+      - name: 'grafana-dashboards-kubernetes'
+        orgId: 1
+        folder: 'Kubernetes'
+        type: file
+        disableDeletion: true
+        editable: true
+        options:
+          path: /var/lib/grafana/dashboards/grafana-dashboards-kubernetes
+  dashboardsConfigMaps:
+    # The config map is generated from dashboards values below using a
+    # custom template inside templates/
+    grafana-dashboards-kubernetes: k8s-all-config-map
+  grafana.ini:
+    server:
+      root_url: "https://{{ tpl (first .Values.ingress.hosts) . }}/grafana"
+  ingress:
+    enabled: true
+    annotations:
+      nginx.ingress.kubernetes.io/rewrite-target: /$2
+    path: /grafana(/|$)(.*)
+    pathType: ImplementationSpecific
+    hosts:
+      - rmf.test
+    ingressClassName: nginx
+
+loki:
+  deploymentMode: SingleBinary
+  loki:
+    auth_enabled: false
+    commonConfig:
+      replication_factor: 1
+    storage:
+      type: "filesystem"
+    schemaConfig:
+      configs:
+        - from: 2024-01-01
+          store: tsdb
+          index:
+            prefix: loki_index_
+            period: 24h
+          object_store: filesystem # we're storing on filesystem so there's no real persistence here.
+          schema: v13
+  singleBinary:
+    replicas: 1
+  read:
+    replicas: 0
+  backend:
+    replicas: 0
+  write:
+    replicas: 0
+  monitoring:
+    selfMonitoring:
+      podLogs:
+        additionalPipelineStages:
+          - match:
+              selector: "{__meta_kubernetes_pod_annotation_logging_format=logfmt}"
+            stages:
+              - logfmt:
+                  source: content
+
+promtail:
+  config:
+    clients:
+      - url: "http://{{ tpl .Release.Name . }}-loki-gateway/loki/api/v1/push"
+
+# Custom configurations to import the dasbboards config from files
+dashboards:
+  k8s-system-api-server:
+    file: dashboards/k8s-system-api-server.json
+  k8s-system-coredns:
+    file: dashboards/k8s-system-coredns.json
+  k8s-views-global:
+    file: dashboards/k8s-views-global.json
+  k8s-views-namespaces:
+    file: dashboards/k8s-views-namespaces.json
+  k8s-views-nodes:
+    file: dashboards/k8s-views-nodes.json
+  k8s-views-pods:
+    file: dashboards/k8s-views-pods.json
