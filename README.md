@@ -90,6 +90,8 @@ kubectl create namespace rmf
 kubectl create namespace argocd
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 kubectl port-forward svc/argocd-server -n argocd 9090:443
+# If you get an error forwarding the port, it is likely that socat is unavailable
+# on your machine, to fix - sudo apt -y install socat
 
 # Start a new ssh session with port forward 9090 to the VM, you should now be able
 # to view the admin panel on port localhost:9090 
