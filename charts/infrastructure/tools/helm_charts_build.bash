@@ -1,7 +1,7 @@
 #!/bin/bash
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
-ROOT_REPO="$(realpath "${SCRIPT_DIR}/../..")"
+ROOT_REPO="$(realpath "${SCRIPT_DIR}/../../..")"
 
 # safety check
 if [[ ! -d $ROOT_REPO/.git ]]; then
