@@ -26,13 +26,14 @@ sudo usermod -aG docker $USER
 newgrp docker
 
 # install k3s (https://docs.k3s.io/)
+# replace ens5 with the interface of your choice 
 curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--flannel-iface=ens5 --disable=traefik --write-kubeconfig-mode=644 --docker" sh -s - 
 
 # install helm (https://helm.sh/docs/intro/install/)
 curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
 # clone this repo
-git clone -b deploy git@github.com:open-rmf/rmf_deployment_template.git
+git clone git@github.com:open-rmf/rmf_deployment_template.git
 
 # deploy infrastructure components
 cd rmf_deployment_template/charts/
