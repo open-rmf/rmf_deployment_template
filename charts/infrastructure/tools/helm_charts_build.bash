@@ -15,6 +15,6 @@ helm repo add jetstack https://charts.jetstack.io
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo add grafana https://grafana.github.io/helm-charts
 helm repo add t3n https://storage.googleapis.com/t3n-helm-charts
-helm dep build infrastructure
-helm dep build monitoring
+helm dep build charts/infrastructure
+helm dep build charts/monitoring
 popd 2> /dev/null || exit
