@@ -27,7 +27,11 @@ you may follow the github actions in this repo to setup CI.
 
 <details>
 <summary>(Alternate method) Manual build in liue of CI</summary>
-To build manually, follow the steps in `.github/workflows/build-images.yaml` to build dockerfiles for deployment.
+To build dockerfiles for deployment manually, emulate the build steps in 
+
+```bash
+.github/workflows/build-images.yaml
+```
 </details>
 
 <details>
