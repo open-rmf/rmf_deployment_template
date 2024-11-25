@@ -6,16 +6,53 @@ well as on-prem environments
 
 ![](../media/rmf_banner.png?raw=true)
 
+<details>
+<summary> ** Quick local deployment for testing, in lieu of kubernetes cluster **</summary>
+
+If you are planning to run a small local deployment and do not want to setup up a kubernetes cluster for it OR run `rmf_demos` with simulation on your local machine.
+
+```bash
+docker-compose -f devel/docker-compose-local.yaml up -d
+```
+
+Now access the dashboard with: http://localhost:3000/dashboard and try dispatch a task.
+
+</details>
+
 ## The Kubernetes way of deployment
 
 ### Build
-#### CI
 If you are deploying on a public cloud, it is recommeded to use CI / CD pipelines; 
 you may follow the github actions in this repo to setup CI.
 
 <details>
 <summary>(Alternate method) Manual build in liue of CI</summary>
 To build manually, follow the steps in `.github/workflows/build-images.yaml` to build dockerfiles for deployment.
+</details>
+
+<details>
+<summary>Docker images structure</summary>
+
+```mermaid
+flowchart LR
+    subgraph Legend
+      direction LR
+      start1[ ] -..->|copy| stop1[ ]
+      start2[ ] --->|base| stop2[ ]
+      style start1 height:0px;
+      style stop1 height:0px;
+      style start2 height:0px;
+      style stop2 height:0px;
+    end
+    ros:$ROS_DISTRO --> builder
+    builder --> rmf
+    builder --> api-server
+    rmf --> rmf-site
+    rmf --> rmf-sim
+    ubuntu:24.04 --> dashboard
+    ubuntu:24.04 --> dashboard-local
+    ubuntu:24.04 --> keycloak-setup
+```
 </details>
 
 ### Install kubernetes and setup infrastructure
@@ -44,11 +81,15 @@ export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
 helm install -n=infra --create-namespace rmf-infra infrastructure
 ```
 
+<details>
+<summary>Additional steps for Local/intranet in lieu of public/internet installation</summary>
 If you are deploying locally, add your cluster's IP to `/etc/hosts` to point to be 
 able to resolve https://rmf.test
+
 ```bash
 sudo bash -c "echo $(kubectl get svc rmf-infra-ingress-nginx-controller -n infra -o jsonpath="{.spec.clusterIP}") rmf.test >> /etc/hosts"
 ```
+</details>
 
 ### Setup SSL certifications
 
@@ -78,10 +119,10 @@ kubectl apply -f devel/certs.yaml
 # get the ca cert
 kubectl -n=infra get secrets rmf-dev-secret --template='{{index .data "ca.crt"}}' | base64 -dw0 > ca.crt
 ```
-</details>
 
 ##### Browser https connections
 For self signed certificates, tell your browser to trust the ca.crt cert (instructions depends on the browser).
+</details>
 
 ### DEPLOY
 
@@ -145,26 +186,6 @@ To get the admin password, run
 kubectl -n=monitoring get secrets rmf-monitoring-grafana -o=jsonpath='{.data.admin-password}' | base64 -d -
 ```
 
-## Docker images structure
-```mermaid
-flowchart LR
-    subgraph Legend
-      direction LR
-      start1[ ] -..->|copy| stop1[ ]
-      start2[ ] --->|base| stop2[ ]
-      style start1 height:0px;
-      style stop1 height:0px;
-      style start2 height:0px;
-      style stop2 height:0px;
-    end
-    ros:$ROS_DISTRO --> builder-rosdep --> rmf
-    rmf --> builder-rmf-web
-    rmf --> rmf-simulation
-    builder-rmf-web --> rmf-web-dashboard
-    builder-rmf-web --> rmf-web-dashboard-local
-    builder-rmf-web --> rmf-web-rmf-server
-```
- 
 # Troubleshooting
 
 ### Unable to list resources on kubectl cli
@@ -182,7 +203,7 @@ Or specify the location of the kubeconfig file in the command:
 kubectl --kubeconfig /etc/rancher/k3s/k3s.yaml get pods --all-namespaces
 helm --kubeconfig /etc/rancher/k3s/k3s.yaml ls --all-namespaces
 ```
-### Services
+### Services list
 
 List of ports and URIs used by the different services:
 
@@ -193,7 +214,7 @@ List of ports and URIs used by the different services:
 | Grafana UI      | 443      | ingress-nginx https | cluster IP  | https://${URL}/grafana/ |
 | Keycloak UI     | 443      | ingress-nginx https | cluster IP  | https://${URL}/auth/ |
 
-### Production Deployment
+### Extra tips for production Deployment
 
 To reserve a node for rmf.
 
@@ -238,12 +259,3 @@ Restart the API server pod by running,
 ```
 kubectl rollout restart deployments/rmf-web-rmf-server
 ```
-
-## (Alternate method) Quick local deployment for testing in lieu of kubernetes cluster
-If you are planning to run a small local deployment and do not want to setup up a kubernetes cluster for it OR run `rmf_demos` with simulation on your local machine.
-
-```bash
-docker-compose -f devel/docker-compose-local.yaml up -d
-```
-
-Now access the dashboard with: http://localhost:3000/dashboard and try dispatch a task.
