@@ -13,8 +13,10 @@ well as on-prem environments
 If you are deploying on a public cloud, it is recommeded to use CI / CD pipelines; 
 you may follow the github actions in this repo to setup CI.
 
-#### (Alternate method) Manual
+<details>
+<summary>(Alternate method) Manual build in liue of CI</summary>
 To build manually, follow the steps in `.github/workflows/build-images.yaml` to build dockerfiles for deployment.
+</details>
 
 ### Install kubernetes and setup infrastructure
 There are various kubernetes distributions available, we will be using [k3s](https://k3s.io/) for this template; please feel free to use alternates you may be comfortable with.
@@ -63,9 +65,12 @@ envsubst < charts/infrastructure/tools/letsencrypt-issuer-production.yaml | kube
 # Verify if certificate was issued successfully.
 kubectl get certificates # should be true, if not, might need to wait a couple minutes.
 ```
-#### (Alternate method) Local installation
+
+<details>
+<summary>(Alternate method) Local/intranet in lieu of public/internet installation</summary>
 If you are deploying locally (eg. on your computer / on-prem server / etc) the cluster provides a certification authority that signs different certificates used 
 in different services by the cluster. The root ca certificate can be obtained by:
+
 ```bash
 # create testing ca
 kubectl apply -f devel/certs.yaml
@@ -73,6 +78,7 @@ kubectl apply -f devel/certs.yaml
 # get the ca cert
 kubectl -n=infra get secrets rmf-dev-secret --template='{{index .data "ca.crt"}}' | base64 -dw0 > ca.crt
 ```
+</details>
 
 ##### Browser https connections
 For self signed certificates, tell your browser to trust the ca.crt cert (instructions depends on the browser).
@@ -113,8 +119,8 @@ For more on ArgoCD, vist their [readthedocs](https://argo-cd.readthedocs.io/en/s
 
 ## Now if you sync the app, we should see the full deployment "come alive"
 ```
-
-#### (Alternate method) Manual deployment
+<details>
+<summary>(Alternate method) Manual deployment in lieu of CD</summary>
 In case it is not feasible to deploy via CD, a manual deployment is possible via helm
 
 ```bash
@@ -127,6 +133,7 @@ helm install -n=rmf --create-namespace rmf charts/rmf-deployment
 # wait for keycloak to be ready
 kubectl -n=rmf wait --for=condition=Complete --timeout=5m jobs keycloak-setup
 ```
+</details>
 
 ### Grafana (using Prometheus and Loki)
 The deployment includes a prometheus stack (with grafana). It can be accessed from
@@ -137,16 +144,6 @@ To get the admin password, run
 ```
 kubectl -n=monitoring get secrets rmf-monitoring-grafana -o=jsonpath='{.data.admin-password}' | base64 -d -
 ```
-
-## (Alternate method) Quick local deployment
-If you are planning to run a small local deployment and do not want to setup up a kubernetes cluster for it OR run `rmf_demos` with simulation on your local machine.
-
-```bash
-docker-compose -f devel/docker-compose-local.yaml up -d
-```
-
-Now access the dashboard with: http://localhost:3000/dashboard and try dispatch a task.
-
 
 ## Docker images structure
 ```mermaid
@@ -241,3 +238,12 @@ Restart the API server pod by running,
 ```
 kubectl rollout restart deployments/rmf-web-rmf-server
 ```
+
+## (Alternate method) Quick local deployment for testing in lieu of kubernetes cluster
+If you are planning to run a small local deployment and do not want to setup up a kubernetes cluster for it OR run `rmf_demos` with simulation on your local machine.
+
+```bash
+docker-compose -f devel/docker-compose-local.yaml up -d
+```
+
+Now access the dashboard with: http://localhost:3000/dashboard and try dispatch a task.
