@@ -39,15 +39,6 @@ To build dockerfiles for deployment manually, emulate the build steps in
 
 ```mermaid
 flowchart LR
-    subgraph Legend
-      direction LR
-      start1[ ] -..->|copy| stop1[ ]
-      start2[ ] --->|base| stop2[ ]
-      style start1 height:0px;
-      style stop1 height:0px;
-      style start2 height:0px;
-      style stop2 height:0px;
-    end
     ros:$ROS_DISTRO --> builder
     builder --> rmf
     builder --> api-server
