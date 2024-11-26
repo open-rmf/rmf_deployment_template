@@ -197,8 +197,7 @@ helm --kubeconfig /etc/rancher/k3s/k3s.yaml ls --all-namespaces
 </details>
 
 <details>
-<summary>Services list</summary>
-List of ports and URIs used by the different services:
+<summary>List of ports and URIs used by the different services</summary>
 
 | Service         | Port     | Port handled by     | Test Env IP | Production access      |
 |-----------------|----------|---------------------|-------------|------------------------|
