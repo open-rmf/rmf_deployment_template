@@ -6,17 +6,49 @@ well as on-prem environments
 
 ![](../media/rmf_banner.png?raw=true)
 
-## The Kubernetes way of deployment
+<details>
+<summary><b>Quick local deployment for testing, in lieu of kubernetes cluster</b></summary>
 
-### Build
-#### CI
+If you are planning to run a small local deployment and do not want to setup up a kubernetes cluster for it OR run `rmf_demos` with simulation on your local machine.
+
+```bash
+docker-compose -f devel/docker-compose-local.yaml up -d
+```
+
+Now access the dashboard with: http://localhost:3000/dashboard and try dispatch a task.
+
+</details>
+
+## Build
 If you are deploying on a public cloud, it is recommeded to use CI / CD pipelines; 
 you may follow the github actions in this repo to setup CI.
 
-#### (Alternate method) Manual
-To build manually, follow the steps in `.github/workflows/build-images.yaml` to build dockerfiles for deployment.
+<details>
+<summary>(Alternate method) Manual build in liue of CI</summary>
+To build dockerfiles for deployment manually, emulate the build steps in 
 
-### Install kubernetes and setup infrastructure
+```bash
+.github/workflows/build-images.yaml
+```
+</details>
+
+<details>
+<summary>Docker images structure</summary>
+
+```mermaid
+flowchart LR
+    ros:$ROS_DISTRO --> builder
+    builder --> rmf
+    builder --> api-server
+    rmf --> rmf-site
+    rmf --> rmf-sim
+    ubuntu:24.04 --> dashboard
+    ubuntu:24.04 --> dashboard-local
+    ubuntu:24.04 --> keycloak-setup
+```
+</details>
+
+## Install kubernetes and setup infrastructure
 There are various kubernetes distributions available, we will be using [k3s](https://k3s.io/) for this template; please feel free to use alternates you may be comfortable with.
 
 ```bash
@@ -42,15 +74,18 @@ export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
 helm install -n=infra --create-namespace rmf-infra infrastructure
 ```
 
+<details>
+<summary>Additional steps for Local/intranet in lieu of public/internet installation</summary>
 If you are deploying locally, add your cluster's IP to `/etc/hosts` to point to be 
 able to resolve https://rmf.test
+
 ```bash
 sudo bash -c "echo $(kubectl get svc rmf-infra-ingress-nginx-controller -n infra -o jsonpath="{.spec.clusterIP}") rmf.test >> /etc/hosts"
 ```
+</details>
 
-### Setup SSL certifications
+## Setup SSL certifications
 
-#### Installation on public cloud
 If you are deploying on the internet (eg. Cloud VM / managed cluser / etc), letsencrypt provides an easy way of obtaining SSL certificates
 ```bash
 # IMPORTANT: Before you proceed to the next steps, make sure your DNS is indeed setup 
@@ -63,9 +98,12 @@ envsubst < charts/infrastructure/tools/letsencrypt-issuer-production.yaml | kube
 # Verify if certificate was issued successfully.
 kubectl get certificates # should be true, if not, might need to wait a couple minutes.
 ```
-#### (Alternate method) Local installation
+
+<details>
+<summary>(Alternate method) Local/intranet in lieu of public/internet installation</summary>
 If you are deploying locally (eg. on your computer / on-prem server / etc) the cluster provides a certification authority that signs different certificates used 
 in different services by the cluster. The root ca certificate can be obtained by:
+
 ```bash
 # create testing ca
 kubectl apply -f devel/certs.yaml
@@ -74,12 +112,13 @@ kubectl apply -f devel/certs.yaml
 kubectl -n=infra get secrets rmf-dev-secret --template='{{index .data "ca.crt"}}' | base64 -dw0 > ca.crt
 ```
 
-##### Browser https connections
+**Browser https connections**
+
 For self signed certificates, tell your browser to trust the ca.crt cert (instructions depends on the browser).
+</details>
 
-### DEPLOY
+## Deploy
 
-#### CD
 We will use [ArgoCD](https://argoproj.github.io/cd) to handle chart changes on this 
 branch of the repository and apply to the cluster. The `charts` directory consists of 
 [helm charts](https://helm.sh/docs/topics/charts/) which describes the provisioning 
@@ -113,8 +152,8 @@ For more on ArgoCD, vist their [readthedocs](https://argo-cd.readthedocs.io/en/s
 
 ## Now if you sync the app, we should see the full deployment "come alive"
 ```
-
-#### (Alternate method) Manual deployment
+<details>
+<summary>(Alternate method) Manual deployment in lieu of CD</summary>
 In case it is not feasible to deploy via CD, a manual deployment is possible via helm
 
 ```bash
@@ -127,8 +166,9 @@ helm install -n=rmf --create-namespace rmf charts/rmf-deployment
 # wait for keycloak to be ready
 kubectl -n=rmf wait --for=condition=Complete --timeout=5m jobs keycloak-setup
 ```
+</details>
 
-### Grafana (using Prometheus and Loki)
+## Grafana
 The deployment includes a prometheus stack (with grafana). It can be accessed from
 https://rmf.test/grafana.
 
@@ -138,40 +178,9 @@ To get the admin password, run
 kubectl -n=monitoring get secrets rmf-monitoring-grafana -o=jsonpath='{.data.admin-password}' | base64 -d -
 ```
 
-## (Alternate method) Quick local deployment
-If you are planning to run a small local deployment and do not want to setup up a kubernetes cluster for it OR run `rmf_demos` with simulation on your local machine.
-
-```bash
-docker-compose -f devel/docker-compose-local.yaml up -d
-```
-
-Now access the dashboard with: http://localhost:3000/dashboard and try dispatch a task.
-
-
-## Docker images structure
-```mermaid
-flowchart LR
-    subgraph Legend
-      direction LR
-      start1[ ] -..->|copy| stop1[ ]
-      start2[ ] --->|base| stop2[ ]
-      style start1 height:0px;
-      style stop1 height:0px;
-      style start2 height:0px;
-      style stop2 height:0px;
-    end
-    ros:$ROS_DISTRO --> builder-rosdep --> rmf
-    rmf --> builder-rmf-web
-    rmf --> rmf-simulation
-    builder-rmf-web --> rmf-web-dashboard
-    builder-rmf-web --> rmf-web-dashboard-local
-    builder-rmf-web --> rmf-web-rmf-server
-```
- 
 # Troubleshooting
-
-### Unable to list resources on kubectl cli
-
+<details>
+<summary>Unable to list resources on kubectl cli</summary>
 The kubeconfig file stored at `/etc/rancher/k3s/k3s.yaml` is used to configure access to the Kubernetes cluster. If you have installed upstream Kubernetes command line tools such as kubectl or helm you will need to configure them with the correct kubeconfig path. This can be done by either exporting the `KUBECONFIG` environment variable or by invoking the `--kubeconfig` command line flag. Refer to the examples below for details.
 
 Leverage the KUBECONFIG environment variable:
@@ -185,9 +194,10 @@ Or specify the location of the kubeconfig file in the command:
 kubectl --kubeconfig /etc/rancher/k3s/k3s.yaml get pods --all-namespaces
 helm --kubeconfig /etc/rancher/k3s/k3s.yaml ls --all-namespaces
 ```
-### Services
+</details>
 
-List of ports and URIs used by the different services:
+<details>
+<summary>List of ports and URIs used by the different services</summary>
 
 | Service         | Port     | Port handled by     | Test Env IP | Production access      |
 |-----------------|----------|---------------------|-------------|------------------------|
@@ -195,25 +205,28 @@ List of ports and URIs used by the different services:
 | RMF https       | 443      | ingress-nginx https | 127.0.0.1   | https://${URL}:443/dashboard/ |
 | Grafana UI      | 443      | ingress-nginx https | cluster IP  | https://${URL}/grafana/ |
 | Keycloak UI     | 443      | ingress-nginx https | cluster IP  | https://${URL}/auth/ |
+</details>
 
-### Production Deployment
-
+<details>
+<summary>Reserve node for production Deployment</summary>
 To reserve a node for rmf.
 
 ```bash
 kubectl taint node <node-name> reserved=rmf:NoSchedule
 ```
+</details>
 
-### Deleting and Removing the local deployment / installation
-
+<details>
+<summary>Deleting and Removing the local deployment / installation</summary>
 To delete the local deployment
 
 ```bash
 helm uninstall -n=rmf rmf
 ```
+</details>
 
-### API server crash loop backoff and jwt-pub-key missing
-
+<details>
+<summary>API server crash loop backoff and jwt-pub-key missing</summary>
 It is generally normal for the first deployment to see this happening, as it has to wait 
 for keycloak to be ready and the `keycloak-setup` job to be completed.
 
@@ -241,3 +254,4 @@ Restart the API server pod by running,
 ```
 kubectl rollout restart deployments/rmf-web-rmf-server
 ```
+</details>
