@@ -7,7 +7,7 @@ well as on-prem environments
 ![](../media/rmf_banner.png?raw=true)
 
 <details>
-<summary> ** Quick local deployment for testing, in lieu of kubernetes cluster **</summary>
+<summary><b>Quick local deployment for testing, in lieu of kubernetes cluster</b></summary>
 
 If you are planning to run a small local deployment and do not want to setup up a kubernetes cluster for it OR run `rmf_demos` with simulation on your local machine.
 
