@@ -2,8 +2,8 @@ FROM docker.io/ubuntu:24.04
 
 ARG RMF_WEB_COMMIT="main"
 
-# If we are building for deployment use with auth
-ARG APP_CONFIG="app-config.json"
+# If we are building for deployment use with auth, otherwise "local"
+ARG DASHBOARD_DIRECTORY="with_auth"
 ###################################################################
 
 ENV CI=1
@@ -14,11 +14,7 @@ RUN apt update && apt install -y \
   && curl -fsSL https://get.pnpm.io/install.sh | bash -
 ENV PNPM_HOME /root/.local/share/pnpm
 ENV PATH "$PNPM_HOME:$PATH"
-
-# setup pnpm and install node
-# this needs to be a separate step so that pnpm can be found
-RUN pnpm config set unsafe-perm \
-  && pnpm env use --global lts
+RUN pnpm env use --global lts
 
 # fetch sources
 RUN mkdir -p /ws \
@@ -27,22 +23,23 @@ RUN mkdir -p /ws \
 
 # install deps
 RUN cd /ws \
-  && pnpm install --filter rmf-dashboard...
+  && pnpm install --filter rmf-dashboard-framework...
 
-# copy in app config
-COPY $APP_CONFIG /ws/packages/dashboard/app-config.json
+# copy in the dashboard main files
+RUN mkdir -p /ws/packages/rmf-dashboard-framework/examples/target
+COPY $DASHBOARD_DIRECTORY/* /ws/packages/rmf-dashboard-framework/examples/target/
 
 # copy in dashoard resources
-COPY dashboard_resources/* /ws/packages/dashboard/public/resources/
+COPY dashboard_resources/* /ws/packages/rmf-dashboard-framework/public/resources/
 
 # build
-RUN cd /ws/packages/dashboard \
-  && pnpm run build
+RUN cd /ws/packages/rmf-dashboard-framework \
+  && pnpm run build:example examples/target
 
 ###
 
 FROM docker.io/nginx:stable
-COPY --from=0 --chown=root:nginx /ws/packages/dashboard/dist /usr/share/nginx/html/dashboard
+COPY --from=0 --chown=root:nginx /ws/packages/rmf-dashboard-framework/examples/target/dist /usr/share/nginx/html/dashboard
 
 COPY nginx.default.conf /etc/nginx/conf.d/default.conf
 COPY 99-inject-env.sh /docker-entrypoint.d
