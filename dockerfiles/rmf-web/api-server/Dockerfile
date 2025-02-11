@@ -50,7 +50,7 @@ RUN mkdir -p /ws \
 
 # build api-server
 RUN cd /ws \
-  && pnpm install -w --filter api-server...
+  && pnpm install -w --no-frozen-lockfile --filter api-server...
 
 FROM docker.io/library/ros:$ROS_DISTRO-ros-core
 

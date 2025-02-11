@@ -23,7 +23,7 @@ RUN mkdir -p /ws \
 
 # install deps
 RUN cd /ws \
-  && pnpm install --filter rmf-dashboard-framework...
+  && pnpm install --no-frozen-lockfile --filter rmf-dashboard-framework...
 
 # copy in the dashboard main files
 RUN mkdir -p /ws/packages/rmf-dashboard-framework/examples/target
