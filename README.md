@@ -1,4 +1,5 @@
 [![CI image builder](https://github.com/open-rmf/rmf_deployment_template/actions/workflows/build-images.yaml/badge.svg?branch=main)](https://github.com/open-rmf/rmf_deployment_template/actions/workflows/build-images.yaml)
+[![CI Nightly](https://github.com/open-rmf/rmf_deployment_template/actions/workflows/nightly.yaml/badge.svg?branch=main)](https://github.com/open-rmf/rmf_deployment_template/actions/workflows/nightly.yaml)
 
 # Open-RMF Deployment Template
 This repo provides a reference template to build, deploy and manage an [Open-RMF](https://github.com/open-rmf/rmf) installation for production use, in cloud as 
