@@ -63,14 +63,14 @@ const tasksWorkspace: InitialWindow[] = [
 export default function App() {
   return (
     <RmfDashboard
-      apiServerUrl="__RMF_SERVER_URL__"
-      trajectoryServerUrl="__TRAJECTORY_SERVER_URL__"
+      apiServerUrl={window.RMF_SERVER_URL}
+      trajectoryServerUrl={window.TRAJECTORY_SERVER_URL}
       authenticator={
         new KeycloakAuthenticator(
           {
             clientId: 'dashboard',
             realm: 'rmf-web',
-            url: '__KEYCLOAK_URL__',
+            url: window.KEYCLOAK_URL,
           },
           // This must be a full url, if the dashboard is served under a subpath, this
           // must be set approriately.

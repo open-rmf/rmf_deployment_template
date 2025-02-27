@@ -63,7 +63,7 @@ const tasksWorkspace: InitialWindow[] = [
 export default function App() {
   return (
     <RmfDashboard
-      apiServerUrl="__RMF_SERVER_URL__"
+      apiServerUrl={window.RMF_SERVER_URL}
       trajectoryServerUrl="http://localhost:8006"
       authenticator={new StubAuthenticator()}
       helpLink="https://osrf.github.io/ros2multirobotbook/rmf-core.html"
