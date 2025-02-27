@@ -32,6 +32,9 @@ COPY $DASHBOARD_DIRECTORY/* /ws/packages/rmf-dashboard-framework/examples/target
 # copy in dashoard resources
 COPY dashboard_resources/* /ws/packages/rmf-dashboard-framework/public/resources/
 
+# replace vite.config.ts to include base
+COPY vite.config.ts /ws/packages/rmf-dashboard-framework/examples/shared/vite.config.ts
+
 # build
 RUN cd /ws/packages/rmf-dashboard-framework \
   && pnpm run build:example examples/target
