@@ -30,7 +30,7 @@ RUN mkdir -p /ws/packages/rmf-dashboard-framework/examples/target
 COPY $DASHBOARD_DIRECTORY/* /ws/packages/rmf-dashboard-framework/examples/target/
 
 # copy in dashoard resources
-COPY dashboard_resources/* /ws/packages/rmf-dashboard-framework/public/resources/
+COPY dashboard_resources/* /ws/packages/rmf-dashboard-framework/examples/shared/public/resources/
 
 # replace vite.config.ts to include base
 COPY vite.config.ts /ws/packages/rmf-dashboard-framework/examples/shared/vite.config.ts
