@@ -1,5 +1,20 @@
 {{- if .Values.ENABLE_RMF_SIM -}}
 ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rmf-sim
+  labels:
+    app: rmf-sim
+spec:
+  selector:
+    app: rmf-sim
+  ports:
+    - protocol: TCP
+      port: 8006
+      targetPort: 8006
+      name: websocket-port
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -38,6 +53,10 @@ spec:
               use_sim_time:={{ .Values.global.RMF_USE_SIM_TIME }}
               failover_mode:={{ .Values.global.RMF_FAILOVER_MODE }}
               server_uri:={{ .Values.global.RMF_SERVER_URI }}
+          ports:
+            - containerPort: 8006
+              name: websocket-port
+              protocol: TCP
           volumeMounts:
             - mountPath: {{ .Values.global.DDS_CONFIG_MOUNTPATH | quote }}
               name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
@@ -50,4 +69,29 @@ spec:
           operator: Equal
           value: rmf
           effect: NoSchedule
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: rmf-sim
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    cert-manager.io/cluster-issuer: {{ .Values.CERT_MANAGER_ISSUER }}
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: {{ .Values.hostName | quote }}
+      http:
+        paths:
+          - path: /trajectory
+            pathType: Prefix
+            backend:
+              service:
+                name: rmf-sim
+                port:
+                  number: 8006
+  tls:
+    - hosts:
+        - {{ .Values.hostName | quote }}
+      secretName: rmf-sim-ingress-tls
 {{- end -}}

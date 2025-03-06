@@ -75,7 +75,7 @@ export default function App() {
           // This must be a full url, if the dashboard is served under a subpath, this
           // must be set approriately.
           // Note that we can't use the base url directly as it could be an absolute path.
-          `${location.origin}/silent-check-sso.html`,
+          `${location.origin}/dashboard/silent-check-sso.html`,
         )
       }
       helpLink="https://github.com/open-rmf/rmf-web"
