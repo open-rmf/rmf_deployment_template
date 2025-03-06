@@ -73,7 +73,7 @@ export default function App() {
           tinyRobot: {
             default: {
               icon: '/resources/tinyRobot.png',
-              scale: 0.0053
+              scale: 0.00217765,
             }
           }
         },

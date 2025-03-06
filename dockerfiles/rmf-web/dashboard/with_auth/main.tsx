@@ -84,12 +84,12 @@ export default function App() {
         fleets: {
           tinyRobot: {
             default: {
-              icon: '/resources/tinyRobot.png',
-              scale: 0.0053
+              icon: '/dashboard/resources/tinyRobot.png',
+              scale: 0.00217765,
             }
           }
         },
-        logos: { header: '/resources/openrmf_logo.png' }
+        logos: { header: '/dashboard/resources/openrmf_logo.png' }
       }}
       tasks={{
         allowedTasks: [
