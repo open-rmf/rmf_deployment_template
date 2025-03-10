@@ -24,8 +24,8 @@ import { StubAuthenticator } from 'rmf-dashboard-framework/services';
 const mapApp = createMapApp({
   attributionPrefix: 'Support: xxxx xxxx',
   defaultMapLevel: 'L1',
-  defaultRobotZoom: 50,
-  defaultZoom: 5,
+  defaultRobotZoom: 20,
+  defaultZoom: 6,
 });
 
 const appRegistry: MicroAppManifest[] = [
