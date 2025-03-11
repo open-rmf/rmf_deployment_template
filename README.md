@@ -263,5 +263,22 @@ This is due to the JWT public key not being ready when the trajectory server lau
 It is generally normal for the first deployment to see this happening, as it has to wait
 for keycloak to be ready and the `keycloak-setup` job to be completed.
 
-Restart the pod running the trajectory server after the `keycloak-setup` job is done, by deleting either the `rmf-sim` pod or the `rmf-trajectory-visualizer` pod.
+Check that the `keycloak-setup` job is completed,
+
+```bash
+kubectl get jobs -A
+```
+
+Restart the deployment or delete the pod,
+
+```bash
+# Restart the deployment
+kubectl rollout restart deployments/rmf-sim
+
+# or delete the pod to restart it
+kubectl delete pod -n rmf rmf-sim
+
+# or only the trajectory pod if ENABLE_RMF_SIM is false
+# kubectl delete pod -n rmf rmf-trajectory-visualizer
+```
 </details>
