@@ -13,7 +13,7 @@ services:
     network_mode: "host"
 
   web-dashboard:
-    image: "ghcr.io/open-rmf/rmf_deployment_template/rmf-deployment/dashboard-local:latest"
+    image: "ghcr.io/open-rmf/rmf_deployment_template/rmf-deployment/dashboard-no-auth:latest"
     environment:
       RMF_SERVER_URL: "http://localhost:8000"
       TRAJECTORY_SERVER_URL: "ws://localhost:8006"

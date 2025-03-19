@@ -16,7 +16,7 @@ If you are planning to run a small local deployment and do not want to setup up 
 docker-compose -f devel/docker-compose-local.yaml up -d
 ```
 
-Now access the dashboard with: http://localhost:3000/dashboard and try dispatch a task.
+Now access the dashboard with: http://localhost:3000/dashboard and try dispatch a task. Do note that this launches the [`dashboard-no-auth`](devel/dashboard-no-auth/) docker image instead, which does not require authentication.
 
 </details>
 
