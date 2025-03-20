@@ -24,8 +24,8 @@ import { StubAuthenticator } from 'rmf-dashboard-framework/services';
 const mapApp = createMapApp({
   attributionPrefix: 'Support: xxxx xxxx',
   defaultMapLevel: 'L1',
-  defaultRobotZoom: 50,
-  defaultZoom: 5,
+  defaultRobotZoom: 20,
+  defaultZoom: 6,
 });
 
 const appRegistry: MicroAppManifest[] = [
@@ -63,7 +63,7 @@ const tasksWorkspace: InitialWindow[] = [
 export default function App() {
   return (
     <RmfDashboard
-      apiServerUrl="__RMF_SERVER_URL__"
+      apiServerUrl={window.RMF_SERVER_URL}
       trajectoryServerUrl="http://localhost:8006"
       authenticator={new StubAuthenticator()}
       helpLink="https://osrf.github.io/ros2multirobotbook/rmf-core.html"
@@ -72,12 +72,12 @@ export default function App() {
         fleets: {
           tinyRobot: {
             default: {
-              icon: '/resources/tinyRobot.png',
-              scale: 0.0053
+              icon: '/dashboard/resources/tinyRobot.png',
+              scale: 0.00217765,
             }
           }
         },
-        logos: { header: '/resources/openrmf_logo.png' }
+        logos: { header: '/dashboard/resources/openrmf_logo.png' }
       }}
       tasks={{
         allowedTasks: [

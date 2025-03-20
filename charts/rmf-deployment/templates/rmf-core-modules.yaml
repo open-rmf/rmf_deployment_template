@@ -175,6 +175,8 @@ spec:
   ports:
     - protocol: TCP
       port: 8006
+      targetPort: 8006
+      name: websocket-port
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -211,7 +213,7 @@ spec:
           args:
             - -c
             - >
-              /ros_entrypoint.sh
+              export JWT_PUBLIC_KEY="$(cat /etc/config/jwt-pub-key.pub)"; /ros_entrypoint.sh
               ros2 launch rmf_visualization visualization.launch.xml
               headless:=1
               use_sim_time:=$(RMF_USE_SIM_TIME)
@@ -221,13 +223,44 @@ spec:
           volumeMounts:
             - mountPath: {{ .Values.global.DDS_CONFIG_MOUNTPATH | quote }}
               name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
+            - mountPath: /etc/config
+              name: jwt-pub-key
+              readOnly: true
       volumes:
         - name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
           configMap:
             name: {{ .Values.global.DDS_CONFIG_VOLUME | quote }}
+        - name: jwt-pub-key
+          configMap:
+            name: jwt-pub-key
       tolerations:
         - key: reserved
           operator: Equal
           value: rmf
           effect: NoSchedule
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: rmf-trajectory-visualizer
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    cert-manager.io/cluster-issuer: {{ .Values.CERT_MANAGER_ISSUER }}
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: {{ .Values.hostName | quote }}
+      http:
+        paths:
+          - path: /trajectory
+            pathType: Prefix
+            backend:
+              service:
+                name: rmf-trajectory-visualizer
+                port:
+                  number: 8006
+  tls:
+    - hosts:
+        - {{ .Values.hostName | quote }}
+      secretName: rmf-trajectory-visualizer-ingress-tls
 {{- end -}}

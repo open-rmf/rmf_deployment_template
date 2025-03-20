@@ -63,19 +63,19 @@ const tasksWorkspace: InitialWindow[] = [
 export default function App() {
   return (
     <RmfDashboard
-      apiServerUrl="__RMF_SERVER_URL__"
-      trajectoryServerUrl="__TRAJECTORY_SERVER_URL__"
+      apiServerUrl={window.RMF_SERVER_URL}
+      trajectoryServerUrl={window.TRAJECTORY_SERVER_URL}
       authenticator={
         new KeycloakAuthenticator(
           {
             clientId: 'dashboard',
             realm: 'rmf-web',
-            url: '__KEYCLOAK_URL__',
+            url: window.KEYCLOAK_URL,
           },
           // This must be a full url, if the dashboard is served under a subpath, this
           // must be set approriately.
           // Note that we can't use the base url directly as it could be an absolute path.
-          `${location.origin}/silent-check-sso.html`,
+          `${location.origin}/dashboard/silent-check-sso.html`,
         )
       }
       helpLink="https://github.com/open-rmf/rmf-web"
@@ -84,12 +84,12 @@ export default function App() {
         fleets: {
           tinyRobot: {
             default: {
-              icon: '/resources/tinyRobot.png',
-              scale: 0.0053
+              icon: '/dashboard/resources/tinyRobot.png',
+              scale: 0.00217765,
             }
           }
         },
-        logos: { header: '/resources/openrmf_logo.png' }
+        logos: { header: '/dashboard/resources/openrmf_logo.png' }
       }}
       tasks={{
         allowedTasks: [

@@ -2,7 +2,7 @@
 [![CI Nightly](https://github.com/open-rmf/rmf_deployment_template/actions/workflows/nightly.yaml/badge.svg?branch=main)](https://github.com/open-rmf/rmf_deployment_template/actions/workflows/nightly.yaml)
 
 # Open-RMF Deployment Template
-This repo provides a reference template to build, deploy and manage an [Open-RMF](https://github.com/open-rmf/rmf) installation for production use, in cloud as 
+This repo provides a reference template to build, deploy and manage an [Open-RMF](https://github.com/open-rmf/rmf) installation for production use, in cloud as
 well as on-prem environments
 
 ![](../media/rmf_banner.png?raw=true)
@@ -16,17 +16,17 @@ If you are planning to run a small local deployment and do not want to setup up 
 docker-compose -f devel/docker-compose-local.yaml up -d
 ```
 
-Now access the dashboard with: http://localhost:3000/dashboard and try dispatch a task.
+Now access the dashboard with: http://localhost:3000/dashboard and try dispatch a task. Do note that this launches the [`dashboard-no-auth`](devel/dashboard-no-auth/) docker image instead, which does not require authentication.
 
 </details>
 
 ## Build
-If you are deploying on a public cloud, it is recommeded to use CI / CD pipelines; 
+If you are deploying on a public cloud, it is recommeded to use CI / CD pipelines;
 you may follow the github actions in this repo to setup CI.
 
 <details>
 <summary>(Alternate method) Manual build in liue of CI</summary>
-To build dockerfiles for deployment manually, emulate the build steps in 
+To build dockerfiles for deployment manually, emulate the build steps in
 
 ```bash
 .github/workflows/build-images.yaml
@@ -59,8 +59,8 @@ sudo usermod -aG docker $USER
 newgrp docker
 
 # install k3s (https://docs.k3s.io/)
-# replace ens5 with the interface of your choice 
-curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--flannel-iface=ens5 --disable=traefik --write-kubeconfig-mode=644 --docker" sh -s - 
+# replace ens5 with the interface of your choice
+curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--flannel-iface=ens5 --disable=traefik --write-kubeconfig-mode=644 --docker" sh -s -
 
 # install helm (https://helm.sh/docs/intro/install/)
 curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
@@ -77,7 +77,7 @@ helm install -n=infra --create-namespace rmf-infra infrastructure
 
 <details>
 <summary>Additional steps for Local/intranet in lieu of public/internet installation</summary>
-If you are deploying locally, add your cluster's IP to `/etc/hosts` to point to be 
+If you are deploying locally, add your cluster's IP to `/etc/hosts` to point to be
 able to resolve https://rmf.test
 
 ```bash
@@ -89,7 +89,7 @@ sudo bash -c "echo $(kubectl get svc rmf-infra-ingress-nginx-controller -n infra
 
 If you are deploying on the internet (eg. Cloud VM / managed cluser / etc), letsencrypt provides an easy way of obtaining SSL certificates
 ```bash
-# IMPORTANT: Before you proceed to the next steps, make sure your DNS is indeed setup 
+# IMPORTANT: Before you proceed to the next steps, make sure your DNS is indeed setup
 # and resolving; this is to avoid hitting letsencrypt's rate limits on DNS failure.
 # NOTE: Specify your `ACME_EMAIL` and `DOMAIN_NAME` for letsencrypt-issuer-production
 export DOMAIN_NAME=rmf.test
@@ -102,7 +102,7 @@ kubectl get certificates # should be true, if not, might need to wait a couple m
 
 <details>
 <summary>(Alternate method) Local/intranet in lieu of public/internet installation</summary>
-If you are deploying locally (eg. on your computer / on-prem server / etc) the cluster provides a certification authority that signs different certificates used 
+If you are deploying locally (eg. on your computer / on-prem server / etc) the cluster provides a certification authority that signs different certificates used
 in different services by the cluster. The root ca certificate can be obtained by:
 
 ```bash
@@ -120,9 +120,9 @@ For self signed certificates, tell your browser to trust the ca.crt cert (instru
 
 ## Deploy
 
-We will use [ArgoCD](https://argoproj.github.io/cd) to handle chart changes on this 
-branch of the repository and apply to the cluster. The `charts` directory consists of 
-[helm charts](https://helm.sh/docs/topics/charts/) which describes the provisioning 
+We will use [ArgoCD](https://argoproj.github.io/cd) to handle chart changes on this
+branch of the repository and apply to the cluster. The `charts` directory consists of
+[helm charts](https://helm.sh/docs/topics/charts/) which describes the provisioning
 of the deployment.
 
 ```bash
@@ -134,11 +134,11 @@ kubectl port-forward svc/argocd-server -n argocd 9090:443
 # on your machine, to fix - sudo apt -y install socat
 
 # Start a new ssh session with port forward 9090 to the VM, you should now be able
-# to view the admin panel on port localhost:9090 
-# (eg. ssh -L 9090:localhost:9090 my-awesome-server.tld and then open ArgoCD web UI 
+# to view the admin panel on port localhost:9090
+# (eg. ssh -L 9090:localhost:9090 my-awesome-server.tld and then open ArgoCD web UI
 # by going to localhost:9090 on your workstation)
-# In case you have problems with port forwarding, you may be missing socat on the 
-# server, install by sudo apt install -y socat 
+# In case you have problems with port forwarding, you may be missing socat on the
+# server, install by sudo apt install -y socat
 
 # Get the initial password for ArgoCD
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
@@ -147,8 +147,8 @@ For more on ArgoCD, vist their [readthedocs](https://argo-cd.readthedocs.io/en/s
 ```bash
 # Connect the repository
 
-## When adding a "new app" on argocd, we will specify the repo, this branch and 
-## `charts/rmf-deployment` directory. Similarly to deploy the monitoring tools, use 
+## When adding a "new app" on argocd, we will specify the repo, this branch and
+## `charts/rmf-deployment` directory. Similarly to deploy the monitoring tools, use
 ## `charts/monitoring` directory.
 
 ## Now if you sync the app, we should see the full deployment "come alive"
@@ -228,7 +228,7 @@ helm uninstall -n=rmf rmf
 
 <details>
 <summary>API server crash loop backoff and jwt-pub-key missing</summary>
-It is generally normal for the first deployment to see this happening, as it has to wait 
+It is generally normal for the first deployment to see this happening, as it has to wait
 for keycloak to be ready and the `keycloak-setup` job to be completed.
 
 If this issue is persisting and the `keycloak-setup` job does not show up on `kubectl get jobs -A`,
@@ -254,5 +254,31 @@ Restart the API server pod by running,
 
 ```
 kubectl rollout restart deployments/rmf-web-rmf-server
+```
+</details>
+
+<details>
+<summary>Unable to see robot trajectories on dashboard</summary>
+This is due to the JWT public key not being ready when the trajectory server launches.
+It is generally normal for the first deployment to see this happening, as it has to wait
+for keycloak to be ready and the `keycloak-setup` job to be completed.
+
+Check that the `keycloak-setup` job is completed,
+
+```bash
+kubectl get jobs -A
+```
+
+Restart the deployment or delete the pod,
+
+```bash
+# Restart the deployment
+kubectl rollout restart deployments/rmf-sim
+
+# or delete the pod to restart it
+kubectl delete pod -n rmf rmf-sim
+
+# or only the trajectory pod if ENABLE_RMF_SIM is false
+# kubectl delete pod -n rmf rmf-trajectory-visualizer
 ```
 </details>

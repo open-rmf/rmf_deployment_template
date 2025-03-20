@@ -5,5 +5,5 @@ repositories:
     version: main
   rmf/rmf_simulation:
     type: git
-    url: https://github.com/open-rmf/rmf_simulation.git    
+    url: https://github.com/open-rmf/rmf_simulation.git
     version: main

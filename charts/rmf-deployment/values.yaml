@@ -7,7 +7,7 @@ ENABLE_RMF: false # mutually exclusive with `ENABLE_RMF_SIM`
 CERT_MANAGER_ISSUER: rmf-dev-issuer
 
 global:
-  # change these to the registry you are using 
+  # change these to the registry you are using
   # REGISTRY_DOCKER: docker.io
   # REGISTRY_QUAY: quay.io
   REGISTRY_RMF: ghcr.io/open-rmf/rmf_deployment_template
