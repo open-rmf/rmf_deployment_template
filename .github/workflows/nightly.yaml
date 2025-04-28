@@ -109,9 +109,9 @@ jobs:
           . dockerfiles/build-args.sh
           docker build -t $IMAGE $DASHBOARD_BUILD_ARGS dockerfiles/rmf-web/dashboard
           docker push $IMAGE
-  ## Dashboard without custom url, use defaults env for react app for local testing
-  dashboard-local:
-    name: dashboard-local
+  ## Dashboard without custom url or auth, use defaults env for react app for local docker-compose testing
+  dashboard-no-auth:
+    name: dashboard-no-auth
     runs-on: ubuntu-latest
     steps:
       - name: Login to Github Packages
@@ -124,10 +124,13 @@ jobs:
         uses: actions/checkout@v4
       - name: build and push
         run: |
-          IMAGE=$IMAGE_NS/dashboard-local:$IMAGE_TAG
+          IMAGE=$IMAGE_NS/dashboard-no-auth:$IMAGE_TAG
+          IMAGE_LATEST=$IMAGE_NS/dashboard-no-auth:$IMAGE_TAG_LATEST
           . dockerfiles/build-args.sh
-          docker build -t $IMAGE $DASHBOARD_LOCAL_BUILD_ARGS dockerfiles/rmf-web/dashboard
+          docker build -t $IMAGE $DASHBOARD_BUILD_ARGS devel/dashboard-no-auth
           docker push $IMAGE
+          docker tag $IMAGE $IMAGE_LATEST
+          docker push $IMAGE_LATEST
   keycloak_setup:
     name: keycloak-setup
     runs-on: ubuntu-latest
