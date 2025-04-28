@@ -146,7 +146,7 @@ jobs:
           IMAGE=$IMAGE_NS/dashboard-no-auth:$IMAGE_TAG
           IMAGE_LATEST=$IMAGE_NS/dashboard-no-auth:$IMAGE_TAG_LATEST
           . dockerfiles/build-args.sh
-          docker build -t $IMAGE --build-arg=RMF_WEB_COMMIT=$RMF_WEB_COMMIT devel/dashboard-no-auth
+          docker build -t $IMAGE $DASHBOARD_BUILD_ARGS devel/dashboard-no-auth
           docker push $IMAGE
           docker tag $IMAGE $IMAGE_LATEST
           docker push $IMAGE_LATEST
